@@ -14,7 +14,8 @@ namespace GoWMS.Server.Models.Mas
 		public DateTime? Modified { get; set; }
 		public Int64? Innovator { get; set; }
 		public string Device { get; set; }
-		public string Itemcode { get; set; }
+		public string Itemcat { get; set; }
+        public string Itemcode { get; set; }
 		public string Itemname { get; set; }
 		public string Itemunit { get; set; }
 		public string Itembrand { get; set; }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GoWMS.Server.Controllers;
 using GoWMS.Server.Models.Oub;
+using GoWMS.Server.Models.Public;
 using NpgsqlTypes;
 using System.Text;
 
@@ -23,10 +24,12 @@ namespace GoWMS.Server.Data
             {
                 NpgsqlCommand cmd = new NpgsqlCommand("select * " +
                     "from public.sap_storeout  " +
+                    "where  status <@status " +
                     "order by idx", con)
                 {
                     CommandType = CommandType.Text
                 };
+                cmd.Parameters.AddWithValue("@status", 3);
                 con.Open();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -85,6 +88,121 @@ namespace GoWMS.Server.Data
             }
             return lstobj;
         }
+
+        public async Task<IEnumerable<Inv_Stock_GoApiInfo>> GetStockListInfo()
+        {
+
+            List<Inv_Stock_GoApiInfo> lstobj = new List<Inv_Stock_GoApiInfo>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                StringBuilder Sql = new StringBuilder();
+                /*
+                Sql.AppendLine("select row_number() over(order by  itemcode asc) AS rn,");
+                Sql.AppendLine("itemcode, itemname, quantity, pallettag, pallteno, storagearea, storagebin");
+                Sql.AppendLine("from wms.inv_stock_go ");
+                Sql.AppendLine("order by itemcode, ");
+                */
+
+                Sql.AppendLine("SELECT t1.efidx , t1.efstatus, t1.created, t1.modified, t1.innovator, t1.device");
+                Sql.AppendLine(", t1.pono, t1.pallettag, t1.itemtag, t1.itemcode, t1.itemname, t1.itembar, t1.unit");
+                Sql.AppendLine(", t1.weightunit, t1.quantity, t1.weight, t1.lotno, t1.totalquantity, t1.totalweight");
+                Sql.AppendLine(", t1.docno, t1.docby, t1.docdate, t1.docnote, t1.grnrefer, t1.grntime, t1.grtime");
+                Sql.AppendLine(", t1.grtype, t1.pallteno, t1.palltmapkey, t1.storagetime, t1.storageno");
+                Sql.AppendLine(", t1.storagearea, t1.storagebin, t1.gnrefer, t1.allocatequantity, t1.allocateweight");
+                Sql.AppendLine(",t0.efidx as apiefidx, t0.efstatus as apiefstatus, t0.created as apicreated, t0.modified as apimodified, t0.innovator as apiinnovator, t0.device as apidevice");
+                Sql.AppendLine(",t0.lenum as apiPackage_ID, t0.lenum as apiRoll_ID");
+
+                Sql.AppendLine(",matnr as apiMaterial_Code, '-' as apiMaterial_Description");
+                //Sql.AppendLine(",SUBSTRING (t0.matnr FROM 2) as apiMaterial_Code, '-' as apiMaterial_Description");
+                Sql.AppendLine(",t0.created as apiReceiving_Date, CAST(t0.matqty AS DECIMAL) as  apiGR_Quantity");
+                Sql.AppendLine(",null as apiUnit,1.00 as apiGR_Quantity_KG");
+                Sql.AppendLine(",t0.lgnum as  apiWH_Code, t0.lgnum as apiWarehouse, t0.matnr as apiJob, t0.matbatch as apiJob_Code, t0.typor as apitypor, t0.karor as apikaror");
+                Sql.AppendLine("FROM api.postasrsorders t0");
+                Sql.AppendLine("LEFT JOIN wms.vinv_stock_go_readypick t1");
+
+                Sql.AppendLine("ON t0.lenum = t1.pallettag");
+                Sql.AppendLine("WHERE t0.typor=@typor");
+                Sql.AppendLine("AND t0.efstatus=@efstatus");
+                Sql.AppendLine("order by itemcode ASC, docdate ASC, pallettag ASC");
+
+
+                NpgsqlCommand cmd = new NpgsqlCommand(Sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+                cmd.Parameters.AddWithValue("@typor", "PICK");
+                cmd.Parameters.AddWithValue("@efstatus", 0);
+
+                con.Open();
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (await rdr.ReadAsync())
+                {
+                    Inv_Stock_GoApiInfo objrd = new Inv_Stock_GoApiInfo
+                    {
+                        Efidx = rdr["efidx"] == DBNull.Value ? null : (Int64?)rdr["efidx"],
+                        Efstatus = rdr["efstatus"] == DBNull.Value ? null : (Int32?)rdr["efstatus"],
+                        Created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"],
+                        Innovator = rdr["innovator"] == DBNull.Value ? null : (Int64?)rdr["innovator"],
+                        Device = rdr["device"].ToString(),
+                        Pono = rdr["pono"].ToString(),
+                        Pallettag = rdr["pallettag"].ToString(),
+                        Itemtag = rdr["itemtag"].ToString(),
+                        Itemcode = rdr["itemcode"].ToString(),
+                        Itemname = rdr["itemname"].ToString(),
+                        Itembar = rdr["itembar"].ToString(),
+                        Unit = rdr["unit"].ToString(),
+                        Weightunit = rdr["weightunit"].ToString(),
+                        Quantity = rdr["quantity"] == DBNull.Value ? null : (decimal?)rdr["quantity"],
+                        Weight = rdr["weight"] == DBNull.Value ? null : (decimal?)rdr["weight"],
+                        Lotno = rdr["lotno"].ToString(),
+                        Totalquantity = rdr["totalquantity"] == DBNull.Value ? null : (decimal?)rdr["totalquantity"],
+                        Totalweight = rdr["totalweight"] == DBNull.Value ? null : (decimal?)rdr["totalweight"],
+                        Docno = rdr["docno"].ToString(),
+                        Docby = rdr["docby"].ToString(),
+                        Docdate = rdr["docdate"] == DBNull.Value ? null : (DateTime?)rdr["docdate"],
+                        Docnote = rdr["docnote"].ToString(),
+                        Grnrefer = rdr["grnrefer"] == DBNull.Value ? null : (Int64?)rdr["grnrefer"],
+                        Grntime = rdr["grntime"] == DBNull.Value ? null : (DateTime?)rdr["grntime"],
+                        Grtime = rdr["grtime"] == DBNull.Value ? null : (DateTime?)rdr["grtime"],
+                        Grtype = rdr["grtype"].ToString(),
+                        Pallteno = rdr["pallteno"].ToString(),
+                        Palltmapkey = rdr["palltmapkey"].ToString(),
+                        Storagetime = rdr["storagetime"] == DBNull.Value ? null : (DateTime?)rdr["storagetime"],
+                        Storageno = rdr["storageno"].ToString(),
+                        Storagearea = rdr["storagearea"].ToString(),
+                        Storagebin = rdr["storagebin"].ToString(),
+                        Gnrefer = rdr["gnrefer"] == DBNull.Value ? null : (Int64?)rdr["gnrefer"],
+                        Allocatequantity = rdr["allocatequantity"] == DBNull.Value ? null : (decimal?)rdr["allocatequantity"],
+                        Allocateweight = rdr["allocateweight"] == DBNull.Value ? null : (decimal?)rdr["allocateweight"],
+                        Apiefidx = rdr["apiefidx"] == DBNull.Value ? null : (Int64?)rdr["apiefidx"],
+                        Apiefstatus = rdr["apiefstatus"] == DBNull.Value ? null : (Int32?)rdr["apiefstatus"],
+                        Apicreated = rdr["apicreated"] == DBNull.Value ? null : (DateTime?)rdr["apicreated"],
+                        Apimodified = rdr["apimodified"] == DBNull.Value ? null : (DateTime?)rdr["apimodified"],
+                        Apiinnovator = rdr["apiinnovator"] == DBNull.Value ? null : (Int64?)rdr["apiinnovator"],
+                        Apidevice = rdr["apidevice"].ToString(),
+                        ApipackageID = rdr["apiPackage_ID"].ToString(),
+                        ApirollID = rdr["apiRoll_ID"].ToString(),
+                        ApimaterialCode = rdr["apiMaterial_Code"].ToString(),
+                        ApimaterialDescription = rdr["apiMaterial_Description"].ToString(),
+                        ApireceivingDate = rdr["apiReceiving_Date"] == DBNull.Value ? null : (DateTime?)rdr["apiReceiving_Date"],
+                        ApigrQuantity = rdr["apiGR_Quantity"] == DBNull.Value ? null : (decimal?)rdr["apiGR_Quantity"],
+                        ApiUnit = rdr["apiUnit"].ToString(),
+                        apigrQuantityKG = rdr["apiGR_Quantity_KG"] == DBNull.Value ? null : (decimal?)rdr["apiGR_Quantity_KG"],
+                        ApiwhCode = rdr["apiWH_Code"].ToString(),
+                        Apiwarehouse = rdr["apiWarehouse"].ToString(),
+                        Apijob = rdr["apiJob"].ToString(),
+                        ApijobCode = rdr["apiJob_Code"].ToString(),
+                        Apitypor = rdr["apitypor"].ToString(),
+                        Apikaror = rdr["apikaror"].ToString()
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
 
         public IEnumerable<Sap_Storeout> GetSapStoreoutSetBatch()
         {
@@ -407,6 +525,102 @@ namespace GoWMS.Server.Data
             }
             return bRet;
         }
+
+
+        public IEnumerable<Set_Workstation> GetAllWorkstations()
+        {
+            List< Set_Workstation> lstobj = new List<Set_Workstation>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand("select idx, created, entity_lock, modified, client_id, client_ip, stcode, stdesc, stref " +
+                    "FROM public.set_workstation  " +
+                    "order by idx", con)
+                {
+                    CommandType = CommandType.Text
+                };
+                con.Open();
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Set_Workstation objrd = new Set_Workstation
+                    {
+                        Idx = rdr["idx"] == DBNull.Value ? null : (Int64?)rdr["idx"],
+                        Entity_Lock = rdr["entity_lock"] == DBNull.Value ? null : (Int32?)rdr["entity_lock"],
+                        Created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"],
+                        Client_Id = rdr["client_Id"] == DBNull.Value ? null : (Int64?)rdr["client_Id"],
+                        Client_Ip = rdr["client_Ip"].ToString(),
+                        Stcode = rdr["stcode"].ToString(),
+                        Stdesc = rdr["stdesc"].ToString(),
+                        Stref = rdr["stref"].ToString()
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
+        public bool CancelOrderPicking(string suno, string orderno)
+        {
+            bool bret = false;
+            try
+            {
+                using NpgsqlConnection con = new NpgsqlConnection(connectionString);
+                StringBuilder sql = new StringBuilder();
+
+                sql.AppendLine("Update api.postasrsorders");
+                sql.AppendLine("Set typor ='PICK' ,efstatus =0");
+                sql.AppendLine("Where lenum = @lenum");
+                sql.AppendLine("And karor = @karor");
+                sql.AppendLine(";");
+
+                sql.AppendLine("update wms.inv_stock_go");
+                sql.AppendLine("set allocatequantity = 0.0");
+                sql.AppendLine("Where pallettag = @pallettag");
+                sql.AppendLine(";");
+
+                sql.AppendLine("Update public.sap_stock");
+                sql.AppendLine("Set total_qty = qty");
+                sql.AppendLine("Where su_no = @su_no ");
+                sql.AppendLine(";");
+
+                sql.AppendLine("Delete from public.sap_storeout");
+                sql.AppendLine("Where su_no = @su_noout");
+                sql.AppendLine("And order_no = @order_no");
+                sql.AppendLine(";");
+
+                sql.AppendLine("Delete FROM wms.oub_deliveryorder_go");
+                sql.AppendLine("Where package_id = @package_id");
+                sql.AppendLine("And job = @job");
+                sql.AppendLine(";");
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+
+                cmd.Parameters.AddWithValue("@lenum", suno);
+                cmd.Parameters.AddWithValue("@karor", orderno);
+                cmd.Parameters.AddWithValue("@pallettag", suno);
+                cmd.Parameters.AddWithValue("@su_no", suno);
+                cmd.Parameters.AddWithValue("@su_noout", suno);
+                cmd.Parameters.AddWithValue("@order_no", orderno);
+                cmd.Parameters.AddWithValue("@package_id", suno);
+                cmd.Parameters.AddWithValue("@job", orderno);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                bret = true;
+            }
+            catch
+            {
+
+            }
+            return bret;
+        }
+
 
     }
 }

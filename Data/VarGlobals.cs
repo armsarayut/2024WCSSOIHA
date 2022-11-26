@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MudBlazor;
 
 namespace GoWMS.Server.Data
 {
@@ -12,7 +13,7 @@ namespace GoWMS.Server.Data
         public string CurrentMunu { get; set; }
         public static string Imagelogoreport()
         {
-            return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\Logocus.jpg"}" ;
+            return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\KETL.png"}" ;
         }
 
         public static string Fontreport()
@@ -33,6 +34,7 @@ namespace GoWMS.Server.Data
 
         public static string FormatN0 { get; set; } = "{0:N0}";
         public static string FormatN2 { get; set; } = "{0:N2}";
+        public static string FormatN3 { get; set; } = "{0:N3}";
         public static string FormatD2 { get; set; } = "{0:D2}";
         public static string FormatD3 { get; set; } = "{0:D3}";
         public static string FormatD4 { get; set; } = "{0:D4}";
@@ -54,5 +56,7 @@ namespace GoWMS.Server.Data
         public static string MessageRoleReportPermit { get; set; } = "You're not authorized to access the report.";
         public static string MessageRoleApprovePermit { get; set; } = "You're not authorized to access the authorization.";
         public static string MessageRoleAuthrizedPermit { get; set; } = "You're not authorized.";
+
+        public static string TableHeaderColor { get; set; } = Colors.Blue.Accent4;
     }
 }

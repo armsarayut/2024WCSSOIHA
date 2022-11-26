@@ -1,0 +1,127 @@
+﻿@using GoWMS.Server.Data;
+@using GoWMS.Server.Controllers
+@using NETCore.Encrypt;
+@using GoWMS.Server.Models
+@using GoWMS.Server.Models.Mas
+@using Microsoft.Extensions.Configuration
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IConfiguration Configuration
+@inject UserServices ObjUserService
+@inject ReportService UserlogService
+@inject ErpApiService ObjApiService
+@inject MasService ObjService
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<MasItemPage> L
+
+<MudDialog>
+    <DialogContent>
+        <MudSelect @bind-Value="enumValue" Label="Select Category" HelperText="Enum" OpenIcon="@Icons.Material.Filled.Category" AdornmentColor="Color.Secondary">
+            @foreach (ItemCat item in Enum.GetValues(typeof(ItemCat)))
+            {
+                <MudSelectItem Value="@item">@item</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudTextField @bind-Value="pItemcode" Counter="50" MaxLength="50" Label="@L["ITEMCODE"]" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="pItemname" Counter="255" MaxLength="255" Label="@L["ITEMNAME"]" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="pUnit" Counter="10" MaxLength="10" Label="@L["UNIT"]" Variant="Variant.Outlined" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string pItemcode { get; set; }
+    [Parameter] public string pItemname { get; set; }
+    [Parameter] public string pUnit{ get; set; }
+    [Parameter] public ItemCat pEnumValue { get; set; }
+
+    public enum ItemCat { FG, MAT }
+    private ItemCat enumValue { get; set; } = ItemCat.FG;
+
+    string pTypor { get; set; } = "PUT";
+
+    private string stringValue { get; set; }
+
+    private readonly string pageheader = "1.1.Receiving Order";
+    string sUsername { get; set; } = "";
+    string sRole { get; set; } = "";
+    string sGroupID { get; set; } = "";
+    string sUserID { get; set; } = "";
+
+    [Inject] private IDialogService DialogService { get; set; }
+
+    private ResultReturn resultReturn = null;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUserAthu();
+    }
+
+    async Task GetUserAthu()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        sGroupID = user.Claims.FirstOrDefault(
+        c => c.Type == ClaimTypes.Role)?.Value;
+
+        sUserID = user.Claims.FirstOrDefault(
+            c => c.Type == ClaimTypes.Actor)?.Value;
+
+        enumValue = pEnumValue;
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+
+        string msgReturn = "";
+  
+
+        if (pItemcode.Length > 0 && pItemname.Length > 0 && pUnit.Length > 0 )
+        {
+            resultReturn = await Task.Run(() => ObjService.UpsertItem(enumValue.ToString(), pItemcode, pItemname, pUnit));
+
+            if (resultReturn.Bret == true)
+            {
+                this.InsertAuditrial("Setting Itemcode : " + pItemcode + " , Itemname : " + pItemcode, pageheader);
+
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+
+        }
+        else
+        {
+
+            string state = "";
+
+            bool? result = await DialogService.ShowMessageBox(
+             "Warning",
+             "Please set data is require! Do you want add agian",
+             yesText: "Yes", cancelText: "No");
+
+            state = result == null ? "No" : "Yes";
+            if (state == "No")
+            {
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+
+        }
+
+    }
+
+    private void InsertAuditrial(String actdesc, String munname)
+    {
+        bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
+    }
+}
+
+

@@ -118,30 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Action" xml:space="preserve">
-    <value>Action</value>
+    <value>ACTION</value>
+  </data>
+  <data name="Batch" xml:space="preserve">
+    <value>BATCH</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>ItemCode</value>
+    <value>PART</value>
   </data>
   <data name="ItemName" xml:space="preserve">
-    <value>ItemName</value>
+    <value>NAME</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>JOB</value>
   </data>
   <data name="MasterPallet" xml:space="preserve">
-    <value>Master Pallet</value>
+    <value>PALLET</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Master Mapping</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>PalletGo</value>
+    <value>PALLET</value>
   </data>
   <data name="Qty" xml:space="preserve">
     <value>Qty</value>
   </data>
   <data name="SeqNo" xml:space="preserve">
-    <value>SeqNo</value>
+    <value>SU</value>
   </data>
   <data name="Unit" xml:space="preserve">
-    <value>Unit</value>
+    <value>UNIT</value>
   </data>
 </root>

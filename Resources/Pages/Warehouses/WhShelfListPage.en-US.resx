@@ -130,16 +130,16 @@
     <value>LANE</value>
   </data>
   <data name="LastUpdate" xml:space="preserve">
-    <value>LastUpdate</value>
+    <value>LASTUPDATE</value>
   </data>
   <data name="LEVEL" xml:space="preserve">
     <value>LEVEL</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>Location</value>
+    <value>LOCATION</value>
   </data>
   <data name="MasterPallet" xml:space="preserve">
-    <value>MasterPallet</value>
+    <value>PALLET</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Location</value>
@@ -151,6 +151,6 @@
     <value>Search</value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value>Status</value>
+    <value>STATUS</value>
   </data>
 </root>

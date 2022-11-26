@@ -23,7 +23,12 @@
 else
 {
     <MudText Typo="Typo.h6" Color="Color.Primary"> @pageheader </MudText>
+      
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+        <MudButtonGroup Color="Color.Default" Variant="Variant.Outlined">
+            <MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="Color.Tertiary" OnClick=@AddNewItem>@L["ADD"]</MudButton>
+                </MudButtonGroup>
+
         <MudSpacer />
         <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
@@ -39,7 +44,7 @@ else
               Filter="new Func<Mas_Item_Go,bool>(FilterFunc)" @bind-SelectedItem="selectedItem"
               SortLabel=@L["SortBy"]>
         <ToolBarContent>
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString"
                           Placeholder=@L["Search"] Adornment="Adornment.Start"
                           AdornmentIcon="@Icons.Material.Filled.Search"
@@ -47,20 +52,29 @@ else
         </ToolBarContent>
 
         <HeaderContent>
-            <MudTh>@L["ITEMCODE"]</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Itemcode)">@L["ITEMCODE"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Itemname)">@L["ITEMNAME"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Itemunit)">@L["UNIT"]</MudTableSortLabel></MudTh>
+            <MudTh>@L["ACTION"]</MudTh>
+
+          @*  <MudTh>@L["ITEMCODE"]</MudTh>
             <MudTh>@L["ITEMNAME"]</MudTh>
-            <MudTh>@L["UNIT"]</MudTh>
-            <MudTh>@L["NETWEIGHT"]</MudTh>
+            <MudTh>@L["UNIT"]</MudTh>*@
+            @*<MudTh>@L["NETWEIGHT"]</MudTh>
             <MudTh>@L["GROSSWEIGHT"]</MudTh>
-            <MudTh>@L["WEIGHTUNIT"]</MudTh>
+            <MudTh>@L["WEIGHTUNIT"]</MudTh>*@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel=@L["ITEMCODE"]>@context.Itemcode</MudTd>
             <MudTd DataLabel=@L["ITEMNAME"]>@context.Itemname</MudTd>
             <MudTd DataLabel=@L["UNIT"]>@context.Itemunit</MudTd>
-            <MudTd DataLabel=@L["NETWEIGHT"]>@context.Weightnet</MudTd>
+            <MudTd DataLabel="@L["ACTION"]">
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" Color="Color.Secondary" @onclick="@(()=>EditItem(@context.Itemcode, @context.Itemname, context.Itemunit, context.Itemcat))" />
+            </MudTd>
+
+           @* <MudTd DataLabel=@L["NETWEIGHT"]>@context.Weightnet</MudTd>
             <MudTd DataLabel=@L["GROSSWEIGHT"]>@context.Weightgross</MudTd>
-            <MudTd DataLabel=@L["WEIGHTUNIT"]>@context.Weightuint</MudTd>
+            <MudTd DataLabel=@L["WEIGHTUNIT"]>@context.Weightuint</MudTd>*@
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
@@ -223,6 +237,74 @@ else
             var exmsg = e.Message.ToString();
         }
     }
+
+    private async Task AddNewItem()
+    {
+        bool? result = await CheckRoleAdd();
+        if (result == true)
+        {
+            long pid = 0;
+            DialogOptions closeOnEscapeKey = new DialogOptions() { CloseButton = true };
+            DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+            var parameters = new DialogParameters();
+            parameters.Add("pItemcode", "");
+            parameters.Add("pItemname", "");
+            parameters.Add("pUnit", "");
+            parameters.Add("pEnumValue", 0);
+
+
+            var dialog = DialogService.Show<AddNewItem>("NEW ITEM", parameters, maxWidth);
+
+            var resultDialog = await dialog.Result;
+
+            if (!resultDialog.Cancelled)
+            {
+                 Elements = await Task.Run(() => ObjService.GetAllMasterItems());
+
+                this.StateHasChanged();
+            }
+
+        }
+
+    }
+
+
+    private async Task EditItem(string itemcode, string itemname, string unit, string itemcat)
+    {
+        bool? result = await CheckRoleEdit();
+        if (result == true)
+        {
+            long pid = 0;
+            DialogOptions closeOnEscapeKey = new DialogOptions() { CloseButton = true };
+            DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+            var parameters = new DialogParameters();
+            parameters.Add("pItemcode", itemcode);
+            parameters.Add("pItemname", itemname);
+            parameters.Add("pUnit", unit);
+            if (itemcat=="FG")
+            {
+                 parameters.Add("pEnumValue", 0);
+            }
+            else{
+                parameters.Add("pEnumValue", 1);
+            }
+           
+
+            var dialog = DialogService.Show<AddNewItem>("EDIT ITEM : " + itemcode, parameters, maxWidth);
+
+            var resultDialog = await dialog.Result;
+
+            if (!resultDialog.Cancelled)
+            {
+                Elements = await Task.Run(() => ObjService.GetAllMasterItems());
+
+                this.StateHasChanged();
+            }
+
+        }
+
+    }
+
 
     #region "Role"
     private async Task<bool> CheckRoleAdd()

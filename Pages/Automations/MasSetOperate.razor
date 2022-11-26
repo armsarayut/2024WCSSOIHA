@@ -48,8 +48,8 @@ else
             <MudTd DataLabel="SRM">@context.Mc_Name</MudTd>
             <MudTd DataLabel="ENABLE"><MudCheckBox @bind-Checked="@context.Enable" /></MudTd>
             <MudTd Class="clm-row-small" DataLabel="ACTION">
-                <MudFab @onclick="@(()=>Commitconstance(@context.Idx.Value, @context.Enable.Value, @context.Mc_Name.ToString()))" Color="Color.Error" Icon="@Icons.Material.Filled.Save" Size="Size.Small" IconSize="Size.Small" />
-                <MudFab @onclick="@(()=>Refreshconstance())" Color="Color.Info" Icon="@Icons.Material.Filled.Refresh" Size="Size.Small" IconSize="Size.Small" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Save" Color="Color.Secondary" @onclick="@(()=>Commitconstance(@context.Idx.Value, @context.Enable.Value, @context.Mc_Name.ToString()))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Refresh" Color="Color.Info" @onclick="@(()=>Refreshconstance())" />
             </MudTd>
         </RowTemplate>
 
@@ -63,9 +63,9 @@ else
 
     IEnumerable<int> pageSizeOptions = new int[] { 10, 20, 30, 50, 100 };
 
-    private string pageheader { get; set; } = "4.5.1.SRM-ENABLE";
+    private string pageheader { get; set; } = "4.3.1.SRM-ENABLE";
 
-    public string mPagedesc { get; set; } = "4.5.1.SRM-ENABLE";
+    public string mPagedesc { get; set; } = "4.3.1.SRM-ENABLE";
     private string mPagename { get; set; } = "/4/4_5_1";
 
     private string msgAction = "Enter Palletcode";

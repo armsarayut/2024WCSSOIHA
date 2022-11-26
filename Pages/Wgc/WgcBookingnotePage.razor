@@ -2,19 +2,23 @@
 @using GoWMS.Server.Data
 @using GoWMS.Server.Controllers
 @using GoWMS.Server.Models
-@using GoWMS.Server.Models.Wgc
-@using System.Globalization
-@using System.Reflection
+@using GoWMS.Server.Models.Inv
+@using GoWMS.Server.Models.Oub
 @using System.Text.Json
 @using System.Security.Claims
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IJSRuntime JSRuntime
+@inject InvService ObjService
+@inject PublicFunServices ObjFunService
+
+
 @inject WgcService ObjErpService
 @inject ISnackbar Snackbar
 @inject ErpApiService ObjApiService
 @inject UserServices OpjUserService
 @inject ReportService UserlogService
+@inject StoreoutService ObjOubService
+@inject InboundService OpjInbService
 @inject IStringLocalizer<WgcBookingnotePage> L
 @attribute [Authorize]
 
@@ -25,7 +29,7 @@
 
     .mud-table-cell-custom-group-footer {
         padding-bottom: 50px;
-        text-align: left;
+        text-align: right;
     }
 </style>
 
@@ -37,94 +41,100 @@
 }
 else
 {
-    <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
 
-    <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Done"
-                   Color="Color.Success"
-                   OnClick=@SelectOrder>@L["StartPick"]</MudButton>
+    @if (StkGroup)
+    {
+        <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+
+        <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+@*            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Done"
+               Color="Color.Success"
+               OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>*@
+
+             <MudButtonGroup Color="Color.Default" Variant="Variant.Outlined">
+            <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="Color.Tertiary" OnClick=@AddNewGr>@L["ADD"]</MudButton>
+             </MudButtonGroup>
+
+            <MudSpacer />
+        </MudAppBar>
+
+
+        <MudTable Hover="@hover"
+          Breakpoint="Breakpoint.Sm"
+          Height="@(fixed_header || fixed_footer ?"500px":"")"
+          MultiSelection=@_multiSelect
+          FixedHeader="@fixed_header"
+          Items="@Elements.OrderBy(o => o.Itembar)"
+          Dense="@dense"
+          FixedFooter="@fixed_footer"
+          Bordered="@bordered"
+          Striped="@striped"
+          Filter="new Func<Inv_Stock_GoApiInfo,bool>(FilterFunc)" @bind-SelectedItems="selectedItems">
+
+            <ToolBarContent>
                 <MudSpacer />
-            </MudAppBar>
+                <MudTextField @bind-Value="searchString"
+                      Placeholder=@L["Search"]
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
 
-            <MudTable Hover="@hover"
-                      Breakpoint="Breakpoint.Sm"
-                      Height="@(fixed_header || fixed_footer ?"500px":"")"
-                      MultiSelection=@_multiSelect
-                      FixedHeader="@fixed_header"
-                      Items="@Elements"
-                      GroupBy="@_groupDefinition"
-                      GroupHeaderStyle="background-color:var(--mud-palette-background-white)"
-                      GroupFooterClass="mb-4"
-                      Dense="@dense"
-                      FixedFooter="@fixed_footer"
-                      Bordered="@bordered"
-                      Striped="@striped"
-                      Filter="new Func<BOOKING_NOTE_ITEMS,bool>(FilterFunc1)" @bind-SelectedItems="selectedItems">
-                <ToolBarContent>
-                    <MudToolBarSpacer />
-                    <MudTextField @bind-Value="searchString1"
-                                  Placeholder=@L["Search"]
-                                  Adornment="Adornment.Start"
-                                  AdornmentIcon="@Icons.Material.Filled.Search"
-                                  IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                </ToolBarContent>
+            <HeaderContent>
 
-                <ColGroup>
-                    @if (_multiSelect)
-                        {
-                        <col style="width: 60px;" />
-                        }
-                    @if (_groupDefinition.Expandable)
-                        {
-                        <col style="width: 60px;" />
-                        }
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                </ColGroup>
-                <HeaderContent>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.SO_NO)">@L["SoNo"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.ITEM_CODE)">@L["ItemCode"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.CUSTOMER_CODE)">@L["Customer"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.DN_SEQ)">@L["Seq"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.LOT_NO)">@L["LotNo"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.BATCH_NO)">@L["BatchNo"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.PACKETING_CODE)">@L["Qty"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.DN_QTY)">@L["Unit"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.DN_UM)">@L["Location"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<BOOKING_NOTE_ITEMS, object>(x=>x.PALLET_GO)">@L["PalletGo"]</MudTableSortLabel></MudTh>
+              <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Apicreated)">@L["DNDate"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Apikaror)">@L["SoNo"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApimaterialCode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApipackageID)">@L["Seq"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApijobCode)">@L["BatchNo"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApigrQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
+                <MudTh>@L["Adjust"]</MudTh>
 
-                </HeaderContent>
-                <GroupHeaderTemplate>
-                    <MudTh Class="mud-table-cell-custom-group" colspan="10">@($"{context.GroupName}: {context.Key}") @L["TotalQuantity"]: @string.Format(VarGlobals.FormatN0, @context.Items.Sum((e) => e.DN_QTY))</MudTh>
-                </GroupHeaderTemplate>
-                <RowTemplate>
-                    <MudTd DataLabel="@L["SoNo"]">@context.SO_NO</MudTd>
-                    <MudTd DataLabel="@L["ItemCode"]">@context.ITEM_CODE</MudTd>
-                    <MudTd DataLabel="@L["Customer"]">@context.CUSTOMER_CODE</MudTd>
-                    <MudTd DataLabel="@L["Seq"]">@context.DN_SEQ</MudTd>
-                    <MudTd DataLabel="@L["LotNo"]">@context.LOT_NO</MudTd>
-                    <MudTd DataLabel="@L["BatchNo"]">@context.BATCH_NO</MudTd>
-                    <MudTd DataLabel="@L["Packeting"]">@context.PACKETING_CODE</MudTd>
-                    <MudTd DataLabel="@L["Qty"]">@context.DN_QTY</MudTd>
-                    <MudTd DataLabel="@L["Unit"]">@context.DN_UM</MudTd>
-                    <MudTd DataLabel="@L["PalletGo"]">@context.PALLET_GO</MudTd>
-                </RowTemplate>
-                <GroupFooterTemplate>
-                    <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="1">@L["TotalQuantity"]: @string.Format(VarGlobals.FormatN0, @context.Items.Sum((e) => e.DN_QTY))</MudTh>
-                </GroupFooterTemplate>
-            </MudTable>
+            </HeaderContent>
 
-        }
+            <RowTemplate>
+                <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Apicreated).ToString(VarGlobals.FormatDT)</MudTd>
+                <MudTd DataLabel="@L["SoNo"]">@context.Apikaror</MudTd>
+                <MudTd DataLabel="@L["ItemCode"]">@context.ApimaterialCode</MudTd>
+                <MudTd DataLabel=@L["Seq"]>@context.ApipackageID</MudTd>
+                <MudTd DataLabel="@L["BatchNo"]">@context.ApijobCode</MudTd>
+                <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.ApigrQuantity)</MudTd>
+                 <MudTd DataLabel="@L["Adjust"]">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
+            </MudTd>
+            </RowTemplate>
+
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
+            </PagerContent>
+
+        </MudTable>
+    }
+    else
+    {
+
+    }
+
+    <MudMessageBox @ref="mbox" Title="@mboxheader" CancelText="Cancel">
+        <MessageContent>
+            @foreach (var item in References)
+            {
+                <br />
+                @item
+            }
+        </MessageContent>
+        <YesButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
+        </YesButton>
+    </MudMessageBox>
+}
 
 @code {
-    private bool _dense = true;
+
+    MudMessageBox mbox { get; set; }
+
+    private bool _dense = false;
     private bool _multiSelect = true;
     public string mPagedesc { get; set; } = "3.1.Order Booking";
     private string mPagename { get; set; } = "/3/3_1";
@@ -141,13 +151,22 @@ else
     private bool fixed_header = true;
     private bool fixed_footer = true;
     private string searchString = "";
-    private string searchString1 = "";
-    private BOOKING_NOTE_ITEMS selectedItem = null;
-    private HashSet<BOOKING_NOTE_ITEMS> selectedItems = new HashSet<BOOKING_NOTE_ITEMS>();
-    private IEnumerable<BOOKING_NOTE_ITEMS> Elements = new List<BOOKING_NOTE_ITEMS>();
+    private Inv_Stock_GoApiInfo selectedItem = null;
+    private HashSet<Inv_Stock_GoApiInfo> selectedItems = new HashSet<Inv_Stock_GoApiInfo>();
+    private IEnumerable<Inv_Stock_GoApiInfo> Elements = new List<Inv_Stock_GoApiInfo>();
+
+    string state = "Message box hasn't been opened yet";
+
+    string mboxheader { get; set; } = "รายการที่ขอเบิก";
+    string mboxcontent { get; set; } = "";
+    string mboxmessage { get; set; } = "";
 
     public int elevation = 0;
     private ResultReturn resultReturn = null;
+
+    public bool StkGroup { get; set; }
+
+    protected List<string> References { get; set; } = new List<string>();
 
     string sUsername { get; set; } = "";
     string sRole { get; set; } = "";
@@ -156,18 +175,9 @@ else
     List<Userroleinfo> Roles = new List<Userroleinfo>();
     [Inject] private IDialogService DialogService { get; set; }
 
-    private TableGroupDefinition<BOOKING_NOTE_ITEMS> _groupDefinition = new()
-    {
-        GroupName = "Order",
-        Indentation = true,
-        Expandable = true,
-        IsInitiallyExpanded = false,
-        Selector = (e) => e.SO_NO
-    };
-
     protected override async Task OnInitializedAsync()
     {
-        WgcService objCS = new WgcService();
+        StoreoutService objCS = new StoreoutService();
 
         //////// Intial Menu and Privilege//////
         resultReturn = await Task.Run(() => OpjUserService.InsertMenu(mPagename, mPagedesc));
@@ -178,10 +188,11 @@ else
         this.InsertAuditrial("View", pageheader);
         Roles = await Task.Run(() => OpjUserService.GetUserRole(mPagename, long.Parse(sGroupID)));
 
-        Elements = await Task.Run(() => objCS.GetAllApiNewBookingnoteWgc());
+        Elements = await Task.Run(() => objCS.GetStockListApiInfo());
 
-     
+        this.OnSelectChange();
     }
+
 
     async Task GetUserAthu()
     {
@@ -200,81 +211,284 @@ else
         bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
     }
 
-    private bool FilterFunc1(BOOKING_NOTE_ITEMS element) => FilterFunc(element, searchString1);
-
-    private bool FilterFunc(BOOKING_NOTE_ITEMS element, string searchString)
+    protected void OnSelectChange()
     {
+        StkGroup = !StkGroup;
 
-        if (element.SO_NO.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+    }
+
+    private TableGroupDefinition<Inv_Stock_GoApiInfo> _groupDefinition = new TableGroupDefinition<Inv_Stock_GoApiInfo>()
+        {
+            GroupName = "PalletNo",
+            Indentation = false,
+            Expandable = true,
+            IsInitiallyExpanded = false,
+            Selector = (e) => e.Itembar
+        };
+
+    private bool FilterFunc(Inv_Stock_GoApiInfo element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        else if (string.IsNullOrWhiteSpace(searchString))
+        if (element.Itemcode.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        else if ($"{element.ITEM_NAME} {element.LOT_NO} {element.BATCH_NO}".Contains(searchString))
+        if (element.Pallteno.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Pallettag.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Itemname} {element.Storagebin}".Contains(searchString))
             return true;
         return false;
     }
 
+    private bool FilterFunc_(InvStockSum element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Item_code.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Item_name} ".Contains(searchString))
+            return true;
+        return false;
+    }
 
+    async Task SelectOrder()
+    {
+        var result = selectedItems.GroupBy(t => t.Itemcode)
+                   .Select(t => new
+                   {
+                       Itemcode = t.Key,
+                       Qty = t.Sum(ta => ta.Quantity),
+                   }).ToList();
 
-    private async void SelectOrder()
+        System.Text.StringBuilder strPopup = new System.Text.StringBuilder();
+        Int16 i = 0;
+
+        foreach (var rec in result)
+        {
+            i++;
+            strPopup.Append(i.ToString() + ". รายการ : ");
+            strPopup.Append(rec.Itemcode.ToString());
+            strPopup.Append(" จำนวน : ");
+            strPopup.AppendLine(rec.Qty.ToString());
+        }
+
+        System.Text.StringBuilder popup = new System.Text.StringBuilder();
+        popup.AppendLine("รายการที่ขอเบิก");
+        popup.Append(strPopup.ToString());
+
+        string sContentText = popup.ToString();
+
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", sContentText);
+        parameters.Add("ButtonText", "Yes");
+        parameters.Add("Color", Color.Success);
+
+        var formModal = DialogService.Show<DialogTemplateExample_Dialog>("Confirm", parameters);
+
+        var resultModal = await Task.Run(() => formModal.Result);
+
+        var formModal1 = await Task.Run(() => DialogService.ShowMessageBox("AA", "XX"));
+
+    }
+
+    private async void OnButtonOrderSelected()
     {
         bool? result = await CheckRoleAdd();
         if (result == true)
         {
-            var serializeOptions = new JsonSerializerOptions
+            if (selectedItems.Count()>0)
+            {
+                var resultlist = selectedItems.GroupBy(t => t.Itemcode)
+                    .Select(t => new
+                    {
+                        Itemcode = t.Key,
+                        Qty = t.Sum(ta => ta.Quantity),
+                    }).ToList();
+
+                System.Text.StringBuilder strPopup = new System.Text.StringBuilder();
+                Int16 i = 0;
+                mboxcontent = "";
+
+                References.Clear();
+
+                if (resultlist.Count > 0)
+                {
+                    foreach (var rec in resultlist)
+                    {
+                        i++;
+                        strPopup.Clear();
+                        strPopup.Append(i.ToString() + ". รายการ : ");
+                        strPopup.Append(rec.Itemcode.ToString());
+                        strPopup.Append(" จำนวน : ");
+                        strPopup.AppendLine(rec.Qty.ToString());
+
+                        References.Add(strPopup.ToString());
+                    }
+                    result = await mbox.Show();
+                    state = result == null ? "Cancelled" : "Confirmed";
+
+                    if (state == "Confirmed")
+                    {
+                        this.InsertAuditrial("Set Picking List : " + strPopup.ToString(), pageheader);
+                        //await SelectOrderPick();
+                        await Task.Run(() => SelectOrderPick());
+
+                    }
+
+                    Elements = await Task.Run(() => ObjOubService.GetStockListApiInfo());
+                    //selectedItems.Clear();
+                    searchString = null;
+
+                    this.StateHasChanged();
+                }
+            }else{
+                Snackbar.Add("Please select item!", Severity.Warning);
+            }
+
+           
+        }
+
+    }
+
+    private async void SelectOrderPick()
+    {
+        var serializeOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
-            // For Sim Test
-            /*
-            string pallet = "WGC-001503";
-            string pack = "289";
-            string mat = "MP1095O";
-            string matDesc = "Organaic Maltodextrin Powder";
-            */
-            //var strRES = selectedItems.OrderBy(x => x.SEQ_NO).Select(x => new { efidx = x.SEQ_NO, quantity = x.DN_QTY, packageid = pack, materialcode = mat, palletno = pallet, sono = x.SO_NO, customer = x.CUSTOMER_CODE, lotno = x.LOT_NO, batchno = x.BATCH_NO, matematerialdescription = matDesc, unit = x.DN_UM, deliverydate = x.REQUEST_DATE }).ToList();
-            //-------------------------
 
-            // For Production
-            var strRES = selectedItems.OrderBy(x => x.SEQ_NO).Select(x => new { efidx = x.SEQ_NO, quantity = x.DN_QTY, packageid = x.DN_SEQ, materialcode = x.ITEM_CODE, palletno = x.PALLET_GO, sono = x.SO_NO, customer = x.CUSTOMER_CODE, lotno = x.LOT_NO, batchno = x.BATCH_NO, matematerialdescription = x.ITEM_NAME, unit = x.DN_UM, deliverydate = x.REQUEST_DATE }).ToList();
-            //-----------------
-
-            var jsonRES = JsonSerializer.Serialize(strRES, serializeOptions);
-
-            var iReturn = 0;
-            var sReturn = "Call";
+        string cus = "SAP";
+        //string so = "MO-" + DateTime.Now.ToString("yyMMddHHmmssffff");
 
 
+        string lot = "-";
+        string batch = "-";
 
-            ObjApiService.SetPickWgc(jsonRES, ref iReturn, ref sReturn);
-            this.InsertAuditrial("Create Order picking ", pageheader);
-            if (selectedItems.Count > 0)
+        DateTime requestdate = DateTime.Today.Date;
+
+        if (selectedItems.Count > 0)
+        {
+            var pallets = selectedItems.GroupBy(g => g.Pallteno).OrderBy(o => o.Key).Select(s => s.Key);
+
+            foreach (var valpal in pallets)
             {
+                
+                var so = selectedItems.Where(w => w.Pallteno == valpal).Select(c => c.Apikaror).First();
+
+
+                //string so = "MO-" + ObjFunService.GetRunning("sq002", 4);
+
+                var strRES = selectedItems.Where(w => w.Pallteno == valpal).OrderBy(x => x.Pallettag).Select(x => new { efidx = x.Efidx, quantity = x.Quantity, packageid = x.Pallettag, materialcode = x.Itemcode, palletno = x.Pallteno, sono = so, customer = cus, lotno = x.Docno, batchno = x.Docnote, matematerialdescription = x.Itemname, unit = x.Unit, deliverydate = requestdate }).ToList();
+
+
+                var jsonRES = JsonSerializer.Serialize(strRES, serializeOptions);
+
+                var iReturn = 0;
+                var sReturn = "Call";
+
+                ObjApiService.SetPickWgcmanual(jsonRES, ref iReturn, ref sReturn);
+
                 if (iReturn == 0)
                 {
                     Snackbar.Add(sReturn, Severity.Error);
                 }
                 else
                 {
-
-                    await ObjErpService.UpdateNewBooking_notebylist(selectedItems.ToList());
-
-                    this.InsertAuditrial("Update Order picking to ERP ", pageheader);
+                    this.InsertAuditrial("Create order picking : " + so.ToString(), pageheader);
 
                     Snackbar.Add("Order picking created", Severity.Success);
-
-                    this.InsertAuditrial("Order picking Created", pageheader);
-
                 }
             }
-            else
+
+            await RefreshData();
+        }
+        else
+        {
+            Snackbar.Add("Please select order picking", Severity.Warning);
+        }
+    }
+
+    private async Task RefreshData()
+    {
+        Elements = await ObjOubService.GetStockListApiInfo();
+        selectedItems = null;
+    }
+
+        private async Task AddNewGr()
+    {
+        bool? result = await CheckRoleAdd();
+        if (result == true)
+        {
+            long pid = 0;
+            DialogOptions closeOnEscapeKey = new DialogOptions() { CloseButton = true };
+            DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+            var parameters = new DialogParameters();
+            parameters.Add("pOrder", "");
+            parameters.Add("pItemcode", "");
+            parameters.Add("pSuno", "");
+            parameters.Add("pBatchno", "");
+
+
+            var dialog = DialogService.Show<AddNewGR>("NEW JOB", parameters, maxWidth);
+
+            var resultDialog = await dialog.Result;
+
+            if (!resultDialog.Cancelled)
             {
-                Snackbar.Add("Please select order picking", Severity.Warning);
+                Elements = await Task.Run(() => ObjOubService.GetStockListApiInfo());
+                this.StateHasChanged();
             }
+
         }
 
     }
+
+    private async Task CancelGR(long idDel, string sjob, string ssuno)
+    {
+        bool? result = await CheckRoleDelete();
+        if (result == true)
+        {
+             string state = "";
+
+            state = await ConfirmDelete();
+
+            if (state=="Deleted")
+            {
+                if (OpjInbService.CancelGrAPI(idDel))
+                {
+                    this.InsertAuditrial("Cancel Order Bookin >> JOB:" + sjob + " SU:" + ssuno, pageheader);
+                }
+                else
+                {
+                    this.InsertAuditrial("Error Cancel Order Bookin >> JOB:" + sjob + " SU:" + ssuno, pageheader);
+                }
+
+                Elements = await Task.Run(() => ObjOubService.GetStockListApiInfo());
+
+            }
+
+        }
+    }
+
+
+
+      private async Task<string>  ConfirmDelete()
+    {
+        string state = "";
+
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning", 
+            "Deleting can not be undone!", 
+            yesText:"Delete!", cancelText:"Cancel");
+
+        state= result==null ? "Cancelled" : "Deleted";
+   
+        return  state ;
+
+    }
+
 
     #region "Role"
     private async Task<bool> CheckRoleAdd()
@@ -439,4 +653,7 @@ else
     }
     #endregion
 
-}
+
+
+
+            }

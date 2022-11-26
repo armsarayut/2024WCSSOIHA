@@ -23,5 +23,7 @@ namespace GoWMS.Server.Models.Inv
         public Int32? Actual_size { get; set; }
         public string Desc_size { get; set; }
         public string St_desc { get; set; }
+        public string Backcolor { get; set; }
+        public string Focecolor { get; set; }
     }
 }

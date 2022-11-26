@@ -118,37 +118,37 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Area" xml:space="preserve">
-    <value>Area</value>
+    <value>AREA</value>
   </data>
   <data name="Bank" xml:space="preserve">
-    <value>Bank</value>
+    <value>BANK</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Bay</value>
+    <value>BAY</value>
   </data>
   <data name="Bin" xml:space="preserve">
-    <value>Location</value>
+    <value>BINNO</value>
   </data>
   <data name="Excel" xml:space="preserve">
     <value>Excel</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>ItemCode</value>
+    <value>PART</value>
   </data>
   <data name="ItemName" xml:space="preserve">
-    <value>ItemName</value>
+    <value>NAME</value>
   </data>
   <data name="Lane" xml:space="preserve">
-    <value>Lane</value>
+    <value>LANE</value>
   </data>
   <data name="Level" xml:space="preserve">
-    <value>Level</value>
+    <value>LEVEL</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>Location</value>
+    <value>BINNO</value>
   </data>
   <data name="Lot" xml:space="preserve">
-    <value>Lot</value>
+    <value>BATCH</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Stock Summary</value>
@@ -157,10 +157,10 @@
     <value>Stock List</value>
   </data>
   <data name="PalletErp" xml:space="preserve">
-    <value>PalletNo</value>
+    <value>PALLET</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>PalletGo</value>
+    <value>PALLET</value>
   </data>
   <data name="PDF" xml:space="preserve">
     <value>PDF</value>
@@ -169,12 +169,12 @@
     <value>Search</value>
   </data>
   <data name="SEQ" xml:space="preserve">
-    <value>SEQ</value>
+    <value>SU</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>Stock</value>
+    <value>STOCK</value>
   </data>
   <data name="TotalStock" xml:space="preserve">
-    <value>TotalStock</value>
+    <value>TOTALSTOCK</value>
   </data>
 </root>

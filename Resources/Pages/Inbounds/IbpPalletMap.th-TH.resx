@@ -120,11 +120,17 @@
   <data name="Action" xml:space="preserve">
     <value>การกระทำ</value>
   </data>
+  <data name="Batch" xml:space="preserve">
+    <value>ชุด</value>
+  </data>
   <data name="ItemCode" xml:space="preserve">
     <value>รหัสสินค้า</value>
   </data>
   <data name="ItemName" xml:space="preserve">
     <value>ชื่อสินค้า</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>ใบงาน</value>
   </data>
   <data name="MasterPallet" xml:space="preserve">
     <value>พาเลท</value>

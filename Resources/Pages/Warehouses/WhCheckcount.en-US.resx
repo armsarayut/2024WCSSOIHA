@@ -120,20 +120,23 @@
   <data name="ACTION" xml:space="preserve">
     <value>ACTION</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>BATCH</value>
+  </data>
   <data name="Inputscan" xml:space="preserve">
     <value>Input scan</value>
   </data>
   <data name="MATERIAL" xml:space="preserve">
-    <value>ITEMCODE</value>
+    <value>PART</value>
   </data>
   <data name="PACKID" xml:space="preserve">
-    <value>DNSeq</value>
+    <value>SU</value>
   </data>
   <data name="Pallet" xml:space="preserve">
-    <value>Pallet</value>
+    <value>PALLET</value>
   </data>
   <data name="QTY" xml:space="preserve">
-    <value>ITEMNAME</value>
+    <value>Qty</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>

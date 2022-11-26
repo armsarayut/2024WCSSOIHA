@@ -17,6 +17,7 @@
 @inject UserServices OpjUserService
 @inject ReportService UserlogService
 
+@inject IPrintingService PrintingService
 
 @if (Elements != null)
 {
@@ -61,17 +62,24 @@
                   Hover="@hover"
                   Bordered="@bordered" Striped="@striped" Filter="new Func<Rpt_Ejectgate, bool>(FilterFunc)" Style="width:100%;">
             <ToolBarContent>
-
                 <MudToolBarSpacer />
                 <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <HeaderContent>
-                <MudTh>DATETIME</MudTh>
+                 <MudTh><MudTableSortLabel SortBy="new Func<Rpt_Ejectgate, object>(x=>x.Created)">DATETIME</MudTableSortLabel></MudTh>
+                 <MudTh><MudTableSortLabel SortBy="new Func<Rpt_Ejectgate, object>(x=>x.Lpncode)">PALLET</MudTableSortLabel></MudTh>
+                 <MudTh><MudTableSortLabel SortBy="new Func<Rpt_Ejectgate, object>(x=>x.Msg)">REASON</MudTableSortLabel></MudTh>
+                 <MudTh><MudTableSortLabel SortBy="new Func<Rpt_Ejectgate, object>(x=>x.Actual_Weight)">WEIGHT</MudTableSortLabel></MudTh>
+                 <MudTh><MudTableSortLabel SortBy="new Func<Rpt_Ejectgate, object>(x=>x.Actual_Size)">SIZE</MudTableSortLabel></MudTh>
+                 <MudTh><MudTableSortLabel SortBy="new Func<Rpt_Ejectgate, object>(x=>x.Work_Gate)">GATE</MudTableSortLabel></MudTh>
+   
+
+              @*  <MudTh>DATETIME</MudTh>
                 <MudTh>PALLET</MudTh>
                 <MudTh>REASON</MudTh>
                 <MudTh>WEIGHT</MudTh>
                 <MudTh>SIZE</MudTh>
-                <MudTh>GATE</MudTh>
+                <MudTh>GATE</MudTh>*@
             </HeaderContent>
             <RowTemplate>
 
@@ -228,7 +236,13 @@
                 listPdfReport = Elements.ToList();
                 var fileName = $"{pageheader.ToString()}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.pdf";
                 ////await JSRuntime.InvokeAsync<object>("jsSaveAsFile", fileName, Convert.ToBase64String(pdfReport.Report(listPdfReport)));
+
+                //// Print out 
+                //await PrintingService.Print(new PrintOptions(Convert.ToBase64String(pdfReport.ExportPDF(listPdfReport))) { Base64 = true });
+
+                //// Export file
                 await JSRuntime.InvokeAsync<object>("jsSaveAsFile", fileName, Convert.ToBase64String(pdfReport.ExportPDF(listPdfReport)));
+
                 this.InsertAuditrial("Export pdf file :" + fileName.ToString(), pageheader);
             }
         }

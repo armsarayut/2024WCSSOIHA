@@ -5,38 +5,52 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Npgsql;
+using NpgsqlTypes;
 using GoWMS.Server.Controllers;
 using GoWMS.Server.Models;
 using GoWMS.Server.Models.Erp;
 using GoWMS.Server.Models.Api;
 using GoWMS.Server.Models.Inb;
+using System.Text;
 
 namespace GoWMS.Server.Data
 {
     public class ErpDAL
     {
-        readonly private string connectionString = ConnGlobals.GetConnErpDB();
+        readonly private string connectionString = ConnGlobals.GetConnLocalDBPG();
 
         public IEnumerable<V_Receiving_OrdersInfo> GetAllErpReceivingOrders()
         {
             List<V_Receiving_OrdersInfo> lstobj = new List<V_Receiving_OrdersInfo>();
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Package_ID,Roll_ID " +
-                    ",Material_Code,Material_Description" +
-                    ",Receiving_Date,GR_Quantity" +
-                    ",Unit,GR_Quantity_KG" +
-                    ",WH_Code,Warehouse" +
-                    ",Location,Document_Number" +
-                    ",Job,Job_Code " +
-                    "FROM dbo.V_Receiving_Orders", con)
+                StringBuilder sql = new StringBuilder();
+
+                //sql.AppendLine("SELECT Package_ID,Roll_ID");
+                //sql.AppendLine(",Material_Code,Material_Description");
+                //sql.AppendLine(",Receiving_Date,GR_Quantity");
+                //sql.AppendLine(",Unit,GR_Quantity_KG");
+                //sql.AppendLine(",WH_Code,Warehouse,Job,Job_Cod");
+                //sql.AppendLine("FROM dbo.V_Receiving_Orders");
+
+
+                sql.AppendLine("SELECT lenum as Package_ID, lenum as Roll_ID");
+                sql.AppendLine(",matnr as Material_Code, '-' as Material_Description");
+                //sql.AppendLine(",SUBSTRING (matnr FROM 2) as Material_Code, '-' as Material_Description");
+                sql.AppendLine(",created as Receiving_Date, matqty as  GR_Quantity");
+                sql.AppendLine(",null as Unit,1 as GR_Quantity_KG");
+                sql.AppendLine(",lgnum as  WH_Code, lgnum as Warehouse, matnr as Job, matbatch as Job_Code");
+                sql.AppendLine("FROM api.postasrsorders");
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
 
                 {
                     CommandType = CommandType.Text
                 };
 
                 con.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
                     V_Receiving_OrdersInfo objrd = new V_Receiving_OrdersInfo
@@ -66,24 +80,40 @@ namespace GoWMS.Server.Data
         public IEnumerable<Api_Receivingorders_Go> GetErpReceivingOrdersByTag(string Tag)
         {
             List<Api_Receivingorders_Go> lstobj = new List<Api_Receivingorders_Go>();
-            using (SqlConnection con = new SqlConnection(connectionString))
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Package_ID,Roll_ID " +
-                    ",Material_Code,Material_Description" +
-                    ",Receiving_Date,GR_Quantity" +
-                    ",Unit,GR_Quantity_KG" +
-                    ",WH_Code,Warehouse" +
-                    ",Location,Document_Number" +
-                    ",Job,Job_Code " +
-                    "FROM dbo.V_Receiving_Orders " +
-                    "WHERE Package_ID = @tag ", con)
+                StringBuilder sql = new StringBuilder();
+
+                //sql.AppendLine("SELECT Package_ID,Roll_ID");
+                //sql.AppendLine(",Material_Code,Material_Description");
+                //sql.AppendLine(",Receiving_Date,GR_Quantity");
+                //sql.AppendLine(",Unit,GR_Quantity_KG");
+                //sql.AppendLine(",WH_Code,Warehouse,Job,Job_Cod");
+                //sql.AppendLine("FROM dbo.V_Receiving_Orders");
+                //sql.AppendLine("WHERE Package_ID = @tag");
+
+
+                sql.AppendLine("SELECT lenum as Package_ID, lenum as Roll_ID");
+                sql.AppendLine(", matnr as Material_Code, '-' as Material_Description");
+                //sql.AppendLine(",SUBSTRING (matnr FROM 2) as Material_Code, '-' as Material_Description");
+                sql.AppendLine(",created as Receiving_Date, cast(matqty as numeric) as  GR_Quantity");
+                sql.AppendLine(",null as Unit, 1.0 as GR_Quantity_KG");
+                sql.AppendLine(",lgnum as  WH_Code, lgnum as Warehouse, matnr as Job, matbatch as Job_Code , karor as Document_Number , kxbin as Location ");
+                sql.AppendLine("FROM api.postasrsorders");
+                sql.AppendLine("WHERE lenum = @tag");
+                sql.AppendLine("AND typor = @typor");
+                sql.AppendLine("Limit 1");
+
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
                     CommandType = CommandType.Text
                 };
 
                 con.Open();
                 cmd.Parameters.AddWithValue("@tag", Tag);
-                SqlDataReader rdr = cmd.ExecuteReader();
+                cmd.Parameters.AddWithValue("@typor", "PUT");
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
                     Api_Receivingorders_Go objrd = new Api_Receivingorders_Go
@@ -102,7 +132,7 @@ namespace GoWMS.Server.Data
                         Document_Number = rdr["Document_Number"].ToString(),
                         Job = rdr["Job"].ToString(),
                         Job_Code = rdr["Job_Code"].ToString(),
-                        Matcategory = rdr["Material_Code"].ToString().Substring(0,2)
+                        Matcategory = "01"
                     };
                     lstobj.Add(objrd);
                 }

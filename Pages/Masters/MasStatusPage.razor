@@ -52,8 +52,11 @@ else
         </ToolBarContent>
 
         <HeaderContent>
-            <MudTh>@L["Statusno"]</MudTh>
-            <MudTh>@L["Description"]</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Mas_Status_Go, object>(x=>x.Statcode)">@L["Statusno"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Mas_Status_Go, object>(x=>x.Description)">@L["Description"]</MudTableSortLabel></MudTh>
+
+            @*<MudTh>@L["Statusno"]</MudTh>
+            <MudTh>@L["Description"]</MudTh>*@
 
         </HeaderContent>
         <RowTemplate>

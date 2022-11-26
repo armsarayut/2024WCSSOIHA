@@ -121,7 +121,7 @@
     <value>DESTINATION</value>
   </data>
   <data name="END" xml:space="preserve">
-    <value>END</value>
+    <value>FINISHED</value>
   </data>
   <data name="EXCEL" xml:space="preserve">
     <value>Excel</value>
@@ -151,13 +151,13 @@
     <value>SRM</value>
   </data>
   <data name="START" xml:space="preserve">
-    <value>START</value>
+    <value>STARTED</value>
   </data>
   <data name="TASKCODE" xml:space="preserve">
-    <value>TASKCODE</value>
+    <value>WORK</value>
   </data>
   <data name="TASKTYPE" xml:space="preserve">
-    <value>TASKTYPE</value>
+    <value>WORK</value>
   </data>
   <data name="TIME" xml:space="preserve">
     <value>TIME</value>

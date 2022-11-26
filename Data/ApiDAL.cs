@@ -10,6 +10,7 @@ using GoWMS.Server.Models;
 using GoWMS.Server.Models.Api;
 using NpgsqlTypes;
 using System.Text;
+using Serilog;
 
 namespace GoWMS.Server.Data
 {
@@ -338,6 +339,7 @@ namespace GoWMS.Server.Data
                 using var cmd = new NpgsqlCommand(connection: con, cmdText: null);
 
                 var i = 0;
+
                 foreach (var s in listOrder)
                 {
                     if (i != 0) sql.AppendLine(",");
@@ -1014,6 +1016,222 @@ namespace GoWMS.Server.Data
             }
         }
 
+        public IEnumerable<ApiKardexconfirmStatus> GetAllApiKardexconfirmStatuses()
+        {
+            List<ApiKardexconfirmStatus> lstobj = new List<ApiKardexconfirmStatus>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.AppendLine("select karor, matnr, lgnum, lenum, typor, ");
+                sql.AppendLine("kxbin, kquit2, msgid, msgno, msgty, text, ");
+                sql.AppendLine("failed_read, failed_conf, kardexconfirm_status, ");
+                sql.AppendLine("created, send_to_kardex,backcolor, focecolor");
+                sql.AppendLine("from api.vkardexconfirm_status");
+                sql.AppendLine("order by send_to_kardex");
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+                con.Open();
+
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ApiKardexconfirmStatus objrd = new ApiKardexconfirmStatus
+                    {
+                        karor = rdr["karor"].ToString(),
+                        matnr = rdr["matnr"].ToString(),
+                        lgnum = rdr["lgnum"].ToString(),
+                        lenum = rdr["lenum"].ToString(),
+                        typor = rdr["typor"].ToString(),
+                        kxbin = rdr["kxbin"].ToString(),
+                        kquit2 = rdr["kquit2"].ToString(),
+                        msgid = rdr["msgid"].ToString(),
+                        msgno = rdr["msgno"].ToString(),
+                        msgty = rdr["msgty"].ToString(),
+                        text = rdr["text"].ToString(),
+                        failed_read = rdr["failed_read"].ToString(),
+                        failed_conf = rdr["failed_conf"].ToString(),
+                        kardexconfirm_status = rdr["kardexconfirm_status"].ToString(),
+                        created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        send_to_kardex = rdr["send_to_kardex"] == DBNull.Value ? null : (DateTime?)rdr["send_to_kardex"],
+                        backcolor = rdr["backcolor"].ToString(),
+                        focecolor = rdr["focecolor"].ToString()
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
+        public IEnumerable<ApiKardexconfirmStatus> GetApiKardexconfirmStatusesByCreated(DateTime dtStart, DateTime dtStop)
+        {
+            List<ApiKardexconfirmStatus> lstobj = new List<ApiKardexconfirmStatus>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.AppendLine("select karor, matnr, lgnum, lenum, typor, ");
+                sql.AppendLine("kxbin, kquit2, msgid, msgno, msgty, text, ");
+                sql.AppendLine("failed_read, failed_conf, kardexconfirm_status, ");
+                sql.AppendLine("created, send_to_kardex,backcolor, focecolor");
+                sql.AppendLine("from api.vkardexconfirm_status");
+                sql.AppendLine("where (created >= @startdate AND created < @stopdate)");
+                sql.AppendLine("order by send_to_kardex");
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+                cmd.Parameters.AddWithValue("@startdate", NpgsqlDbType.Timestamp, dtStart);
+                cmd.Parameters.AddWithValue("@stopdate", NpgsqlDbType.Timestamp, dtStop);
+
+                con.Open();
+
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ApiKardexconfirmStatus objrd = new ApiKardexconfirmStatus
+                    {
+                        karor = rdr["karor"].ToString(),
+                        matnr = rdr["matnr"].ToString(),
+                        lgnum = rdr["lgnum"].ToString(),
+                        lenum = rdr["lenum"].ToString(),
+                        typor = rdr["typor"].ToString(),
+                        kxbin = rdr["kxbin"].ToString(),
+                        kquit2 = rdr["kquit2"].ToString(),
+                        msgid = rdr["msgid"].ToString(),
+                        msgno = rdr["msgno"].ToString(),
+                        msgty = rdr["msgty"].ToString(),
+                        text = rdr["text"].ToString(),
+                        failed_read = rdr["failed_read"].ToString(),
+                        failed_conf = rdr["failed_conf"].ToString(),
+                        kardexconfirm_status = rdr["kardexconfirm_status"].ToString(),
+                        created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        send_to_kardex = rdr["send_to_kardex"] == DBNull.Value ? null : (DateTime?)rdr["send_to_kardex"],
+                        backcolor = rdr["backcolor"].ToString(),
+                        focecolor = rdr["focecolor"].ToString()
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
+        public IEnumerable<ApiKardexconfirmStatus> GetApiKardexconfirmStatusesBySended(DateTime dtStart, DateTime dtStop)
+        {
+            List<ApiKardexconfirmStatus> lstobj = new List<ApiKardexconfirmStatus>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.AppendLine("select karor, matnr, lgnum, lenum, typor, ");
+                sql.AppendLine("kxbin, kquit2, msgid, msgno, msgty, text, ");
+                sql.AppendLine("failed_read, failed_conf, kardexconfirm_status, ");
+                sql.AppendLine("created, send_to_kardex,backcolor, focecolor");
+                sql.AppendLine("from api.vkardexconfirm_status");
+                sql.AppendLine("where (send_to_kardex >= @startdate AND send_to_kardex < @stopdate)");
+                sql.AppendLine("order by send_to_kardex");
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+                cmd.Parameters.AddWithValue("@startdate", NpgsqlDbType.Timestamp, dtStart);
+                cmd.Parameters.AddWithValue("@stopdate", NpgsqlDbType.Timestamp, dtStop);
+                con.Open();
+
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    ApiKardexconfirmStatus objrd = new ApiKardexconfirmStatus
+                    {
+                        karor = rdr["karor"].ToString(),
+                        matnr = rdr["matnr"].ToString(),
+                        lgnum = rdr["lgnum"].ToString(),
+                        lenum = rdr["lenum"].ToString(),
+                        typor = rdr["typor"].ToString(),
+                        kxbin = rdr["kxbin"].ToString(),
+                        kquit2 = rdr["kquit2"].ToString(),
+                        msgid = rdr["msgid"].ToString(),
+                        msgno = rdr["msgno"].ToString(),
+                        msgty = rdr["msgty"].ToString(),
+                        text = rdr["text"].ToString(),
+                        failed_read = rdr["failed_read"].ToString(),
+                        failed_conf = rdr["failed_conf"].ToString(),
+                        kardexconfirm_status = rdr["kardexconfirm_status"].ToString(),
+                        created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        send_to_kardex = rdr["send_to_kardex"] == DBNull.Value ? null : (DateTime?)rdr["send_to_kardex"],
+                        backcolor = rdr["backcolor"].ToString(),
+                        focecolor = rdr["focecolor"].ToString()
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
+
+        public Boolean CreateManualApi(string karor, string matnr, string lenum, string matbatch, string typor, ref string strReturn)
+        {
+            Boolean bRet = false;
+            string sRet = "";
+            Int32? iRet = 0;
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                try
+                {
+                    StringBuilder sqlQurey = new StringBuilder();
+                    sqlQurey.AppendLine("select _retchk, _retmsg from api.fuc_insert_postasrsorders(:karor , :matnr, :lgnum, :lenum, :matbatch, :typor, :matqty, :kxbin, :kquit2);");
+                    NpgsqlCommand cmd = new NpgsqlCommand(sqlQurey.ToString(), con)
+                    {
+                        CommandType = CommandType.Text
+                    };
+                    cmd.Parameters.AddWithValue(":karor", NpgsqlDbType.Varchar, karor);
+                    cmd.Parameters.AddWithValue(":matnr", NpgsqlDbType.Varchar, matnr);
+                    cmd.Parameters.AddWithValue(":lgnum", NpgsqlDbType.Varchar, "050");
+                    cmd.Parameters.AddWithValue(":lenum", NpgsqlDbType.Varchar, lenum);
+                    cmd.Parameters.AddWithValue(":matbatch", NpgsqlDbType.Varchar, matbatch);
+                    cmd.Parameters.AddWithValue(":typor", NpgsqlDbType.Varchar, typor);
+                    cmd.Parameters.AddWithValue(":matqty", NpgsqlDbType.Double, 1.0);
+                    cmd.Parameters.AddWithValue(":kxbin", NpgsqlDbType.Varchar, "");
+                    cmd.Parameters.AddWithValue(":kquit2", NpgsqlDbType.Varchar, "");
+
+                    con.Open();
+                    NpgsqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        iRet = rdr["_retchk"] == DBNull.Value ? null : (Int32?)rdr["_retchk"];
+                        if (iRet==1)
+                        {
+                            sRet = "Succeeded";
+                        }
+                        else
+                        {
+                            sRet = "Unknown error, try again.";
+                        }
+                        
+                    }
+                }
+                catch (NpgsqlException ex)
+                {
+                    sRet = ex.ToString();
+                    Log.Error(ex.ToString());
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                if (iRet == 1)
+                {
+                    bRet = true;
+                }
+
+            }
+            strReturn = sRet;
+
+            return bRet;
+        }
 
     }
 }

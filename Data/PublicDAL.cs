@@ -282,16 +282,18 @@ namespace GoWMS.Server.Data
                     StringBuilder sql = new StringBuilder();
 
                     sql.AppendLine("SELECT");
-                    sql.AppendLine("created, work_type, create_by, batch_number, item_code,");
-                    sql.AppendLine("item_name, su_no, movement_type, movemet_reason, order_no, seq_no,");
-                    sql.AppendLine("result_qty, doc_ref , pallet_no, crane_no, location_no,");
-                    sql.AppendLine("dest_su_no, to_no, to_line, status, shortge_qty, po_no, invoice_no,");
-                    sql.AppendLine("recviving_date, delivery_date, order_line,");
-                    sql.AppendLine("queue_no, ship_to_code, ship_name, delivery_priority ");
-                    sql.AppendLine("FROM public.sap_operateresult");
+                    sql.AppendLine("t1.created, t1.work_type, t1.create_by, t1.batch_number, t1.item_code,");
+                    sql.AppendLine("t2.itemname as item_name, t1.su_no, t1.movement_type, t1.movemet_reason, t1.order_no, t1.seq_no,");
+                    sql.AppendLine("t1.result_qty, t1.doc_ref , t1.pallet_no, t1.crane_no, t1.location_no,");
+                    sql.AppendLine("t1.dest_su_no, t1.to_no, t1.to_line, t1.status, t1.shortge_qty, t1.po_no, t1.invoice_no,");
+                    sql.AppendLine("t1.recviving_date, t1.delivery_date, t1.order_line,");
+                    sql.AppendLine("t1.queue_no, t1.ship_to_code, t1.ship_name, t1.delivery_priority ");
+                    sql.AppendLine("FROM public.sap_operateresult t1");
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t2");
+                    sql.AppendLine("ON t1.item_code= t2.itemcode");
                     sql.AppendLine("WHERE (1=1)");
-                    sql.AppendLine("AND (work_type in ('01'))");
-                    sql.AppendLine("AND (created >= @startdate AND created < @stopdate)");
+                    sql.AppendLine("AND (t1.work_type in ('01'))");
+                    sql.AppendLine("AND (t1.created >= @startdate AND t1.created < @stopdate)");
                     sql.AppendLine("ORDER BY created ASC");
                     // sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
@@ -500,16 +502,19 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
                     sql.AppendLine("SELECT ");
-                    sql.AppendLine("created::date as created , po_no, batch_number, item_code,");
-                    sql.AppendLine("item_name, movement_type, movemet_reason, ");
-                    sql.AppendLine("SUM(result_qty) as result_qty");
-                    sql.AppendLine("FROM public.sap_operateresult");
+                    sql.AppendLine("t1.created::date as created , t1.po_no, t1.batch_number, t1.item_code,");
+                    sql.AppendLine("t2.itemname as item_name, t1.movement_type, t1.movemet_reason, ");
+                    sql.AppendLine("SUM(t1.result_qty) as result_qty");
+                    sql.AppendLine("FROM public.sap_operateresult t1");
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t2");
+                    sql.AppendLine("ON t1.item_code= t2.itemcode");
+
                     sql.AppendLine("WHERE (1=1)");
-                    sql.AppendLine("AND (work_type in ('01'))");
-                    sql.AppendLine("AND (created >= @startdate AND created < @stopdate)");
-                    sql.AppendLine("GROUP BY created::date, po_no, batch_number, item_code,");
-                    sql.AppendLine("item_name, movement_type, movemet_reason");
-                    sql.AppendLine("ORDER BY created::date , item_code asc");
+                    sql.AppendLine("AND (t1.work_type in ('01'))");
+                    sql.AppendLine("AND (t1.created >= @startdate AND t1.created < @stopdate)");
+                    sql.AppendLine("GROUP BY t1.created::date, t1.po_no, t1.batch_number, t1.item_code,");
+                    sql.AppendLine("t2.itemname, t1.movement_type, t1.movemet_reason");
+                    sql.AppendLine("ORDER BY t1.created::date , t1.item_code asc");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
 
@@ -613,17 +618,18 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
 
-                    sql.AppendLine("select row_number() over(order by t2.brand asc, t1.batch_number asc, t1.item_code asc) AS rn,");
-                    sql.AppendLine("t2.brand, t1.batch_number, t1.item_code, t1.item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
-                    sql.AppendLine(" , t3.srm_no ");
+                    sql.AppendLine("select row_number() over(order by t2.itembrand asc, t1.batch_number asc, t1.item_code asc) AS rn,");
+                    sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
+                    sql.AppendLine(", t3.srm_no ");
                     sql.AppendLine("from public.sap_stock t1");
-                    sql.AppendLine("left join public.sap_itemmaster_v t2");
-                    sql.AppendLine("on t1.item_code=t2.article");
+                    sql.AppendLine("left join wms.mas_item_go t2");
+                    sql.AppendLine("on t1.item_code=t2.itemcode");
                     sql.AppendLine("left join wcs.set_shelf t3");
                     sql.AppendLine("on t1.palletcode=t3.lpncode");
                     sql.AppendLine("where (1=1)");
                     sql.AppendLine("order by brand,batch_number,item_code");
                     sql.AppendLine(";");
+
                     /*
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t2.brand, t1.batch_number, t1.item_code, t1.item_name, sum(t1.qty) AS totalstock, count(t1.palletcode) as countpallet ");
@@ -752,12 +758,12 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
                     sql.AppendLine("SELECT ");
-                    sql.AppendLine("t2.brand, t1.batch_number, t1.item_code, t1.item_name, sum(t1.qty) AS totalstock, count(t1.palletcode) as countpallet ");
+                    sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, sum(t1.qty) AS totalstock, count(t1.palletcode) as countpallet ");
                     sql.AppendLine("FROM public.sap_stock t1");
-                    sql.AppendLine("LEFT JOIN public.sap_itemmaster_v t2");
-                    sql.AppendLine("ON t1.item_code=t2.article");
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t2");
+                    sql.AppendLine("ON t1.item_code=t2.itemcode");
                     sql.AppendLine("WHERE (1=1)");
-                    sql.AppendLine("GROUP BY t2.brand, t1.batch_number, t1.item_code, t1.item_name");
+                    sql.AppendLine("GROUP BY t2.itembrand, t1.batch_number, t1.item_code, t2.itemname");
                     sql.AppendLine("ORDER BY brand,batch_number,item_code");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
@@ -865,11 +871,11 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
                     sql.AppendLine("SELECT ");
-                    sql.AppendLine("t2.brand, t1.batch_number, t1.item_code, t1.item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
+                    sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
                     sql.AppendLine(" , DATE_PART('day', now()::timestamp - t1.receiving_date::timestamp) as aging");
                     sql.AppendLine("FROM public.sap_stock t1");
-                    sql.AppendLine("LEFT JOIN public.sap_itemmaster_v t2");
-                    sql.AppendLine("ON t1.item_code=t2.article");
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t2");
+                    sql.AppendLine("ON t1.item_code=t2.itemcode");
                     sql.AppendLine("LEFT JOIN wcs.set_shelf t3");
                     sql.AppendLine("ON t1.palletcode=t3.lpncode");
                     sql.AppendLine("WHERE (1=1)");
@@ -1298,17 +1304,19 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
                     sql.AppendLine("SELECT ");
-                    sql.AppendLine("idx, created, entity_lock, modified, client_id, client_ip, seq_no, ");
-                    sql.AppendLine("work_type, order_no, order_line, ship_to_code, ship_name, ");
-                    sql.AppendLine("movement_type, movemet_reason, item_code, item_name, ");
-                    sql.AppendLine("batch_number, su_no, result_qty, to_no, to_line, ");
-                    sql.AppendLine("doc_ref, po_no, delivery_date, delivery_priority, ");
-                    sql.AppendLine("ref_no, ref_line,create_by, created_date, ");
-                    sql.AppendLine("pallet_no, crane_no, location_no,status ");
-                    sql.AppendLine("FROM public.sap_operateresult");
+                    sql.AppendLine("t1.idx, t1.created, t1.entity_lock, t1.modified, t1.client_id, t1.client_ip, t1.seq_no, ");
+                    sql.AppendLine("t1.work_type, t1.order_no, t1.order_line, t1.ship_to_code, t1.ship_name, ");
+                    sql.AppendLine("t1.movement_type, t1.movemet_reason, t1.item_code, t2.itemname as item_name, ");
+                    sql.AppendLine("t1.batch_number, t1.su_no, t1.result_qty, t1.to_no, t1.to_line, ");
+                    sql.AppendLine("t1.doc_ref, t1.po_no, t1.delivery_date, t1.delivery_priority, ");
+                    sql.AppendLine("t1.ref_no, t1.ref_line, t1.create_by, t1.created_date, ");
+                    sql.AppendLine("t1.pallet_no, t1.crane_no, t1.location_no, t1.status ");
+                    sql.AppendLine("FROM public.sap_operateresult t1");
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t2");
+                    sql.AppendLine("ON t1.item_code= t2.itemcode");
                     sql.AppendLine("WHERE (1=1)");
-                    sql.AppendLine("AND (work_type in ('05'))");
-                    sql.AppendLine("AND (created >= @startdate and created < @stopdate)");
+                    sql.AppendLine("AND (t1.work_type in ('05'))");
+                    sql.AppendLine("AND (t1.created >= @startdate and t1.created < @stopdate)");
                     sql.AppendLine("ORDER BY idx asc");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
@@ -1533,16 +1541,18 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
                     sql.AppendLine("SELECT ");
-                    sql.AppendLine("created::date as created, order_no, ship_to_code, ship_name, ");
-                    sql.AppendLine("item_code, item_name, movement_type, movemet_reason, ");
-                    sql.AppendLine("sum(result_qty) as result_qty");
-                    sql.AppendLine("from public.sap_operateresult");
+                    sql.AppendLine("t1.created::date as created, t1.order_no, t1.ship_to_code, t1.ship_name, t1.batch_number ,");
+                    sql.AppendLine("t1.item_code, t2.itemname as item_name, t1.movement_type, t1.movemet_reason,  ");
+                    sql.AppendLine("sum(t1.result_qty) as result_qty");
+                    sql.AppendLine("from public.sap_operateresult t1");
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t2");
+                    sql.AppendLine("ON t1.item_code= t2.itemcode");
                     sql.AppendLine("where (1=1)");
-                    sql.AppendLine("and  (work_type in ('05'))");
-                    sql.AppendLine("AND (created >= @startdate and created < @stopdate)");
-                    sql.Append("group  by created::date , order_no, ship_to_code, ship_name,");
-                    sql.AppendLine("item_code, item_name, movement_type, movemet_reason ");
-                    sql.AppendLine("order by created::date , order_no asc, item_code asc");
+                    sql.AppendLine("and  (t1.work_type in ('05'))");
+                    sql.AppendLine("AND (t1.created >= @startdate and t1.created < @stopdate)");
+                    sql.Append("group  by t1.created::date , t1.order_no, t1.ship_to_code, t1.ship_name,");
+                    sql.AppendLine("t1.item_code, t2.itemname, t1.movement_type, t1.movemet_reason , t1.batch_number ");
+                    sql.AppendLine("order by t1.created::date , order_no asc, item_code asc");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
 
@@ -1567,7 +1577,8 @@ namespace GoWMS.Server.Data
                             Movemet_Reason = rdr["movemet_reason"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
                             Item_Name = rdr["item_name"].ToString(),
-                            Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"]
+                            Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"],
+                            Batch_number = rdr["batch_number"].ToString()
                         };
                         lstobj.Add(objrd);
                     }

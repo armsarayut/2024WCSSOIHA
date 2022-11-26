@@ -2,14 +2,14 @@
 @using GoWMS.Server.Data
 @using GoWMS.Server.Controllers
 @using GoWMS.Server.Models
-@using GoWMS.Server.Models.Wgc
+@using GoWMS.Server.Models.Api
 @using System.Security.Claims
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 @inject IStringLocalizer<WgcApiBookingnoteitemsPage> L
 
-@inject WgcService ObjErpService
+@inject ErpApiService ObjErpService
 @inject UserServices OpjUserService
 @inject ReportService UserlogService
 @attribute [Authorize]
@@ -22,6 +22,33 @@
 else
 {
     <MudText Typo="Typo.h6" Color="Color.Primary"> @pageheader </MudText>
+     <MudGrid>
+
+        <MudItem Class="d-flex flex-row">
+            <MudItem>
+                <MudDatePicker Class="" Label=@L["FromDate"] @bind-Date="fromDate" DateFormat="@VarGlobals.FormatD" />
+            </MudItem>
+        </MudItem>
+        <MudItem Class="d-flex flex-row">
+            <MudItem>
+                <MudDatePicker Class="" Label=@L["ToDate"] @bind-Date="toDate" DateFormat="@VarGlobals.FormatD" />
+            </MudItem>
+        </MudItem>
+        <MudItem Class="d-flex flex-row align-self-end">
+            <MudButton Disabled="@_processing" StartIcon="@Icons.Material.Filled.Search" Size="Size.Medium"
+                       OnClick="OnclickSearch" Variant="Variant.Filled" Color="Color.Primary">
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Processing</MudText>
+                }
+                else
+                {
+                    <MudText>@L["Search"]</MudText>
+                }
+            </MudButton>
+        </MudItem>
+    </MudGrid>
 
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
         <MudSpacer />
@@ -37,10 +64,10 @@ else
               Height="@(fixed_header || fixed_footer ?"500px":"")"
               Dense="@dense" Hover="@hover"
               Bordered="@bordered"
-              Striped="@striped" Filter="new Func<BOOKING_NOTE_ITEMS,bool>(FilterFunc)" @bind-SelectedItem="selectedItem">
+              Striped="@striped" Filter="new Func<ApiKardexconfirmStatus,bool>(FilterFunc)" @bind-SelectedItem="selectedItem">
         <ToolBarContent>
 
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString"
                           Placeholder=@L["Search"]
                           Adornment="Adornment.Start"
@@ -49,45 +76,63 @@ else
         </ToolBarContent>
 
         <HeaderContent>
-            <MudTh>@L["SEQ_NO"]</MudTh>
-            <MudTh>@L["BK_NO"]</MudTh>
-            <MudTh>@L["DN_NO"]</MudTh>
-            <MudTh>@L["DN_SEQ"]</MudTh>
-            <MudTh>@L["ITEM_CODE"]</MudTh>
-            <MudTh>@L["ITEM_NAME"]</MudTh>
-            <MudTh>@L["DN_QTY"]</MudTh>
-            <MudTh>@L["DN_UM"]</MudTh>
-            <MudTh>@L["CUSTOMER_CODE"]</MudTh>
-            <MudTh>@L["PACKETING_CODE"]</MudTh>
-            <MudTh>@L["CUSTOMER_ITEM"]</MudTh>
-            <MudTh>@L["SUBCUSTOMER_CODE"]</MudTh>
-            <MudTh>@L["BOOKING_MODEL"]</MudTh>
-            <MudTh>@L["REQUEST_DATE"]</MudTh>
-            <MudTh>@L["PALLET_GO"]</MudTh>
-            <MudTh>@L["STATUS_GO"]</MudTh>
-            <MudTh>@L["CREATED_DATE"]</MudTh>
-            <MudTh>@L["UPDATE_DATE"]</MudTh>
+            <MudTh>@L["STATUS"]</MudTh>
+            <MudTh>@L["JOB"]</MudTh>
+            <MudTh>@L["PART"]</MudTh>
+            <MudTh>@L["SU"]</MudTh>
+            <MudTh>@L["BIN"]</MudTh>
+            <MudTh>@L["MSGID"]</MudTh>
+            <MudTh>@L["MSGNO"]</MudTh>
+            <MudTh>@L["MSGTY"]</MudTh>
+            <MudTh>@L["TEXT"]</MudTh>
+            <MudTh>@L["FailedRead"]</MudTh>
+            <MudTh>@L["FailedConf"]</MudTh>
+            <MudTh>@L["Created"]</MudTh>
+            <MudTh>@L["Sent"]</MudTh>
         </HeaderContent>
         <RowTemplate>
-
-            <MudTd DataLabel=@L["SEQ_NO"]>@context.SEQ_NO</MudTd>
-            <MudTd DataLabel=@L["BK_NO"]>@context.BK_NO</MudTd>
-            <MudTd DataLabel=@L["DN_NO"]>@context.DN_NO</MudTd>
-            <MudTd DataLabel=@L["DN_SEQ"]>@context.DN_SEQ</MudTd>
-            <MudTd DataLabel=@L["ITEM_CODE"]>@context.ITEM_CODE</MudTd>
-            <MudTd DataLabel=@L["ITEM_NAME"]>@context.ITEM_NAME</MudTd>
-            <MudTd DataLabel=@L["DN_QTY"]>@context.DN_QTY</MudTd>
-            <MudTd DataLabel=@L["DN_UM"]>@context.DN_UM</MudTd>
-            <MudTd DataLabel=@L["CUSTOMER_CODE"]>@context.CUSTOMER_CODE</MudTd>
-            <MudTd DataLabel=@L["PACKETING_CODE"]>@context.PACKETING_CODE</MudTd>
-            <MudTd DataLabel=@L["CUST_ITEM_CODE"]>@context.CUST_ITEM_CODE</MudTd>
-            <MudTd DataLabel=@L["SUB_CUSTOMER_CODE"]>@context.SUB_CUSTOMER_CODE</MudTd>
-            <MudTd DataLabel=@L["BOOKING_MODEL_NO"]>@context.BOOKING_MODEL_NO</MudTd>
-            <MudTd DataLabel=@L["REQUEST_DATE"]>@context.REQUEST_DATE</MudTd>
-            <MudTd DataLabel=@L["PALLET_GO"]>@context.PALLET_GO</MudTd>
-            <MudTd DataLabel=@L["STATUS_GO"]>@context.STATUS_GO</MudTd>
-            <MudTd DataLabel=@L["CREATED_DATE"]>@context.CREATED_DATE</MudTd>
-            <MudTd DataLabel=@L["UPDATE_DATE_GO"]>@context.UPDATE_DATE_GO</MudTd>
+            <MudTd DataLabel=@L["STATUS"]>
+                @if(context.kardexconfirm_status=="Warning")
+                {
+                    <MudAlert Severity="Severity.Warning"
+                      Variant="Variant.Filled"
+                      Dense="true"
+                      Style="@($"color:{context.focecolor}; background:{context.backcolor};")">
+                        @context.kardexconfirm_status
+                    </MudAlert>
+                }
+                else @if(context.kardexconfirm_status=="Error")
+                {
+                    <MudAlert Severity="Severity.Error"
+                      Variant="Variant.Filled"
+                      Dense="true"
+                      Style="@($"color:{context.focecolor}; background:{context.backcolor};")">
+                        @context.kardexconfirm_status
+                    </MudAlert>
+                }
+                else
+                {
+                    <MudAlert Severity="Severity.Info"
+                      Variant="Variant.Filled"
+                      Dense="true"
+                      Style="@($"color:{context.focecolor}; background:{context.backcolor};")">
+                        @context.kardexconfirm_status
+                    </MudAlert>
+                }
+               
+            </MudTd>
+            <MudTd DataLabel=@L["JOB"]>@context.karor</MudTd>
+            <MudTd DataLabel=@L["PART"]>@context.matnr</MudTd>
+            <MudTd DataLabel=@L["SU"]>@context.lenum</MudTd>
+            <MudTd DataLabel=@L["BIN"]>@context.kxbin</MudTd>
+            <MudTd DataLabel=@L["MSGID"]>@context.msgid</MudTd>
+            <MudTd DataLabel=@L["MSGNO"]>@context.msgno</MudTd>
+            <MudTd DataLabel=@L["MSGTY"]>@context.msgty</MudTd>
+            <MudTd DataLabel=@L["TEXT"]>@context.text</MudTd>
+            <MudTd DataLabel=@L["FailedRead"]>@context.failed_read</MudTd>
+            <MudTd DataLabel=@L["FailedConf"]>@context.failed_conf</MudTd>
+            <MudTd DataLabel=@L["Created"]>@context.created</MudTd>
+            <MudTd DataLabel=@L["Sent"]>@context.send_to_kardex</MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
@@ -97,10 +142,10 @@ else
 }
 
 @code {
-    public string mPagedesc { get; set; } = "9.1.Booking Note";
+    public string mPagedesc { get; set; } = "9.1.Confirmation";
     private string mPagename { get; set; } = "/9/9_1";
 
-    private string pageheader { get; set; } = "9.1.Booking Note";
+    private string pageheader { get; set; } = "9.1.Confirmation";
     private string msgAction = "Enter Palletcode";
     private string mPalletcode { get; set; } = "";
     private string mPackid { get; set; } = "";
@@ -112,9 +157,9 @@ else
     private bool fixed_header = true;
     private bool fixed_footer = true;
     private string searchString = "";
-    private BOOKING_NOTE_ITEMS selectedItem = null;
-    private HashSet<BOOKING_NOTE_ITEMS> selectedItems = new HashSet<BOOKING_NOTE_ITEMS>();
-    private IEnumerable<BOOKING_NOTE_ITEMS> Elements = new List<BOOKING_NOTE_ITEMS>();
+    private ApiKardexconfirmStatus selectedItem = null;
+    private HashSet<ApiKardexconfirmStatus> selectedItems = new HashSet<ApiKardexconfirmStatus>();
+    private IEnumerable<ApiKardexconfirmStatus> Elements = new List<ApiKardexconfirmStatus>();
 
     public int elevation = 0;
     private ResultReturn resultReturn = null;
@@ -126,9 +171,22 @@ else
     List<Userroleinfo> Roles = new List<Userroleinfo>();
     [Inject] private IDialogService DialogService { get; set; }
 
+      DateTime? fromDate = DateTime.Today;
+    TimeSpan? fromTime = DateTime.Now.TimeOfDay;
+    DateTime? toDate = DateTime.Today;
+    TimeSpan? toTime = DateTime.Now.TimeOfDay;
+
+
+
+    DateTime? fromDateTime = DateTime.Today;
+    DateTime? toDateTime = DateTime.Today;
+
+    private bool _processing = false;
+
+
     protected override async Task OnInitializedAsync()
     {
-        WgcService objCS = new WgcService();
+        ErpApiService objCS = new ErpApiService();
 
         //////// Intial Menu and Privilege//////
         resultReturn = await Task.Run(() => OpjUserService.InsertMenu(mPagename, mPagedesc));
@@ -139,7 +197,10 @@ else
         this.InsertAuditrial("View", pageheader);
         Roles = await Task.Run(() => OpjUserService.GetUserRole(mPagename, long.Parse(sGroupID)));
 
-        Elements = await Task.Run(() => objCS.GetAllApiBookingnoteWgc());
+         fromDateTime = fromDate.Value.Date;
+        toDateTime = toDate.Value.Date.AddDays(1);
+
+        Elements = await Task.Run(() => objCS.GetApiKardexconfirmStatusesBySended(fromDateTime.Value, toDateTime.Value));
     }
 
     async Task GetUserAthu()
@@ -160,18 +221,36 @@ else
     }
 
 
-    private bool FilterFunc(BOOKING_NOTE_ITEMS element)
+    private bool FilterFunc(ApiKardexconfirmStatus element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.PALLET_GO.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.karor.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.DN_NO.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.matnr.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if ($"{element.ITEM_CODE} {element.SEQ_NO} {element.JOB_NO}".Contains(searchString))
+        if (element.lenum.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.kxbin} {element.msgid} {element.msgno} {element.msgty} {element.text} {element.failed_read} {element.failed_conf} {element.kardexconfirm_status}".Contains(searchString))
             return true;
         return false;
     }
+
+      async Task OnclickSearch()
+    {
+        _processing = true;
+        await DbGetData();
+        _processing = false;
+        this.StateHasChanged();
+    }
+
+    async Task DbGetData()
+    {
+        DateTime newDateTimeFM = fromDate.Value.Date;
+        DateTime newDateTimeTO = toDate.Value.Date.AddDays(1);
+        Elements = await Task.Run(() => ObjErpService.GetApiKardexconfirmStatusesBySended(newDateTimeFM, newDateTimeTO));
+    }
+
 
     public async Task DownloadExcelDocument()
     {
@@ -216,6 +295,8 @@ else
             var exmsg = e.Message.ToString();
         }
     }
+
+
 
     #region "Role"
     private async Task<bool> CheckRoleAdd()

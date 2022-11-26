@@ -28,9 +28,9 @@ else
 {
     <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Done"
-                   Color="Color.Success"
-                   OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
+        <MudButtonGroup Color="Color.Default" Variant="Variant.Outlined">
+            <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
+        </MudButtonGroup>
                 <MudSpacer />
             </MudAppBar>
 
@@ -51,7 +51,7 @@ else
                           @bind-SelectedItems="selectedItems">
                     <ToolBarContent>
 
-                        <MudToolBarSpacer />
+                        <MudSpacer />
                         <MudTextField @bind-Value="searchString"
                                       Placeholder=@L["Search"]
                                       Adornment="Adornment.Start"
@@ -61,23 +61,19 @@ else
 
                     <HeaderContent>
                         <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Itemcode)">@L["ItemCode"] </MudTableSortLabel></MudTh>
-                        <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Itemname)">@L["ItemName"] </MudTableSortLabel></MudTh>
-                        <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Quantity)">@L["Stock"] </MudTableSortLabel></MudTh>
-                        <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Docno)">@L["Lot"] </MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallettag)">@L["SEQ"] </MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Docno)">@L["Lot"] </MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Quantity)">@L["Stock"] </MudTableSortLabel></MudTh>
                         <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallteno)">@L["PalletGo"] </MudTableSortLabel></MudTh>
-                        <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Itembar)">@L["PalletErp"] </MudTableSortLabel></MudTh>
                     </HeaderContent>
 
 
                     <RowTemplate>
                         <MudTd DataLabel=@L["ItemCode"]>@context.Itemcode</MudTd>
-                        <MudTd DataLabel=@L["ItemName"]>@context.Itemname</MudTd>
-                        <MudTd DataLabel=@L["Stock"]>@context.Quantity</MudTd>
-                        <MudTd DataLabel=@L["Lot"]>@context.Docno</MudTd>
                         <MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>
+                        <MudTd DataLabel=@L["Lot"]>@context.Docno</MudTd>
+                        <MudTd DataLabel="@L["Stock"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.Quantity)</MudTd>
                         <MudTd DataLabel=@L["PalletGo"]>@context.Pallteno</MudTd>
-                        <MudTd DataLabel=@L["PalletErp"]>@context.Itembar</MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
@@ -110,10 +106,10 @@ else
     private bool _dense = false;
     private bool _multiSelect = true;
 
-    public string mPagedesc { get; set; } = "2.4.Cycle Count";
+    public string mPagedesc { get; set; } = "2.4.Audit";
     private string mPagename { get; set; } = "/2/2_4";
 
-    private string pageheader = "2.4.Cycle Count";
+    private string pageheader = "2.4.Audit";
     private string msgAction = "Enter Palletcode";
     private string mPalletcode { get; set; } = "";
     private string mPackid { get; set; } = "";
@@ -299,7 +295,9 @@ else
                 }
 
                 Elements = await Task.Run(() => ObjService.GetStockListInfo());
+                selectedItems.Clear();
 
+                searchString = null;
                 this.StateHasChanged();
             }
         }

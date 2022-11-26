@@ -1,17 +1,20 @@
-﻿@page "/inb-palletmap"
+﻿@page "/1/1_5"
 @using GoWMS.Server.Data
 @using GoWMS.Server.Controllers
 @using GoWMS.Server.Models
 @using GoWMS.Server.Models.Api
 @using GoWMS.Server.Models.Mas
 @using GoWMS.Server.Models.Wgc
+@using System.Security.Claims
 
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ErpService ObjErpService
 @inject ErpApiService ObjErpApiService
 @inject MasService ObjMasService
 @inject WgcService ObjWgcService
 @inject UserServices OpjUserService
+@inject ReportService UserlogService
+@inject IJSRuntime js
 @inject IStringLocalizer<IbpPalletMap> L
 @attribute [Authorize]
 
@@ -43,7 +46,7 @@
 
     <MudItem xs="12">
         <div class="form-group">
-            <input style="width: 100%; height: 40px" type="text" class="form-control" @bind-value="@stringput" @onkeyup="@KeyUp" placeholder="Input scan" />
+            <input Id="inputBar"  style="width: 100%; height: 40px" type="text" class="form-control" @bind-value="@stringput" @onkeyup="@KeyUp" placeholder="Input scan" />
         </div>
     </MudItem>
 
@@ -67,27 +70,25 @@ else
               @bind-SelectedItem="selectedItem">
         <ToolBarContent>
             <MudText Typo="Typo.h6">@L["MasterPallet"] : [ @mPalletcode ]</MudText>
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>@L["PalletGo"]</MudTh>
-            <MudTh>@L["SeqNo"]</MudTh>
+            <MudTh>@L["Job"]</MudTh>
             <MudTh>@L["ItemCode"]</MudTh>
-            <MudTh>@L["ItemName"]</MudTh>
+            <MudTh>@L["SeqNo"]</MudTh>
+            <MudTh>@L["Batch"]</MudTh>
             <MudTh>@L["Qty"]</MudTh>
-            <MudTh>@L["Unit"]</MudTh>
             <MudTh>@L["Action"]</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="MasterPallet">@context.Lpncode</MudTd>
-            <MudTd DataLabel="SEQ">@context.Package_Id</MudTd>
-            <MudTd DataLabel="Material">@context.Material_Code</MudTd>
-            <MudTd DataLabel="Description">@context.Material_Description</MudTd>
-            <MudTd DataLabel="Qty">@context.Gr_Quantity</MudTd>
-            <MudTd DataLabel="Unit">@context.Unit</MudTd>
-            <MudTd DataLabel="">
-                <MudFab @onclick="@(()=>DeleteMap(@context.Package_Id))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" IconSize="Size.Small" />
+            <MudTd DataLabel=@L["Job"]>@context.Document_Number</MudTd>
+            <MudTd DataLabel=@L["ItemCode"]>@context.Material_Code</MudTd>
+            <MudTd DataLabel=@L["SeqNo"]>@context.Package_Id</MudTd>
+            <MudTd DataLabel=@L["Batch"]>@context.Job_Code</MudTd>
+            <MudTd DataLabel=@L["Qty"]>@context.Gr_Quantity</MudTd>
+            <MudTd DataLabel=@L["Action"]>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>DeleteMap(@context.Package_Id))" />
             </MudTd>
         </RowTemplate>
         <PagerContent>
@@ -97,11 +98,10 @@ else
 }
 
 @code {
-    public string mPagedesc { get; set; } = "1.1.Receiving Order";
-    private string mPagename { get; set; } = "/1/1_1";
+    public string mPagedesc { get; set; } = "1.2.Pallet Mapping";
+    private string mPagename { get; set; } = "/1/1_5";
 
-
-    private string pageheader = "Master Mapping";
+    private string pageheader = "1.2.Pallet Mapping";
     private string msgAction = "Enter MasterPallet";
     private string mPalletcode { get; set; } = "";
     private string mPackid { get; set; } = "";
@@ -118,6 +118,9 @@ else
     private IEnumerable<Api_Receivingorders_Go> MapPalletItem = new List<Api_Receivingorders_Go>();
 
     private IEnumerable<Mas_Pallet_Go> MasterPallets = new List<Mas_Pallet_Go>();
+
+    List<Userroleinfo> Roles = new List<Userroleinfo>();
+    [Inject] private IDialogService DialogService { get; set; }
 
     public int elevation = 0;
     private ResultReturn resultReturn = null;
@@ -148,10 +151,51 @@ else
     {
         ErpApiService objCS = new ErpApiService();
 
+        //////// Intial Menu and Privilege//////
+        resultReturn = await Task.Run(() => OpjUserService.InsertMenu(mPagename, mPagedesc));
+        resultReturn = await Task.Run(() => OpjUserService.InsertPrivilege(mPagename));
+
+        await GetUserAthu();
+        this.InsertAuditrial("View", pageheader);
+
+        Roles = await Task.Run(() => OpjUserService.GetUserRole(mPagename, long.Parse(sGroupID)));
+
+
         Elements = await Task.Run(() => objCS.GetAllApiRecevingorderGosypallet(mPalletcode));
-        MasterPallets = ObjMasService.GetAllMasterPallets();
+        //MasterPallets = ObjMasService.GetAllMasterPallets();
 
 
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Focus the element
+            await Focus("inputBar");
+        }
+    }
+
+    public async Task Focus(string elementId)
+    {
+        await js.InvokeVoidAsync("jsfunction.focusElement", elementId);
+    }
+
+    async Task GetUserAthu()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        sGroupID = user.Claims.FirstOrDefault(
+        c => c.Type == ClaimTypes.Role)?.Value;
+
+        sUserID = user.Claims.FirstOrDefault(
+            c => c.Type == ClaimTypes.Actor)?.Value;
+    }
+
+    private void InsertAuditrial(String actdesc, String munname)
+    {
+        bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
     }
 
 
@@ -160,31 +204,20 @@ else
     {
         if (mPalletcode.Length <= 0)
         {
-            var allCorrect = MasterPallets.Where(a => a.Palletno == str).ToList();
+            //var allCorrect = MasterPallets.Where(a => a.Palletno == str).ToList();
 
-            if (allCorrect.ToList().Count > 0)
+            //if (allCorrect.ToList().Count > 0)
+            //{
+
+
+            bool bValidate;
+
+            bValidate= ObjMasService.ValidateMasterpallet(str);
+            if (bValidate)
             {
-
                 mPalletcode = str;
-
-                MapPalletItem = null;
-                MapPalletItem = ObjWgcService.GetMapPalletApiNewDelivery_note(mPalletcode);
-                if (MapPalletItem.ToList().Count > 0)
-                {
-                    Task<string> retString;
-
-                    retString = ObjErpApiService.InsertReceivingOrderbypackAsync(MapPalletItem.ToList(), mPalletcode);
-
-                    //ObjErpApiService.UpdateReceivingOrderbypack(mPalletcode, mPackid);
-                    msgAction = "Enter PalletGo for complete";
-                    elevation = 1;
-                }
-                else
-                {
-                    mPalletcode = "";
-                    msgAction = "Enter PalletGo";
-                    elevation = 1;
-                }
+                msgAction = "Enter Pallet for complete";
+                elevation = 1;
             }
             else
             {
@@ -192,6 +225,37 @@ else
                 elevation = 4;
                 msgAction = "PalletGo find not found";
             }
+
+
+            //MapPalletItem = null;
+            //MapPalletItem = ObjWgcService.GetMapPalletApiNewDelivery_note(mPalletcode);
+            //if (MapPalletItem.ToList().Count > 0)
+            //{
+            //    Task<string> retString;
+
+            //    retString = ObjErpApiService.InsertReceivingOrderbypackAsync(MapPalletItem.ToList(), mPalletcode);
+
+            //    //ObjErpApiService.UpdateReceivingOrderbypack(mPalletcode, mPackid);
+            //    msgAction = "Enter PalletGo for complete";
+            //    elevation = 1;
+            //}
+            //else
+            //{
+            //    mPalletcode = "";
+            //    msgAction = "Enter PalletGo";
+            //    elevation = 1;
+                //}
+
+
+
+
+            //}
+            //else
+            //{
+            //    mPalletcode = "";
+            //    elevation = 4;
+            //    msgAction = "PalletGo find not found";
+            //}
         }
         else
         {
@@ -203,7 +267,7 @@ else
                     msgAction = "Mapping successfully";
                     //ObjErpApiService.UpdateReceivingOrderbypallet(mPalletcode);
                     ObjErpApiService.SetMappedPallet(mPalletcode);
-                    ObjWgcService.UpdatePalletNewDelivery_note(mPalletcode);
+                    //ObjWgcService.UpdatePalletNewDelivery_note(mPalletcode);
                     mPalletcode = "";
                 }
                 else
@@ -278,10 +342,17 @@ else
         return false;
     }
 
-    private void DeleteMap(string pack)
+    private async Task DeleteMap(string pack)
     {
-        msgAction = "Cancle successfully";
-        ObjErpApiService.CancelReceivingOrderbypack(mPalletcode, pack);
+        string state = "";
+
+        state = await ConfirmDelete();
+
+        if (state == "Deleted")
+        {
+            msgAction = "Cancle successfully";
+            ObjErpApiService.CancelReceivingOrderbypack(mPalletcode, pack);
+        }
 
 
         ErpApiService objGR = new ErpApiService();
@@ -293,6 +364,21 @@ else
     {
         this.stringput = string.Empty;
         StateHasChanged();
+    }
+
+    private async Task<string> ConfirmDelete()
+    {
+        string state = "";
+
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning",
+            "Deleting can not be undone!",
+            yesText: "Delete!", cancelText: "Cancel");
+
+        state = result == null ? "Cancelled" : "Deleted";
+
+        return state;
+
     }
 
 }

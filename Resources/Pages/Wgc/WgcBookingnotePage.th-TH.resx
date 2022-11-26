@@ -118,13 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BatchNo" xml:space="preserve">
-    <value>Batchที่ผลิต</value>
+    <value>ชุด</value>
   </data>
   <data name="Customer" xml:space="preserve">
     <value>ลูกค้า</value>
   </data>
+  <data name="DNDate" xml:space="preserve">
+    <value>วันที่</value>
+  </data>
   <data name="ItemCode" xml:space="preserve">
     <value>รหัสสินค้า</value>
+  </data>
+  <data name="ItemName" xml:space="preserve">
+    <value>ชื่อสินค้า</value>
   </data>
   <data name="LotNo" xml:space="preserve">
     <value>ลอท</value>
@@ -135,8 +141,14 @@
   <data name="pageHeader" xml:space="preserve">
     <value>รายการสั่งจอง</value>
   </data>
+  <data name="PALLETERP" xml:space="preserve">
+    <value>พาเลทอ้างอิง</value>
+  </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>พาเลทหลัก</value>
+    <value>พาเลท</value>
+  </data>
+  <data name="PalletNo" xml:space="preserve">
+    <value>เลขพาเลท</value>
   </data>
   <data name="Qty" xml:space="preserve">
     <value>จำนวน</value>
@@ -148,10 +160,19 @@
     <value>ลำดับที่</value>
   </data>
   <data name="SoNo" xml:space="preserve">
-    <value>ใบจอง</value>
+    <value>ใบเบิก</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>สร้างเบิก</value>
   </data>
   <data name="StartPick" xml:space="preserve">
     <value>เริ่มหยิบ</value>
+  </data>
+  <data name="Stock" xml:space="preserve">
+    <value>คงคลัง</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>รวม</value>
   </data>
   <data name="TotalQuantity" xml:space="preserve">
     <value>รวม</value>

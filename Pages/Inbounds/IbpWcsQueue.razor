@@ -34,10 +34,10 @@ else
 
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
         <MudSpacer />
-        <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
+      @*  <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
             <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
-        </MudTooltip>
+        </MudTooltip>*@
     </MudAppBar>
 
     <MudTable Items="@Elements"
@@ -51,7 +51,7 @@ else
               Filter="new Func<Inb_Putaway_Go,bool>(FilterFunc)"
               @bind-SelectedItem="selectedItem">
         <ToolBarContent>
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString"
                           Placeholder=@L["Search"]
                           Adornment="Adornment.Start"
@@ -61,11 +61,15 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Putaway_Go, object>(x=>x.Created)">@L["Queuetime"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Putaway_Go, object>(x=>x.Palletno)">@L["PalletGo"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Putaway_Go, object>(x=>x.Puttype)">@L["Worktype"]</MudTableSortLabel></MudTh>
+            <MudTh>@L["Adjust"]</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="@L["Queuetime"]">@Convert.ToDateTime(context.Created).ToString(VarGlobals.FormatDT)</MudTd>
             <MudTd DataLabel="@L["PalletGo"]">@context.Palletno</MudTd>
             <MudTd DataLabel="@L["Worktype"]">@context.Puttype</MudTd>
+            <MudTd DataLabel="@L["Adjust"]">
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>CancelGR((long)context.Efidx, context.Palletno))" />
+            </MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
@@ -74,10 +78,10 @@ else
 }
 
 @code {
-    private string pageheader = "1.3.Master Queuing";
+    private string pageheader = "1.4.Master Queuing";
     private string msgAction = "Enter Palletcode";
 
-    public string mPagedesc { get; set; } = "1.3.Master Queuing";
+    public string mPagedesc { get; set; } = "1.4.Master Queuing";
     private string mPagename { get; set; } = "/1/1_3";
 
     private string mPalletcode { get; set; } = "";
@@ -211,6 +215,49 @@ else
             var exmsg = e.Message.ToString();
         }
     }
+
+     private async Task CancelGR(long idDel, string pallet)
+    {
+         bool? result = await CheckRoleDelete();
+        if (result == true)
+        {
+             string state = "";
+
+            state = await ConfirmDelete();
+
+            if (state=="Deleted")
+            {
+                if (ObjInboundService.CancelPutawayByPallet(idDel))
+                {
+                    this.InsertAuditrial("Cancel Master Queuing >> PALLET:" + pallet , pageheader);
+                }
+                else
+                {
+                    this.InsertAuditrial("Error Cancel Master Queuing >> PALLET:" + pallet, pageheader);
+                }
+
+                Elements = ObjInboundService.GetAllInbPutawayGos();
+            }
+
+        }
+
+    }
+
+    private async Task<string>  ConfirmDelete()
+    {
+        string state = "";
+
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning", 
+            "Deleting can not be undone!", 
+            yesText:"Delete!", cancelText:"Cancel");
+
+        state= result==null ? "Cancelled" : "Deleted";
+   
+        return  state ;
+
+    }
+
 
     #region "Role"
     private async Task<bool> CheckRoleAdd()

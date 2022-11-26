@@ -19,6 +19,17 @@ namespace GoWMS.Server.Controllers
             return retlist;
         }
 
+
+
+
+        public List<Inb_Goodreceipt_Go> GetAllOubGoodreceiptGo()
+        {
+            List<Inb_Goodreceipt_Go> retlist = objDAL.GetAllOubGoodreceiptGo().ToList();
+            return retlist;
+        }
+
+        
+
         public List<Inb_Goodreceive_Go> GetAllInbGoodreceiveGos()
         {
             List<Inb_Goodreceive_Go> retlist = objDAL.GetAllInbGoodreceiveGo().ToList();
@@ -54,6 +65,18 @@ namespace GoWMS.Server.Controllers
         }
 
 
+        public Task<long> GetCountInbGoodreceiptGo()
+        {
+            return objDAL.GetCountInbGoodreceiptGo();
+        }
+
+        public Task<Int64> GetCountOutGoodreceiptGo()
+        {
+            return objDAL.GetCountOutGoodreceiptGo();
+        }
+
+
+
         public Task<Int64> GetSumPalletAllOubGoodPickingGo()
         {
             return objDAL.GetSumPalletAllOubGoodPickingGo();
@@ -64,8 +87,33 @@ namespace GoWMS.Server.Controllers
             return objDAL.GetSumOrderAllOubGoodPickingGo();
         }
 
+        public bool CancelReceivingOrdersBypack(string pallet, string pack)
+        {
+            bool bret = objDAL.CancelReceivingOrdersBypack(pallet, pack);
 
-   
+            return bret;
+        }
 
-    }
+        public bool CancelReceivingOrdersByPallet(string pallet)
+        {
+            bool bret = objDAL.CancelReceivingOrdersByPallet(pallet);
+
+            return bret;
+        }
+
+        public bool CancelGrAPI(long idx)
+        {
+            bool bret = objDAL.CancelGrAPI(idx);
+
+            return bret;
+        }
+
+        public bool CancelPutawayByPallet(long efidx)
+        {
+            bool bret = objDAL.CancelPutawayByPallet(efidx);
+
+            return bret;
+        }
+
+      }
 }

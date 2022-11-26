@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Block/Error" xml:space="preserve">
-    <value>Block/Error</value>
+    <value>BLOCK/ERROR</value>
   </data>
   <data name="Excel" xml:space="preserve">
     <value>Excel</value>
   </data>
   <data name="Lane" xml:space="preserve">
-    <value>Lane</value>
+    <value>LANE</value>
   </data>
   <data name="Mass" xml:space="preserve">
-    <value>Free</value>
+    <value>FREE</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="OccupancyRate" xml:space="preserve">
-    <value>Occupancy Rate</value>
+    <value>% USE</value>
   </data>
   <data name="Occupied" xml:space="preserve">
-    <value>Occupied</value>
+    <value>USE</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Capacity</value>
@@ -151,6 +151,6 @@
     <value>Search</value>
   </data>
   <data name="Total" xml:space="preserve">
-    <value>Total</value>
+    <value>TOTAL</value>
   </data>
 </root>

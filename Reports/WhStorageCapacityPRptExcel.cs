@@ -21,11 +21,11 @@ namespace GoWMS.Server.Reports
                 var worksheet = workbook.AddWorksheet("2.2");
                 #region Excel Report Header
                 var imagePath = VarGlobals.Imagelogoreport();
-                worksheet.Column(1).Width = 18;
-                worksheet.Row(1).Height = 60;
+                worksheet.Column(1).Width = 24;
+                worksheet.Row(1).Height = 30;
                 var image = worksheet.AddPicture(imagePath).MoveTo(worksheet.Cell("A1")); //this will throw an error
-                image.ScaleWidth(.7);
-                image.ScaleHeight(.7);
+                image.ScaleWidth(.18);
+                image.ScaleHeight(.18);
                 worksheet.Cell("B1").Value = "2.2.Capacity" + " - Report";
                 worksheet.Cell("B1").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
                 worksheet.Cell("B2").Value = $"PrintDate : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}";
@@ -33,24 +33,24 @@ namespace GoWMS.Server.Reports
 
                 #region Excel Report Data
                 var rptRows = 4;
-                worksheet.Cell(rptRows, 1).Value = "Lane";
-                worksheet.Cell(rptRows, 2).Value = "Occupied";
-                worksheet.Cell(rptRows, 3).Value = "Mass";
-                worksheet.Cell(rptRows, 4).Value = "Block/Error";
+                worksheet.Cell(rptRows, 1).Value = "LANE";
+                worksheet.Cell(rptRows, 2).Value = "USE";
+                worksheet.Cell(rptRows, 3).Value = "FREE";
+                worksheet.Cell(rptRows, 4).Value = "BLOCK/ERROR";
                 worksheet.Cell(rptRows, 5).Value = "ProhibitedLocation";
-                worksheet.Cell(rptRows, 6).Value = "Total";
-                worksheet.Cell(rptRows, 7).Value = "OccupancyRate";
+                worksheet.Cell(rptRows, 6).Value = "TOTAL";
+                worksheet.Cell(rptRows, 7).Value = "% USE";
 
                 foreach (var rpt in ListRpt)
                 {
                     rptRows++;
-                    worksheet.Cell(rptRows, 1).Value = rpt.Srmname;
-                    worksheet.Cell(rptRows, 2).Value = rpt.Locavlt1;
-                    worksheet.Cell(rptRows, 3).Value = rpt.Locemp;
-                    worksheet.Cell(rptRows, 4).Value = rpt.Perr;
-                    worksheet.Cell(rptRows, 5).Value = rpt.Prohloc;
-                    worksheet.Cell(rptRows, 6).Value = rpt.Total;
-                    worksheet.Cell(rptRows, 7).Value = rpt.OccRate;
+                    worksheet.Cell(rptRows, 1).Value = "'" + rpt.Srmname;
+                    worksheet.Cell(rptRows, 2).Value = "'" + rpt.Locavlt1;
+                    worksheet.Cell(rptRows, 3).Value = "'" + rpt.Locemp;
+                    worksheet.Cell(rptRows, 4).Value = "'" + rpt.Perr;
+                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.Prohloc;
+                    worksheet.Cell(rptRows, 6).Value = "'" + rpt.Total;
+                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.OccRate;
 
 
                 }

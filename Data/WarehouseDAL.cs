@@ -27,6 +27,7 @@ namespace GoWMS.Server.Data
                 sqlQurey.AppendLine("select row_number() over(order by srm_no asc) AS rn");
                 sqlQurey.AppendLine(", srm_name, srm_no, locavl, locemp, plemp, plerr, prohloc, total, percen");
                 sqlQurey.AppendLine("from wcs.vrpt_shelfsummary");
+                //sqlQurey.AppendLine("where srm_no in (1,2)");
                 sqlQurey.AppendLine("order by srm_no asc");
                 sqlQurey.AppendLine(";");
 

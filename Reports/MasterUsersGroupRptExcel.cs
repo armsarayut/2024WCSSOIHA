@@ -21,11 +21,11 @@ namespace GoWMS.Server.Reports
                 var worksheet = workbook.AddWorksheet("7.3");
                 #region Excel Report Header
                 var imagePath = VarGlobals.Imagelogoreport();
-                worksheet.Column(1).Width = 18;
-                worksheet.Row(1).Height = 60;
+                worksheet.Column(1).Width = 24;
+                worksheet.Row(1).Height = 30;
                 var image = worksheet.AddPicture(imagePath).MoveTo(worksheet.Cell("A1")); //this will throw an error
-                image.ScaleWidth(.7);
-                image.ScaleHeight(.7);
+                image.ScaleWidth(.18);
+                image.ScaleHeight(.18);
                 worksheet.Cell("B1").Value = "7.3.Group" + " - Report";
                 worksheet.Cell("B1").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
                 worksheet.Cell("B2").Value = $"PrintDate : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}";
@@ -39,8 +39,8 @@ namespace GoWMS.Server.Reports
                 foreach (var rpt in rptElements)
                 {
                     rptRows++;
-                    worksheet.Cell(rptRows, 1).Value = rpt.Created;
-                    worksheet.Cell(rptRows, 2).Value = rpt.Ugdesc;
+                    worksheet.Cell(rptRows, 1).Value = "'" + rpt.Created;
+                    worksheet.Cell(rptRows, 2).Value = "'" + rpt.Ugdesc;
                 }
                 #endregion
                 workbook.SaveAs(_memoryStream);

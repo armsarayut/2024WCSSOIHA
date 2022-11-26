@@ -21,11 +21,11 @@ namespace GoWMS.Server.Reports
                 var worksheet = workbook.AddWorksheet("1.2");
                 #region Excel Report Header
                 var imagePath = VarGlobals.Imagelogoreport();
-                worksheet.Column(1).Width = 18;
-                worksheet.Row(1).Height = 60;
+                worksheet.Column(1).Width = 24;
+                worksheet.Row(1).Height = 30;
                 var image = worksheet.AddPicture(imagePath).MoveTo(worksheet.Cell("A1")); //this will throw an error
-                image.ScaleWidth(.7);
-                image.ScaleHeight(.7);
+                image.ScaleWidth(.18);
+                image.ScaleHeight(.18);
                 worksheet.Cell("B1").Value = "1.2.Good Receive" + " Report";
                 worksheet.Cell("B1").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
                 worksheet.Cell("B2").Value = $"PrintDate : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}";
@@ -45,14 +45,14 @@ namespace GoWMS.Server.Reports
                 foreach (var rpt in Inb_Goodreceive_Go_s)
                 {
                     rptRows++;
-                    worksheet.Cell(rptRows, 1).Value = rpt.Created;
-                    worksheet.Cell(rptRows, 2).Value = rpt.Pallteno;
-                    worksheet.Cell(rptRows, 3).Value = rpt.Pono;
-                    worksheet.Cell(rptRows, 4).Value = rpt.Pallettag;
-                    worksheet.Cell(rptRows, 5).Value = rpt.Itemcode;
-                    worksheet.Cell(rptRows, 6).Value = rpt.Itemname;
-                    worksheet.Cell(rptRows, 7).Value = rpt.Quantity;
-                    worksheet.Cell(rptRows, 8).Value = rpt.Unit;
+                    worksheet.Cell(rptRows, 1).Value = "'" + rpt.Created;
+                    worksheet.Cell(rptRows, 2).Value = "'" + rpt.Pallteno;
+                    worksheet.Cell(rptRows, 3).Value = "'" + rpt.Pono;
+                    worksheet.Cell(rptRows, 4).Value = "'" + rpt.Pallettag;
+                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.Itemcode;
+                    worksheet.Cell(rptRows, 6).Value = "'" + rpt.Itemname;
+                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.Quantity;
+                    worksheet.Cell(rptRows, 8).Value = "'" + rpt.Unit;
                 }
                 #endregion
                 workbook.SaveAs(_memoryStream);

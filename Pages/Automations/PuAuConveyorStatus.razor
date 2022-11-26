@@ -103,7 +103,7 @@ else
 
                 @if (@context.Is_cmd == true)
                     {
-                    <MudFab  @onclick="@(()=>OpenDialog(@context.Mccode))" Color="Color.Error" Icon="@Icons.Material.Filled.MenuOpen" Size="Size.Small" IconSize="Size.Small" />
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.OpenInNew" Color="Color.Secondary" @onclick="@(()=>OpenDialog(@context.Mccode))" />
                     }
             </MudTd>
         </RowTemplate>

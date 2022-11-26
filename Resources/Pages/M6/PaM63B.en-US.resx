@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BATCH" xml:space="preserve">
+    <value>BATCH</value>
+  </data>
   <data name="EXCEL" xml:space="preserve">
     <value>Excel</value>
   </data>
@@ -124,10 +127,10 @@
     <value>Export</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
-    <value>ITEMCODE</value>
+    <value>PART</value>
   </data>
   <data name="ITEMNAME" xml:space="preserve">
-    <value>ITEMNAME</value>
+    <value>NAME</value>
   </data>
   <data name="PACK" xml:space="preserve">
     <value>PACK</value>
@@ -139,6 +142,6 @@
     <value>Search</value>
   </data>
   <data name="STOCK" xml:space="preserve">
-    <value>STOCK</value>
+    <value>Qty</value>
   </data>
 </root>

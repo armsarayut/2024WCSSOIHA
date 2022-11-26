@@ -120,6 +120,9 @@
   <data name="AGING" xml:space="preserve">
     <value>อายุ(วัน)</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>ชุด</value>
+  </data>
   <data name="EXCEL" xml:space="preserve">
     <value>Excel</value>
   </data>

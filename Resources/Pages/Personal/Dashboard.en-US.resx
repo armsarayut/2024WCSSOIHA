@@ -136,7 +136,7 @@
     <value>Pending Putaway</value>
   </data>
   <data name="PendingReceving" xml:space="preserve">
-    <value>Pending Receving</value>
+    <value>Pending JOB</value>
   </data>
   <data name="Retrieval" xml:space="preserve">
     <value>Retrieval</value>

@@ -14,6 +14,8 @@
 @inject MasService ObjService
 @inject UserServices OpjUserService
 @inject ReportService UserlogService
+@inject IPrintingService PrintingService
+
 @attribute [Authorize]
 
 @if (Elements == null)
@@ -24,7 +26,24 @@
 else
 {
     <MudText Typo="Typo.h6" Color="Color.Primary"> @pageheader </MudText>
+    <MudGrid>
+           <MudItem Class="d-flex flex-row">
+               <MudNumericField Immediate="false" Label="From" Format="N0" T="int?" @bind-Value="_valuePalletfrom"  />
+           </MudItem>
+           <MudItem Class="d-flex flex-row">
+            <MudNumericField Immediate="false" Label="To" Format="N0" T="int?" @bind-Value="_valuePalletto" />
+           </MudItem>
+        
+          <MudItem Class="d-flex flex-row align-self-end">
+            <MudButtonGroup Color="Color.Default" Variant="Variant.Outlined">
+            <MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="Color.Tertiary" OnClick=@CreateStickPallet>@L["CREATE"]</MudButton>
+            </MudButtonGroup>
+           </MudItem>
+    </MudGrid>
+
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+
+             
         <MudSpacer />
         <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
@@ -41,7 +60,7 @@ else
               Filter="new Func<Mas_Pallet_Go,bool>(FilterFunc)" @bind-SelectedItem="selectedItem"
               SortLabel=@L["SortBy"]>
         <ToolBarContent>
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString"
                           Placeholder=@L["Search"]
                           Adornment="Adornment.Start"
@@ -50,12 +69,22 @@ else
         </ToolBarContent>
 
         <HeaderContent>
-            <MudTh>@L["Masterpallet"]</MudTh>
-            <MudTh>@L["Type"]</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Mas_Pallet_Go, object>(x=>x.Palletno)">@L["Masterpallet"]</MudTableSortLabel></MudTh>
+            @*<MudTh><MudTableSortLabel SortBy="new Func<Mas_Pallet_Go, object>(x=>x.Pallettype)">@L["Type"]</MudTableSortLabel></MudTh>*@
+            <MudTh>@L["REPRINT"]</MudTh>
+       @*     <MudTh>@L["Masterpallet"]</MudTh>
+            <MudTh>@L["Type"]</MudTh>*@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel=@L["Masterpallet"]>@context.Palletno</MudTd>
-            <MudTd DataLabel=@L["Type"]>@context.Pallettype</MudTd>
+            @*<MudTd DataLabel=@L["Type"]>@context.Pallettype</MudTd>*@
+
+              <MudTd Class="clm-row-small" DataLabel=@L["REPRINT"]>
+                @*<MudFab @onclick="@(()=>TestCreateTag(context.Palletno))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Print" Size="Size.Small" IconSize="Size.Small" />*@
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Print" Color="Color.Info" @onclick="@(()=>TestCreateTag(context.Palletno))" />
+
+            </MudTd>
+
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
@@ -95,6 +124,11 @@ else
     string sUserID { get; set; } = "";
     List<Userroleinfo> Roles = new List<Userroleinfo>();
     [Inject] private IDialogService DialogService { get; set; }
+
+    public int? _valuePalletfrom = 0;
+
+    public int? _valuePalletto = 0;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -221,6 +255,102 @@ else
             var exmsg = e.Message.ToString();
         }
     }
+
+    public async Task TestCreateTag(string palletno)
+    {
+
+        ////var guid = Guid.NewGuid().ToString();
+
+
+        //DataTable dtTrans = new DataTable("ptyGenWmsTransGGC");
+        //dtTrans.Columns.Add("tyitem", typeof(System.String));
+        //dtTrans.Columns.Add("tyqty", typeof(System.Decimal));
+        //dtTrans.Columns.Add("tylot", typeof(System.String));
+        //dtTrans.Columns.Add("tyexpdate", typeof(System.DateTime));
+        //dtTrans.Columns.Add("typallet", typeof(System.String));
+
+        //DataRow _ravi = dtTrans.NewRow();
+        //_ravi["tyitem"] = "AAA";
+        //_ravi["tyqty"] = 10.9;
+        //_ravi["tylot"] = "LOT0001";
+        //_ravi["tyexpdate"] = DateTime.Now;
+        //_ravi["typallet"] = "1";
+        //dtTrans.Rows.Add(_ravi);
+
+
+        //ObjInboundService.CreateTagno(apiid, 1, 5, "A0001", sUsername, dtTrans, guid.ToString());
+
+        ////TagList = ObjInboundService.GetTagGGCByIndex(apiid);
+
+        //TagList = await Task.Run(() => ObjInboundService.GetTagGGCByIndex(apiid));
+
+        KimballPallet4x1_5 pdfReport = new KimballPallet4x1_5();
+        List<Pallet4x1_5> listPdfReport = new List<Pallet4x1_5>();
+
+        var pallets = new List<Pallet4x1_5>() {
+                new Pallet4x1_5(){Palletcode = palletno},
+                 new Pallet4x1_5(){Palletcode = palletno}
+            };
+
+
+        listPdfReport = pallets.ToList();
+
+        await PrintingService.Print(new PrintOptions(Convert.ToBase64String(pdfReport.ExportPDF(listPdfReport))) { Base64 = true });
+
+
+    }
+
+    public async Task CreateStickPallet()
+    {
+        string palletno ;
+
+        int iStart = 0;
+        int iEnd =0;
+
+        if (_valuePalletto != null && _valuePalletfrom != null)
+        {
+            if (_valuePalletto.Value !=0 &&  _valuePalletfrom.Value !=0)
+            {
+                if (_valuePalletto < _valuePalletfrom)
+                {
+                    iStart = _valuePalletto.Value;
+                    iEnd = _valuePalletfrom.Value;
+                }
+                else
+                {
+                    iStart = _valuePalletfrom.Value;
+                    iEnd = _valuePalletto.Value;
+                }
+
+                KimballPallet4x1_5 pdfReport = new KimballPallet4x1_5();
+                List<Pallet4x1_5> listPdfReport = new List<Pallet4x1_5>();
+
+
+                List<Pallet4x1_5> objs = new List<Pallet4x1_5>();
+
+                for (int i = iStart; i <= iEnd; i++)
+                {
+                    palletno = "PL" + String.Format("{0:D8}", i);
+                    objs.Add(new Pallet4x1_5() { Palletcode = palletno });
+                    objs.Add(new Pallet4x1_5() { Palletcode = palletno });
+                }
+
+
+                listPdfReport = objs.ToList();
+
+                await PrintingService.Print(new PrintOptions(Convert.ToBase64String(pdfReport.ExportPDF(listPdfReport))) { Base64 = true });
+                this.InsertAuditrial("Print Pallet Tag from " + iStart.ToString() + " to " + iEnd .ToString(), pageheader);
+
+            }
+            
+        }
+        else{
+
+        }
+       
+
+    }
+
 
     #region "Role"
     private async Task<bool> CheckRoleAdd()

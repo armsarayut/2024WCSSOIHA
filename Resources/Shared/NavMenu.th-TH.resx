@@ -145,13 +145,13 @@
     <value>4.4.2.RGV02-แบบสำรวจ</value>
   </data>
   <data name="4.5-SRM-OPERATE" xml:space="preserve">
-    <value>4.5-SRM-ใช้งาน</value>
+    <value>4.3.SRM-ใช้งาน</value>
   </data>
   <data name="4.5.1.SRM-ENABLE" xml:space="preserve">
-    <value>4.5.1.SRM-เปิดใช้งาน</value>
+    <value>4.3.1.SRM-เปิดใช้งาน</value>
   </data>
   <data name="4.5.2.SRM-INOUT" xml:space="preserve">
-    <value>4.5.2.SRM-เข้าออก</value>
+    <value>4.3.2.SRM-เข้าออก</value>
   </data>
   <data name="4.Automation" xml:space="preserve">
     <value>4.ระบบอัตโนมัติ</value>
@@ -232,7 +232,7 @@
     <value>8.ช่วยเหลือ</value>
   </data>
   <data name="9.ERP" xml:space="preserve">
-    <value>9.ระบบERP</value>
+    <value>9.การเชื่อมต่อข้อมูล</value>
   </data>
   <data name="AdmGroup" xml:space="preserve">
     <value>7.3.กลุ่มผู้ใช้</value>
@@ -268,7 +268,7 @@
     <value>แผงควบคุม</value>
   </data>
   <data name="ErpBookingNote" xml:space="preserve">
-    <value>9.1.บันทึกการจอง</value>
+    <value>9.1.ผลการส่งกลับ</value>
   </data>
   <data name="ErpBookingOrder" xml:space="preserve">
     <value>การจองคำสั่งซื้อ</value>
@@ -286,7 +286,7 @@
     <value>9.5.การบรรจุ</value>
   </data>
   <data name="GoodReceive" xml:space="preserve">
-    <value>1.2.การรับ</value>
+    <value>1.3.การรับ</value>
   </data>
   <data name="History" xml:space="preserve">
     <value>ประวัติ</value>
@@ -296,6 +296,9 @@
   </data>
   <data name="HlpHelpdesk" xml:space="preserve">
     <value>8.2.ฝ่ายช่วยเหลือ</value>
+  </data>
+  <data name="HlpLayout" xml:space="preserve">
+    <value>8.3.แผงฝัง</value>
   </data>
   <data name="HlpMachine" xml:space="preserve">
     <value>8.1.3 คู่มือควบคุม</value>
@@ -325,10 +328,10 @@
     <value>เครื่องจักร</value>
   </data>
   <data name="MasterMapping" xml:space="preserve">
-    <value>การทำแพลน</value>
+    <value>1.2.กำกับพาเลท</value>
   </data>
   <data name="MasterQueuing" xml:space="preserve">
-    <value>1.3.มาสเตอร์คิว</value>
+    <value>1.4.มาสเตอร์คิว</value>
   </data>
   <data name="OrderBooking" xml:space="preserve">
     <value>3.1.รายการจองสินค้า</value>

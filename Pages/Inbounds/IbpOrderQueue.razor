@@ -17,6 +17,9 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
+@inject ErpService ObjErpService
+@inject ErpApiService ObjErpApiService
+
 @inject ReportService UserlogService
 @inject InboundService ObjInboundService
 @inject UserServices OpjUserService
@@ -45,17 +48,14 @@ else
 
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
         <MudSpacer />
-        <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
+    @*    <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
             <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
-        </MudTooltip>
+        </MudTooltip>*@
     </MudAppBar>
 
     <MudTable Hover="@hover" Breakpoint="Breakpoint.Sm" Height="@(fixed_header || fixed_footer ?"500px":"")" FixedHeader="@fixed_header"
               Items="@Elements"
-              GroupBy="@_groupDefinition"
-              GroupHeaderStyle="background-color:var(--mud-palette-background-white)"
-              GroupFooterClass="mb-4"
               Dense="@dense"
               FixedFooter="@fixed_footer"
               Bordered="@bordered"
@@ -63,64 +63,38 @@ else
               Filter="new Func<Inb_Goodreceive_Go,bool>(FilterFunc)" @bind-SelectedItem="selectedItem">
         <ToolBarContent>
 
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString"
                           Placeholder=@L["Search"]
                           Adornment="Adornment.Start"
                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
-
-        <ColGroup>
-            @if (_multiSelect)
-                {
-                <col style="width: 60px;" />
-                }
-            @if (_groupDefinition.Expandable)
-                {
-                <col style="width: 60px;" />
-                }
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-        </ColGroup>
+    
         <HeaderContent>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Created)">@L["GRDatetime"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docdate)">@L["DNDate"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pono)">@L["DNNo"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Itemname)">@L["ItemName"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Quantity)">@L["Qty"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Unit)">@L["Unit"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Weight)">@L["Weight"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docno)">@L["LotNo"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pallettag)">@L["DNSeq"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docnote)">@L["BatchNo"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Quantity)">@L["Qty"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pallteno)">@L["Pallet"]</MudTableSortLabel></MudTh>
+            <MudTh>@L["Adjust"]</MudTh>
         </HeaderContent>
-        <GroupHeaderTemplate>
-            <MudTh Class="mud-table-cell-custom-group" colspan="10">@($"{context.GroupName}: {context.Key} ") Total: @string.Format(VarGlobals.FormatN0, @context.Items.Sum((e) => e.Quantity))</MudTh>
-        </GroupHeaderTemplate>
         <RowTemplate>
-            <MudTd DataLabel="@L["GRDatetime"]">@Convert.ToDateTime(context.Created).ToString(VarGlobals.FormatDT)</MudTd>
-            <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Docdate).ToString(VarGlobals.FormatD)</MudTd>
+             <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Docdate).ToString(VarGlobals.FormatDT)</MudTd>
             <MudTd DataLabel="@L["DNNo"]">@context.Pono</MudTd>
             <MudTd DataLabel="@L["ItemCode"]">@context.Itemcode</MudTd>
-            <MudTd DataLabel="@L["ItemName"]">@context.Itemname</MudTd>
-            <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN0, context.Quantity)</MudTd>
-            <MudTd DataLabel="@L["Unit"]">@context.Unit</MudTd>
-            <MudTd DataLabel="@L["Weight"]" Style="text-align: right">@string.Format(VarGlobals.FormatN2, context.Weight)</MudTd>
-            <MudTd DataLabel="@L["LotNo"]">@context.Docno</MudTd>
-            <MudTd DataLabel="@L["BatchNo"]">@context.Docnote</MudTd>
-
+            <MudTd DataLabel=@L["DNSeq"]>@context.Pallettag</MudTd>
+             <MudTd DataLabel="@L["BatchNo"]">@context.Docnote</MudTd>
+            <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.Quantity)</MudTd>
+            <MudTd DataLabel="@L["Pallet"]">@context.Pallteno</MudTd>
+            <MudTd DataLabel="@L["Adjust"]">
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>DeleteMap(@context.Pallteno, @context.Pallettag))" />
+            </MudTd>
         </RowTemplate>
-        <GroupFooterTemplate>
-            <MudTh Class="mud-table-cell-custom-group mud-table-cell-custom-group-footer" colspan="10">Total Quantity: @string.Format(VarGlobals.FormatN0, @context.Items.Sum((e) => e.Quantity)) </MudTh>
-        </GroupFooterTemplate>
-
+         <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
+        </PagerContent>
     </MudTable>
 
 }
@@ -130,10 +104,10 @@ else
     private bool _dense = true;
     private bool _multiSelect = false;
 
-    private string pageheader { get; set; } = "1.2.Good Receive";
+    private string pageheader { get; set; } = "1.3.Good Receive";
     private bool _processing = false;
 
-    public string mPagedesc { get; set; } = "1.2.Good Receive";
+    public string mPagedesc { get; set; } = "1.3.Good Receive";
     private string mPagename { get; set; } = "/1/1_2";
 
     private string msgAction = "Enter Palletcode";
@@ -240,7 +214,7 @@ else
         try
         {
             bool? result = await CheckRoleReport();
-            if (result==true)
+            if (result == true)
             {
                 IbpOrderQueueRptExcel excelReport = new IbpOrderQueueRptExcel();
                 List<Inb_Goodreceive_Go> listExcelReport = new List<Inb_Goodreceive_Go>();
@@ -280,6 +254,88 @@ else
             var exmsg = e.Message.ToString();
         }
     }
+
+
+    private async Task DeleteMap(string pallet, string pack)
+    {
+        bool? result = await CheckRoleApprove();
+
+        if (result == true)
+        {
+             string state = "";
+
+            state = await ConfirmDelete();
+
+            if (state=="Deleted")
+            {
+                if(ObjInboundService.CancelReceivingOrdersBypack(pallet, pack))
+                {
+                     this.InsertAuditrial("Cancel ReceivingOrder SU : " + pack + " From Pallet : " + pallet, pageheader);
+                }
+                else{
+                    this.InsertAuditrial("Error Cancel ReceivingOrder SU : " + pack + " From Pallet : " + pallet, pageheader);
+                }
+
+               
+
+                Elements = ObjInboundService.GetAllInbGoodreceiveGos();
+            }
+
+            
+        }
+
+        this.StateHasChanged();
+
+    }
+
+
+    private async Task DeleteMapPallet(string pallet)
+    {
+        bool? result = await CheckRoleApprove();
+
+        if (result == true)
+        {
+             string state = "";
+
+            state = await ConfirmDelete();
+
+            if (state=="Deleted")
+            {
+                //bool resultReturn;
+
+                if(ObjInboundService.CancelReceivingOrdersByPallet(pallet))
+                {
+                     this.InsertAuditrial("Cancel ReceivingOrders From Pallet : " + pallet, pageheader);
+                }
+                else
+                {
+                     this.InsertAuditrial("Error Cancel ReceivingOrders From Pallet : " + pallet, pageheader);
+                }
+
+                Elements = ObjInboundService.GetAllInbGoodreceiveGos();
+            }
+
+        }
+
+        this.StateHasChanged();
+
+    }
+
+    private async Task<string>  ConfirmDelete()
+    {
+        string state = "";
+
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning", 
+            "Deleting can not be undone!", 
+            yesText:"Delete!", cancelText:"Cancel");
+
+        state= result==null ? "Cancelled" : "Deleted";
+   
+        return  state ;
+
+    }
+
 
     #region "Role"
     private async Task<bool> CheckRoleAdd()

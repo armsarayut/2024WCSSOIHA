@@ -69,14 +69,16 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine("order by itemcode, ");
                 */
 
-                Sql.AppendLine("SELECT efidx , efstatus, created, modified, innovator, device");
-                Sql.AppendLine(", pono, pallettag, itemtag, itemcode, itemname, itembar, unit");
-                Sql.AppendLine(", weightunit, quantity, weight, lotno, totalquantity, totalweight");
-                Sql.AppendLine(", docno, docby, docdate, docnote, grnrefer, grntime, grtime");
-                Sql.AppendLine(", grtype, pallteno, palltmapkey, storagetime, storageno");
-                Sql.AppendLine(", storagearea, storagebin, gnrefer, allocatequantity, allocateweight");
-                Sql.AppendLine("FROM wms.inv_stock_go");
-                Sql.AppendLine("WHERE allocatequantity < quantity");
+                Sql.AppendLine("SELECT t1.efidx , t1.efstatus, t1.created, t1.modified, t1.innovator, t1.device");
+                Sql.AppendLine(", t1.pono, t1.pallettag, t1.itemtag, t1.itemcode, t1.itemname, t1.itembar, t1.unit");
+                Sql.AppendLine(", t1.weightunit, t1.quantity, t1.weight, t1.lotno, t1.totalquantity, t1.totalweight");
+                Sql.AppendLine(", t1.docno, t1.docby, t1.docdate, t1.docnote, t1.grnrefer, t1.grntime, t1.grtime");
+                Sql.AppendLine(", t1.grtype, t1.pallteno, t1.palltmapkey, t1.storagetime, t1.storageno");
+                Sql.AppendLine(", t1.storagearea, t2.shelfname as storagebin, t1.gnrefer, t1.allocatequantity, t1.allocateweight");
+                Sql.AppendLine("FROM wms.inv_stock_go t1");
+                Sql.AppendLine("LEFT JOIN wcs.set_shelf t2");
+                Sql.AppendLine("ON t1.pallteno=t2.lpncode");
+                Sql.AppendLine("WHERE t1.allocatequantity < t1.quantity");
      
                 Sql.AppendLine("order by itemcode ASC, docdate ASC, pallettag ASC");
 
@@ -136,6 +138,8 @@ namespace GoWMS.Server.Data
             return lstobj;
         }
 
+
+
         public IEnumerable<InvStockSum> GetStockSum()
         {
             List<InvStockSum> lstobj = new List<InvStockSum>();
@@ -144,10 +148,10 @@ namespace GoWMS.Server.Data
                 StringBuilder Sql = new StringBuilder();
 
                 Sql.AppendLine("select row_number() over(order by itemcode asc) AS rn,");
-                Sql.AppendLine("itemcode, itemname, sum(quantity) as totalstock, count(pallteno) as countpallet");
+                Sql.AppendLine("itemcode, itemname, sum(quantity) as totalstock, count(pallteno) as countpallet, docnote as lot");
                 Sql.AppendLine("from wms.inv_stock_go ");
                 Sql.AppendLine("WHERE allocatequantity < quantity");
-                Sql.AppendLine("group by itemcode, itemname");
+                Sql.AppendLine("group by itemcode, itemname, docnote");
                 Sql.AppendLine("order by itemcode");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(Sql.ToString(), con)
@@ -164,6 +168,7 @@ namespace GoWMS.Server.Data
                         Rn = rdr["rn"] == DBNull.Value ? null : (Int64?)rdr["rn"],
                         Item_code = rdr["itemcode"].ToString(),
                         Item_name = rdr["itemname"].ToString(),
+                        lot = rdr["lot"].ToString(),
                         Totalstock = rdr["totalstock"] == DBNull.Value ? null : (Decimal?)rdr["totalstock"],
                         Countpallet = rdr["countpallet"] == DBNull.Value ? null : (Int64?)rdr["countpallet"]
                     };
@@ -185,7 +190,7 @@ namespace GoWMS.Server.Data
                  StringBuilder Sql = new StringBuilder();
                 Sql.AppendLine("SELECT modified, srm_no, shelf_no, shelfcode, shelfname");
                 Sql.AppendLine(", shelfbank, shelfframe, shelfbay, shelflevel, shelfstatus");
-                Sql.AppendLine(", lpncode, refercode, actual_weight, actual_size, desc_size, st_desc");
+                Sql.AppendLine(", lpncode, refercode, actual_weight, actual_size, desc_size, st_desc, backcolor, focecolor");
                 Sql.AppendLine("from  wcs.vrpt_shelf_list");
                 Sql.AppendLine("order by shelf_no asc");
 
@@ -216,7 +221,9 @@ namespace GoWMS.Server.Data
                         Actual_size = rdr["actual_size"] == DBNull.Value ? null : (Int32?)rdr["actual_size"],
                         Desc_size = rdr["desc_size"].ToString(),
                         St_desc = rdr["st_desc"].ToString(),
-                        Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"]
+                        Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"],
+                        Backcolor = rdr["backcolor"].ToString(),
+                        Focecolor = rdr["focecolor"].ToString()
 
                     };
                     lstobj.Add(objrd);

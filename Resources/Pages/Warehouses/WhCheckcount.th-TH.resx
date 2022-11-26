@@ -120,6 +120,9 @@
   <data name="ACTION" xml:space="preserve">
     <value>การกระทำ</value>
   </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>ชุด</value>
+  </data>
   <data name="Inputscan" xml:space="preserve">
     <value>ใสข้อมูล</value>
   </data>

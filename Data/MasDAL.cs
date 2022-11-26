@@ -11,6 +11,7 @@ using GoWMS.Server.Models;
 using GoWMS.Server.Models.Mas;
 using NpgsqlTypes;
 using Serilog;
+using static GoWMS.Server.Pages.Masters.AddNewItem;
 
 namespace GoWMS.Server.Data
 {
@@ -124,7 +125,9 @@ namespace GoWMS.Server.Data
                         Weightnet = rdr["weightnet"] == DBNull.Value ? null : (decimal?)rdr["weightnet"],
                         Weightgross = rdr["weightgross"] == DBNull.Value ? null : (decimal?)rdr["weightgross"],
                         Weightuint = rdr["weightuint"].ToString(),
-                        Vendor = rdr["vendor"].ToString()
+                        Vendor = rdr["vendor"].ToString(),
+                        Itemunit = rdr["itemunit"].ToString(),
+                        Itemcat = rdr["itemcat"].ToString()
                     };
                     lstobj.Add(objrd);
                 }
@@ -316,6 +319,87 @@ namespace GoWMS.Server.Data
                 }
             }
             return bret;
+        }
+
+        public async Task<ResultReturn> UpsertItem(string itemcat, string itemcode, string itemname, string itemunit)
+        {
+
+            ResultReturn listRet = new ResultReturn
+            {
+                Bret = false,
+                Iret = 0,
+                Sret = "Error:Intarial"
+            };
+
+            using NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+
+                //WhiteSmoke
+
+                sql.AppendLine("UPDATE wms.mas_item_go");
+                sql.AppendLine("SET itemcat = @itemcat");
+                sql.AppendLine(", itemname = @itemname");
+                sql.AppendLine(", itemunit = @itemunit");
+                sql.AppendLine("WHERE itemcode = @itemcode");
+                sql.AppendLine(";");
+                sql.AppendLine("insert into wms.mas_item_go");
+                sql.AppendLine("(itemcat, itemcode, itemname, itemunit)");
+                sql.AppendLine("SELECT ");
+                sql.AppendLine("@uitemcat, @uitemcode, @uitemname, @uitemunit");
+                sql.AppendLine("WHERE NOT EXISTS (SELECT 1 FROM wms.mas_item_go WHERE itemcode = @usitemcode)");
+                sql.AppendLine(";");
+
+
+
+                using var cmd = new NpgsqlCommand(connection: con, cmdText: null);
+
+
+                string pitemcat = "@itemcat";
+                string pitemname = "@itemname";
+                string pitemunit = "@itemunit";
+                string pitemcode = "@itemcode";
+                string puitemcat = "@uitemcat";
+                string puitemcode = "@uitemcode";
+                string puitemname = "@uitemname";
+                string puitemunit = "@uitemunit";
+                string pusitemcode = "@usitemcode";
+
+
+
+                cmd.Parameters.Add(new NpgsqlParameter<string>(pitemcat, itemcat));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(pitemname, itemname));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(pitemunit, itemunit));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(pitemcode, itemcode));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(puitemcat, itemcat));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(puitemcode, itemcode));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(puitemname, itemname));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(puitemunit, itemunit));
+                cmd.Parameters.Add(new NpgsqlParameter<string>(pusitemcode, itemcode));
+
+
+                con.Open();
+                cmd.CommandText = sql.ToString();
+                await cmd.ExecuteNonQueryAsync();
+                listRet.Bret = true;
+                listRet.Iret = 1;
+                listRet.Sret = "OK";
+
+            }
+            catch (NpgsqlException ex)
+            {
+                Log.Error(ex.ToString());
+                listRet.Bret = false;
+                listRet.Iret = 0;
+                listRet.Sret = "Error :" + ex.ToString();
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return listRet;
         }
 
     }

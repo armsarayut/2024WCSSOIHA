@@ -22,11 +22,11 @@ namespace GoWMS.Server.Reports
                 int startRows = 4;
                 #region Excel Report Header
                 var imagePath = VarGlobals.Imagelogoreport();
-                worksheet.Column(1).Width = 18;
-                worksheet.Row(1).Height = 60;
+                worksheet.Column(1).Width = 24;
+                worksheet.Row(1).Height = 30;
                 var image = worksheet.AddPicture(imagePath).MoveTo(worksheet.Cell("A1")); //this will throw an error
-                image.ScaleWidth(.7);
-                image.ScaleHeight(.7);
+                image.ScaleWidth(.18);
+                image.ScaleHeight(.18);
                 worksheet.Cell("B1").Value = "5.5.6.ASRS-Loadtime" + " Report";
                 worksheet.Cell("B1").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
                 worksheet.Cell("B2").Value = $"PrintDate : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}";
@@ -47,15 +47,15 @@ namespace GoWMS.Server.Reports
                 foreach (var rpt in ListRpt)
                 {
                     rptRows++;
-                    worksheet.Cell(rptRows, 1).Value = rpt.Lpncode;
-                    worksheet.Cell(rptRows, 2).Value = rpt.Work_code;
-                    worksheet.Cell(rptRows, 3).Value = rpt.Work_text_th;
-                    worksheet.Cell(rptRows, 4).Value = string.Format(VarGlobals.FormatD2, rpt.Srm_no);
-                    worksheet.Cell(rptRows, 5).Value = string.Format(VarGlobals.FormatD9, rpt.Srm_from);
-                    worksheet.Cell(rptRows, 6).Value = string.Format(VarGlobals.FormatD9, rpt.Srm_to);
-                    worksheet.Cell(rptRows, 7).Value = Convert.ToDateTime(rpt.Stime).ToString(VarGlobals.FormatDT);
-                    worksheet.Cell(rptRows, 8).Value = Convert.ToDateTime(rpt.Etime).ToString(VarGlobals.FormatDT);
-                    worksheet.Cell(rptRows, 9).Value = rpt.Loadtime;
+                    worksheet.Cell(rptRows, 1).Value = "'" +  rpt.Lpncode;
+                    worksheet.Cell(rptRows, 2).Value = "'" +  rpt.Work_code;
+                    worksheet.Cell(rptRows, 3).Value = "'" +  rpt.Work_text_th;
+                    worksheet.Cell(rptRows, 4).Value = "'" +  string.Format(VarGlobals.FormatD2, rpt.Srm_no);
+                    worksheet.Cell(rptRows, 5).Value = "'" +  string.Format(VarGlobals.FormatD9, rpt.Srm_from);
+                    worksheet.Cell(rptRows, 6).Value = "'" +  string.Format(VarGlobals.FormatD9, rpt.Srm_to);
+                    worksheet.Cell(rptRows, 7).Value = "'" +  Convert.ToDateTime(rpt.Stime).ToString(VarGlobals.FormatDT);
+                    worksheet.Cell(rptRows, 8).Value = "'" +  Convert.ToDateTime(rpt.Etime).ToString(VarGlobals.FormatDT);
+                    worksheet.Cell(rptRows, 9).Value = "'" +  rpt.Loadtime;
                 }
                 #endregion
 

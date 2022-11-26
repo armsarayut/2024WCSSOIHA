@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using GoWMS.Server.Data;
 using GoWMS.Server.Models;
+using GoWMS.Server.Models.Inv;
 using GoWMS.Server.Models.Oub;
+using GoWMS.Server.Models.Public;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoWMS.Server.Controllers
@@ -64,7 +66,26 @@ namespace GoWMS.Server.Controllers
             List<Oub_CustomerReturn> retlist = objDAL.GetAllCustomerReturn().ToList();
             return retlist;
         }
-      
+
+        public Task<IEnumerable<Inv_Stock_GoApiInfo>> GetStockListApiInfo()
+        {
+            return objDAL.GetStockListInfo();
+        }
+
+
+        public List<Set_Workstation> GetAllWorkstations()
+        {
+            List<Set_Workstation> retlist = objDAL.GetAllWorkstations().ToList();
+            return retlist;
+        }
+
+             public bool CancelOrderPicking(string suno, string orderno)
+        {
+            bool bret = objDAL.CancelOrderPicking(suno, orderno);
+
+            return bret;
+        }
+
 
     }
 }

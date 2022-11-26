@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Location" xml:space="preserve">
-    <value>Location</value>
+    <value>LOCATION</value>
   </data>
   <data name="MasterPallet" xml:space="preserve">
-    <value>Master Pallet</value>
+    <value>PALLET</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Storage</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>PalletGo</value>
+    <value>PALLET</value>
   </data>
   <data name="Queuetime" xml:space="preserve">
-    <value>Queuetime</value>
+    <value>QTIME</value>
   </data>
   <data name="SRM" xml:space="preserve">
     <value>SRM</value>
   </data>
   <data name="Starttime" xml:space="preserve">
-    <value>Starttime</value>
+    <value>STARTED</value>
   </data>
   <data name="Worktype" xml:space="preserve">
-    <value>Worktype</value>
+    <value>WORK</value>
   </data>
 </root>

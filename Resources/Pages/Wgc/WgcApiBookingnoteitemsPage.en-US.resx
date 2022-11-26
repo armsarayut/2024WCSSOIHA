@@ -150,6 +150,9 @@
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>FromDate</value>
+  </data>
   <data name="ITEM_CODE" xml:space="preserve">
     <value>ITEM_CODE</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="SUBCUSTOMER_CODE" xml:space="preserve">
     <value>SUBCUSTOMER_CODE</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>ToDate</value>
   </data>
   <data name="UPDATE_DATE" xml:space="preserve">
     <value>UPDATE_DATE</value>

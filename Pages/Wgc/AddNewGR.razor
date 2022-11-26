@@ -1,0 +1,108 @@
+﻿@using GoWMS.Server.Data;
+@using GoWMS.Server.Controllers
+@using NETCore.Encrypt;
+@using GoWMS.Server.Models
+@using GoWMS.Server.Models.Mas
+@using Microsoft.Extensions.Configuration
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IConfiguration Configuration
+@inject UserServices ObjUserService
+@inject ReportService UserlogService
+@inject ErpApiService ObjApiService
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<WgcBookingnotePage> L
+
+<MudDialog>
+    <DialogContent>
+
+        <MudTextField @bind-Value="pOrder" Counter="50" MaxLength="50" Label="@L["SoNo"]" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="pItemcode" Counter="50" MaxLength="50" Label="@L["ItemCode"]" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="pSuno" Counter="20" MaxLength="20" Label="@L["Seq"]" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="pBatchno" Counter="50" MaxLength="50" Label="@L["BatchNo"]" Variant="Variant.Outlined" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string pOrder { get; set; }
+    [Parameter] public string pItemcode { get; set; }
+    [Parameter] public string pSuno { get; set; }
+    [Parameter] public string pBatchno { get; set; }
+
+    string pTypor { get; set; } = "PICK";
+
+
+    private readonly string pageheader = "3.1.Order Booking";
+    string sUsername { get; set; } = "";
+    string sRole { get; set; } = "";
+    string sGroupID { get; set; } = "";
+    string sUserID { get; set; } = "";
+
+    [Inject] private IDialogService DialogService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUserAthu();
+    }
+
+    async Task GetUserAthu()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        sGroupID = user.Claims.FirstOrDefault(
+        c => c.Type == ClaimTypes.Role)?.Value;
+
+        sUserID = user.Claims.FirstOrDefault(
+            c => c.Type == ClaimTypes.Actor)?.Value;
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+
+        string msgReturn = "";
+
+
+        if (pOrder.Length > 0 && pItemcode.Length > 0 && pSuno.Length > 0 && pBatchno.Length > 0 && pTypor.Length > 0)
+        {
+            if (ObjApiService.CreateManualApi(pOrder, pItemcode, pSuno, pBatchno, pTypor, ref msgReturn))
+            {
+                this.InsertAuditrial("Manual : Add Order PUT [JOB : " + pItemcode + " , PART : " + pItemcode + " , SU : " + pSuno + " , BATCH : " + pBatchno, pageheader);
+            }
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+
+            string state = "";
+
+            bool? result = await DialogService.ShowMessageBox(
+             "Warning",
+             "Please set data is require! Do you want add agian",
+             yesText: "Yes", cancelText: "No");
+
+            state = result == null ? "No" : "Yes";
+            if (state == "No")
+            {
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+
+        }
+
+    }
+
+    private void InsertAuditrial(String actdesc, String munname)
+    {
+        bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
+    }
+}
+
+

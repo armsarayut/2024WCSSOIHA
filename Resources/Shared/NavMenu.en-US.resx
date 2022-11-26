@@ -145,13 +145,13 @@
     <value>4.4.2.RGV02-Queue</value>
   </data>
   <data name="4.5-SRM-OPERATE" xml:space="preserve">
-    <value>4.5-SRM-Operate</value>
+    <value>4.3.SRM-Operate</value>
   </data>
   <data name="4.5.1.SRM-ENABLE" xml:space="preserve">
-    <value>4.5.1.SRM-Enable</value>
+    <value>4.3.1.SRM-Enable</value>
   </data>
   <data name="4.5.2.SRM-INOUT" xml:space="preserve">
-    <value>4.5.2.SRM-InOut</value>
+    <value>4.3.2.SRM-InOut</value>
   </data>
   <data name="4.Automation" xml:space="preserve">
     <value>4.Automation</value>
@@ -232,7 +232,7 @@
     <value>8.Help</value>
   </data>
   <data name="9.ERP" xml:space="preserve">
-    <value>9.ERP</value>
+    <value>9.API</value>
   </data>
   <data name="AdmGroup" xml:space="preserve">
     <value>7.3.Group</value>
@@ -256,19 +256,19 @@
     <value>Count Check</value>
   </data>
   <data name="Counting" xml:space="preserve">
-    <value>2.5.Counting</value>
+    <value>2.5.CheckStock</value>
   </data>
   <data name="CountSuggesstion" xml:space="preserve">
     <value>Count Suggestion</value>
   </data>
   <data name="CycleCount" xml:space="preserve">
-    <value>2.4.Cycle Count</value>
+    <value>2.4.Audit</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
   <data name="ErpBookingNote" xml:space="preserve">
-    <value>9.1.Booking Note</value>
+    <value>9.1.Confirmation</value>
   </data>
   <data name="ErpBookingOrder" xml:space="preserve">
     <value>Booking Order</value>
@@ -286,7 +286,7 @@
     <value>9.5.Packeing</value>
   </data>
   <data name="GoodReceive" xml:space="preserve">
-    <value>1.2.Good Receive</value>
+    <value>1.3.Good Receive</value>
   </data>
   <data name="History" xml:space="preserve">
     <value>History</value>
@@ -296,6 +296,9 @@
   </data>
   <data name="HlpHelpdesk" xml:space="preserve">
     <value>8.2.Helpdesk</value>
+  </data>
+  <data name="HlpLayout" xml:space="preserve">
+    <value>8.3.LAYOUT</value>
   </data>
   <data name="HlpMachine" xml:space="preserve">
     <value>8.1.3 Control Manual</value>
@@ -325,10 +328,10 @@
     <value>Machine</value>
   </data>
   <data name="MasterMapping" xml:space="preserve">
-    <value>Master Mapping</value>
+    <value>1.2.Pallet Mapping</value>
   </data>
   <data name="MasterQueuing" xml:space="preserve">
-    <value>1.3.Master Queuing</value>
+    <value>1.4.Master Queuing</value>
   </data>
   <data name="OrderBooking" xml:space="preserve">
     <value>3.1.Order Booking</value>
@@ -352,7 +355,7 @@
     <value>Release Stock</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>1.4.Return</value>
+    <value>1.50.Return</value>
   </data>
   <data name="RGV" xml:space="preserve">
     <value>RGV</value>

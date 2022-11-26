@@ -10,6 +10,7 @@ namespace GoWMS.Server.Models.Inv
         public Int64? Rn { get; set; }
         public string Item_code { get; set; }
         public string Item_name { get; set; }
+        public string lot { get; set; }
         public Decimal? Totalstock { get; set; }
         public Int64? Countpallet { get; set; }
     }

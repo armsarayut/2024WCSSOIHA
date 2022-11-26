@@ -52,9 +52,13 @@ else
         </ToolBarContent>
 
         <HeaderContent>
-            <MudTh>@L["Storeno"]</MudTh>
+             <MudTh><MudTableSortLabel SortBy="new Func<Mas_Storage_Go, object>(x=>x.Stocode)">@L["Storeno"]</MudTableSortLabel></MudTh>
+              <MudTh><MudTableSortLabel SortBy="new Func<Mas_Storage_Go, object>(x=>x.Stoname)">@L["Name"]</MudTableSortLabel></MudTh>
+               <MudTh><MudTableSortLabel SortBy="new Func<Mas_Storage_Go, object>(x=>x.Stoaddress)">@L["Address"]</MudTableSortLabel></MudTh>
+
+         @*   <MudTh>@L["Storeno"]</MudTh>
             <MudTh>@L["Name"]</MudTh>
-            <MudTh>@L["Address"]</MudTh>
+            <MudTh>@L["Address"]</MudTh>*@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel=@L["Storeno"]>@context.Stocode</MudTd>

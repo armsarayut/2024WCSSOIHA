@@ -117,26 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Adjust" xml:space="preserve">
+    <value>ACTION</value>
+  </data>
   <data name="Endtime" xml:space="preserve">
-    <value>Endtime</value>
+    <value>FINISHED</value>
   </data>
   <data name="Excel" xml:space="preserve">
     <value>Excel</value>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>Location</value>
+    <value>LOCATION</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Master Queuing</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>PalletGo</value>
+    <value>PALLET</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>PDF</value>
+    <value>Pdf</value>
   </data>
   <data name="Queuetime" xml:space="preserve">
-    <value>Queuetime</value>
+    <value>QUEUETIME</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
@@ -145,9 +148,9 @@
     <value>SRM</value>
   </data>
   <data name="Starttime" xml:space="preserve">
-    <value>Starttime</value>
+    <value>STARED</value>
   </data>
   <data name="Worktype" xml:space="preserve">
-    <value>Worktype</value>
+    <value>WORK</value>
   </data>
 </root>

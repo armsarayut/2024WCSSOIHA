@@ -15,6 +15,7 @@ using GoWMS.Server.Data;
 using BlazorTable;
 using Blazored.Modal;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Append.Blazor.Printing;
 
 
 // ******
@@ -87,6 +88,8 @@ namespace GoWMS.Server
             //services.AddTransient<VarGlobalService>();
             services.AddScoped<BlazorAppContext>();
 
+            ///Blazor Printing
+            services.AddScoped<IPrintingService, PrintingService>();
 
             services.AddBlazorTable(); // Install-Package BlazorTable -Version 1.17.0 https://www.nuget.org/packages/BlazorTable
 

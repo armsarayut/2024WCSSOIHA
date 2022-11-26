@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using GoWMS.Server.Data;
 using GoWMS.Server.Models;
 using GoWMS.Server.Models.Api;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Bcpg;
 
 namespace GoWMS.Server.Controllers
 {
@@ -137,6 +139,28 @@ namespace GoWMS.Server.Controllers
             return retlist;
         }
 
+        public IEnumerable<ApiKardexconfirmStatus> GetAllApiKardexconfirmStatuses()
+        {
+            List<ApiKardexconfirmStatus> retlist = objDAL.GetAllApiKardexconfirmStatuses().ToList();
+            return retlist;
+        }
+        public IEnumerable<ApiKardexconfirmStatus> GetApiKardexconfirmStatusesByCreated(DateTime dtStart, DateTime dtStop)
+        {
+            List<ApiKardexconfirmStatus> retlist = objDAL.GetApiKardexconfirmStatusesByCreated(dtStart, dtStop).ToList();
+            return retlist;
+        }
+        public IEnumerable<ApiKardexconfirmStatus> GetApiKardexconfirmStatusesBySended(DateTime dtStart, DateTime dtStop)
+        {
+            List<ApiKardexconfirmStatus> retlist = objDAL.GetApiKardexconfirmStatusesBySended(dtStart, dtStop).ToList();
+            return retlist;
+        }
+
+        public Boolean CreateManualApi(string karor, string matnr, string lenum, string matbatch, string typor, ref string strReturn)
+        {
+            Boolean bRet = false;
+            bRet = objDAL.CreateManualApi(karor, matnr, lenum, matbatch, typor, ref strReturn);
+            return bRet;
+        }
 
     }
 }
