@@ -43,5 +43,12 @@ namespace GoWMS.Server.Models.Inv
         public Int64? Gnrefer { get; set; }
         public Decimal? Allocatequantity { get; set; }
         public Decimal? Allocateweight { get; set; }
+
+
+        public Decimal? DisQuantity { get; set; }
+        public Decimal? DisWeight { get; set; }
+
+        public Decimal? DisTotalquantity { get; set; }
+        public Decimal? DisTotalweight { get; set; }
     }
 }

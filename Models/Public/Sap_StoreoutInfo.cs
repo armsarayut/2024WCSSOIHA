@@ -53,6 +53,9 @@ namespace GoWMS.Server.Models.Public
         public string Vendor_Code { get; set; }
         public string Batch_No { get; set; }
         public bool? Bcount { get; set; }
+        public Decimal? DisRequest_Qty { get; set; }
+        public Decimal? DisStock_Qty { get; set; }
+        public Decimal? DisTransfer_Qty { get; set; }
 
     }
 }

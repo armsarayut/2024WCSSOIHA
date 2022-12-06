@@ -162,5 +162,10 @@ namespace GoWMS.Server.Controllers
             return bRet;
         }
 
+        public  Task<Int64> GetHaveReceivingOrdersBypack(string pallet, string packid)
+        {
+            return objDAL.GetHaveReceivingOrdersBypack(pallet, packid);
+        }
+
     }
 }

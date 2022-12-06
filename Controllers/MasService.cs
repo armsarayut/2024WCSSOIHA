@@ -61,9 +61,9 @@ namespace GoWMS.Server.Controllers
             return bret;
         }
 
-        public async Task<ResultReturn> UpsertItem(string itemcat, string itemcode, string itemname, string itemunit)
+        public async Task<ResultReturn> UpsertItem(string itemcat, string itemcode, string itemname, string itemunit, decimal qtypalet)
         {
-            ResultReturn retlist = await Task.Run(() => objDAL.UpsertItem(itemcat, itemcode, itemname, itemunit));
+            ResultReturn retlist = await Task.Run(() => objDAL.UpsertItem(itemcat, itemcode, itemname, itemunit, qtypalet));
             return retlist;
         }
 

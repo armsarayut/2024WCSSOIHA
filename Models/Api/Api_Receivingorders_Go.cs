@@ -30,6 +30,8 @@ namespace GoWMS.Server.Models.Api
 		public string Job_Code { get; set; }
 		public string Lpncode { get; set; }
 		public string Matcategory { get; set; }
+        public Decimal? DisGr_Quantity { get; set; }
+        public Decimal? DisGr_Quantity_Kg { get; set; }
 
-	}
+    }
 }

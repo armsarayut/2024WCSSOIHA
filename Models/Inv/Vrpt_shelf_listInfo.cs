@@ -25,5 +25,7 @@ namespace GoWMS.Server.Models.Inv
         public string St_desc { get; set; }
         public string Backcolor { get; set; }
         public string Focecolor { get; set; }
+
+        public string Suno { get; set; }
     }
 }

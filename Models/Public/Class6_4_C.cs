@@ -24,6 +24,8 @@ namespace GoWMS.Server.Models.Public
         public string Msgsrm { get; set; }
         public DateTime? Loadtime { get; set; }
 
+        public decimal? DisPallet_Qty { get; set; }
+
 
     }
 }

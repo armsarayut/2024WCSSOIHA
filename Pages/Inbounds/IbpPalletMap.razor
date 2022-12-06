@@ -86,7 +86,7 @@ else
             <MudTd DataLabel=@L["ItemCode"]>@context.Material_Code</MudTd>
             <MudTd DataLabel=@L["SeqNo"]>@context.Package_Id</MudTd>
             <MudTd DataLabel=@L["Batch"]>@context.Job_Code</MudTd>
-            <MudTd DataLabel=@L["Qty"]>@context.Gr_Quantity</MudTd>
+            <MudTd DataLabel=@L["Qty"]>@context.DisGr_Quantity</MudTd>
             <MudTd DataLabel=@L["Action"]>
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>DeleteMap(@context.Package_Id))" />
             </MudTd>
@@ -200,7 +200,7 @@ else
 
 
 
-    private void setstr(string str)
+    private  async Task setstr(string str)
     {
         if (mPalletcode.Length <= 0)
         {
@@ -244,7 +244,7 @@ else
             //    mPalletcode = "";
             //    msgAction = "Enter PalletGo";
             //    elevation = 1;
-                //}
+            //}
 
 
 
@@ -278,22 +278,40 @@ else
             }
             else
             {
+
+
+
                 mPackid = str;
                 MapPalletItem = null;
                 MapPalletItem = ObjErpService.GetErpMatReceivingOrdersByTag(mPackid);
                 if (MapPalletItem.ToList().Count > 0)
                 {
-                    Task<string> retString;
+                    Int64 Checkin = await ObjErpApiService.GetHaveReceivingOrdersBypack(mPalletcode, mPackid);
+                
+                    if(Checkin <=0 )
+                    {
+                         Task<string> retString;
 
-                    retString = ObjErpApiService.InsertReceivingOrderbypackAsync(MapPalletItem.ToList(), mPalletcode);
+                        retString = ObjErpApiService.InsertReceivingOrderbypackAsync(MapPalletItem.ToList(), mPalletcode);
 
-                    //ObjErpApiService.UpdateReceivingOrderbypack(mPalletcode, mPackid);
-                    msgAction = "Enter PalletGo for complete";
-                    elevation = 1;
+                        //ObjErpApiService.UpdateReceivingOrderbypack(mPalletcode, mPackid);
+                        msgAction = "Enter PalletGo for complete";
+                        elevation = 1;
+                    }
+                    else{
+                       
+                         elevation = 4;
+                            msgAction = "SU : " + mPackid + " have used";
+                              mPackid = "";
+                    }
+
+                   
                 }
                 else
                 {
-
+                    mPackid = "";
+                    elevation = 4;
+                    msgAction = "SU : " + mPackid + " find not found";
                 }
             }
         }

@@ -16,5 +16,6 @@ namespace GoWMS.Server.Models.Public
         public string Unit { get; set; }
         public string Palletcode { get; set; }
         public string Shelfname { get; set; }
+        public Decimal? DisQty { get; set; }
     }
 }

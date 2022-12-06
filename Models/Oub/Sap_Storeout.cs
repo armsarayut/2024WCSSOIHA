@@ -52,5 +52,9 @@ namespace GoWMS.Server.Models.Oub
 		public string Unit { get; set; }
 		public string Vendor_Code { get; set; }
 		public string Batch_No { get; set; }
-	}
+
+        public Decimal? DisRequest_Qty { get; set; }
+        public Decimal? DisStock_Qty { get; set; }
+        public Decimal? DisTransfer_Qty { get; set; }
+    }
 }

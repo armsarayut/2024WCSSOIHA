@@ -13,5 +13,6 @@ namespace GoWMS.Server.Models.Public
         public string Item_Name { get; set; }
         public Decimal? Totalstock { get; set; }
         public Int64? Countpallet { get; set; }
+        public Decimal? DisTotalstock { get; set; }
     }
 }

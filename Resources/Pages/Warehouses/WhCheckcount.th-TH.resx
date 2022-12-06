@@ -130,7 +130,7 @@
     <value>รหัสสินค้า</value>
   </data>
   <data name="PACKID" xml:space="preserve">
-    <value>เลขลำดับ</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="Pallet" xml:space="preserve">
     <value>พาเลท</value>
@@ -145,6 +145,6 @@
     <value>สถานะ</value>
   </data>
   <data name="UNIT" xml:space="preserve">
-    <value>หน่วยนับ</value>
+    <value>หน่วย</value>
   </data>
 </root>

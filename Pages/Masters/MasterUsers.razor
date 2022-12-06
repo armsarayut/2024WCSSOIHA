@@ -61,7 +61,8 @@ else
             <MudTd DataLabel=@L["USERID"]>@context.UserId</MudTd>
             <MudTd DataLabel=@L["USERNAME"]>@context.Usname</MudTd>
             <MudTd Class="clm-row-small" DataLabel=@L["EDIT"]>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" Color="Color.Secondary" @onclick="@(()=>OpenDialog(@context.Uspass,@context.Usname,@context.UserId ))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" Color="Color.Secondary" @onclick="@(()=>OpenDialog(@context.Uspass,@context.Usname,@context.UserId, (long)context.Usgid))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>CancleUser((long)context.Usid,context.UserId))" />
             </MudTd>
         </RowTemplate>
         <PagerContent>
@@ -164,7 +165,7 @@ else
         return false;
     }
 
-    private async Task OpenDialog(string mpass, string musername, string memail)
+    private async Task OpenDialog(string mpass, string musername, string memail, long mgroup )
     {
         bool? result = await CheckRoleEdit();
         if (result == true)
@@ -174,6 +175,7 @@ else
             parameters.Add("MPassword", mpass);
             parameters.Add("MUsername", musername);
             parameters.Add("MEmail", memail);
+            parameters.Add("MGroup", mgroup);
 
             var dialog = DialogService.Show<DialogResetUser>("USER EDIT", parameters);
         }
@@ -223,6 +225,56 @@ else
         {
             var exmsg = e.Message.ToString();
         }
+    }
+
+    private async Task CancleUser(long usid, string usrecode)
+    {
+        try
+        {
+            bool? result = await CheckRoleDelete();
+            if (result == true)
+            {
+                 string state = "";
+
+                state = await ConfirmDelete();
+
+                if (state=="Deleted")
+                {
+                        if (await Task.Run(() => OpjUserService.CancleUser((long)usid)))
+                    {
+                        this.InsertAuditrial("Deleted >> User:" + usrecode , pageheader);
+                    }
+                    else
+                    {
+                         this.InsertAuditrial("Error Cancel Deleting >> User:" + usrecode , pageheader);
+                    }
+
+                        Elements = OpjUserService.GetUserAll();
+                }
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            var exmsg = e.Message.ToString();
+        }
+
+    }
+
+    private async Task<string> ConfirmDelete()
+    {
+        string state = "";
+
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning",
+            "Deleting can not be undone!",
+            yesText: "Delete!", cancelText: "Cancel");
+
+        state = result == null ? "Cancelled" : "Deleted";
+
+        return state;
+
     }
 
     #region "Role"

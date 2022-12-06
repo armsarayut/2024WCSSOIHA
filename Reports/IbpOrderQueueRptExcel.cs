@@ -51,7 +51,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 4).Value = "'" + rpt.Pallettag;
                     worksheet.Cell(rptRows, 5).Value = "'" + rpt.Itemcode;
                     worksheet.Cell(rptRows, 6).Value = "'" + rpt.Itemname;
-                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.Quantity;
+                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.DisQuantity;
                     worksheet.Cell(rptRows, 8).Value = "'" + rpt.Unit;
                 }
                 #endregion

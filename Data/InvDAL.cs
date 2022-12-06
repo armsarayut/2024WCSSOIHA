@@ -62,23 +62,48 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                 StringBuilder Sql = new StringBuilder();
-                /*
-                Sql.AppendLine("select row_number() over(order by  itemcode asc) AS rn,");
-                Sql.AppendLine("itemcode, itemname, quantity, pallettag, pallteno, storagearea, storagebin");
-                Sql.AppendLine("from wms.inv_stock_go ");
-                Sql.AppendLine("order by itemcode, ");
-                */
 
+                //Sql.AppendLine("select row_number() over(order by  itemcode asc) AS rn,");
+                //Sql.AppendLine("itemcode, itemname, quantity, pallettag, pallteno, storagearea, storagebin");
+                //Sql.AppendLine("from wms.inv_stock_go ");
+
+                //Sql.AppendLine("order by itemcode, ");
+
+             
+
+
+                Sql.AppendLine("SELECT subQ.*");
+
+                Sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                Sql.AppendLine(" THEN   subQ.quantity");
+                Sql.AppendLine(" ELSE subQ.quantity * t3.weightnet ");
+                Sql.AppendLine(" END AS disquantity");
+
+                Sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                Sql.AppendLine(" THEN   subQ.totalquantity");
+                Sql.AppendLine(" ELSE subQ.totalquantity * t3.weightnet ");
+                Sql.AppendLine(" END AS distotalquantity");
+
+                Sql.AppendLine("FROM (");
                 Sql.AppendLine("SELECT t1.efidx , t1.efstatus, t1.created, t1.modified, t1.innovator, t1.device");
                 Sql.AppendLine(", t1.pono, t1.pallettag, t1.itemtag, t1.itemcode, t1.itemname, t1.itembar, t1.unit");
-                Sql.AppendLine(", t1.weightunit, t1.quantity, t1.weight, t1.lotno, t1.totalquantity, t1.totalweight");
+                Sql.AppendLine(", t1.weightunit, t1.weight, t1.lotno, t1.totalweight");
                 Sql.AppendLine(", t1.docno, t1.docby, t1.docdate, t1.docnote, t1.grnrefer, t1.grntime, t1.grtime");
                 Sql.AppendLine(", t1.grtype, t1.pallteno, t1.palltmapkey, t1.storagetime, t1.storageno");
                 Sql.AppendLine(", t1.storagearea, t2.shelfname as storagebin, t1.gnrefer, t1.allocatequantity, t1.allocateweight");
+                Sql.AppendLine(", t1.quantity, t1.totalquantity ");
+
                 Sql.AppendLine("FROM wms.inv_stock_go t1");
                 Sql.AppendLine("LEFT JOIN wcs.set_shelf t2");
                 Sql.AppendLine("ON t1.pallteno=t2.lpncode");
+
                 Sql.AppendLine("WHERE t1.allocatequantity < t1.quantity");
+                Sql.AppendLine(")subQ");
+
+                Sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                Sql.AppendLine("ON subQ.itemcode=t3.itemcode");
+
+
      
                 Sql.AppendLine("order by itemcode ASC, docdate ASC, pallettag ASC");
 
@@ -129,7 +154,10 @@ namespace GoWMS.Server.Data
                         Storagebin = rdr["storagebin"].ToString(),
                         Gnrefer = rdr["gnrefer"] == DBNull.Value ? null : (Int64?)rdr["gnrefer"],
                         Allocatequantity = rdr["allocatequantity"] == DBNull.Value ? null : (decimal?)rdr["allocatequantity"],
-                        Allocateweight = rdr["allocateweight"] == DBNull.Value ? null : (decimal?)rdr["allocateweight"]
+                        Allocateweight = rdr["allocateweight"] == DBNull.Value ? null : (decimal?)rdr["allocateweight"],
+                        DisQuantity = rdr["disquantity"] == DBNull.Value ? null : (decimal?)rdr["disquantity"],
+                        DisTotalquantity = rdr["distotalquantity"] == DBNull.Value ? null : (decimal?)rdr["distotalquantity"]
+
                     };
                     lstobj.Add(objrd);
                 }
@@ -147,12 +175,25 @@ namespace GoWMS.Server.Data
             {
                 StringBuilder Sql = new StringBuilder();
 
+
+                Sql.AppendLine("SELECT subQ.* ");
+                Sql.AppendLine(",CASE WHEN t3.weightnet IS NULL ");
+                Sql.AppendLine("THEN subQ.totalqty ");
+                Sql.AppendLine("ELSE subQ.totalqty * t3.weightnet");
+                Sql.AppendLine("END AS distotalstock");
+
+                Sql.AppendLine("FROM (");
                 Sql.AppendLine("select row_number() over(order by itemcode asc) AS rn,");
-                Sql.AppendLine("itemcode, itemname, sum(quantity) as totalstock, count(pallteno) as countpallet, docnote as lot");
+                Sql.AppendLine("itemcode, itemname, sum(quantity) as totalqty, count(pallteno) as countpallet, docnote as lot");
                 Sql.AppendLine("from wms.inv_stock_go ");
                 Sql.AppendLine("WHERE allocatequantity < quantity");
                 Sql.AppendLine("group by itemcode, itemname, docnote");
-                Sql.AppendLine("order by itemcode");
+                Sql.AppendLine(")subQ");
+
+                Sql.AppendLine("left join wms.mas_item_go t3");
+                Sql.AppendLine("on subQ.itemcode=t3.itemcode");
+
+                Sql.AppendLine("order by rn");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(Sql.ToString(), con)
                 {
@@ -169,8 +210,10 @@ namespace GoWMS.Server.Data
                         Item_code = rdr["itemcode"].ToString(),
                         Item_name = rdr["itemname"].ToString(),
                         lot = rdr["lot"].ToString(),
-                        Totalstock = rdr["totalstock"] == DBNull.Value ? null : (Decimal?)rdr["totalstock"],
-                        Countpallet = rdr["countpallet"] == DBNull.Value ? null : (Int64?)rdr["countpallet"]
+                        Totalstock = rdr["totalqty"] == DBNull.Value ? null : (Decimal?)rdr["totalqty"],
+                        Countpallet = rdr["countpallet"] == DBNull.Value ? null : (Int64?)rdr["countpallet"],
+                        DisTotalstock = rdr["distotalstock"] == DBNull.Value ? null : (Decimal?)rdr["distotalstock"]
+
                     };
                     lstobj.Add(objrd);
                 }
@@ -188,10 +231,13 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                  StringBuilder Sql = new StringBuilder();
-                Sql.AppendLine("SELECT modified, srm_no, shelf_no, shelfcode, shelfname");
-                Sql.AppendLine(", shelfbank, shelfframe, shelfbay, shelflevel, shelfstatus");
-                Sql.AppendLine(", lpncode, refercode, actual_weight, actual_size, desc_size, st_desc, backcolor, focecolor");
-                Sql.AppendLine("from  wcs.vrpt_shelf_list");
+                Sql.AppendLine("SELECT t1.modified, t1.srm_no, t1.shelf_no, t1.shelfcode, t1.shelfname");
+                Sql.AppendLine(", t1.shelfbank, t1.shelfframe, t1.shelfbay, t1.shelflevel, t1.shelfstatus");
+                Sql.AppendLine(", t1.lpncode, t1.refercode, t1.actual_weight, t1.actual_size, t1.desc_size, t1.st_desc, t1.backcolor, t1.focecolor");
+                Sql.AppendLine(",t2.pallettag as suno");
+                Sql.AppendLine("from  wcs.vrpt_shelf_list t1");
+                Sql.AppendLine("left join wms.inv_stock_go t2");
+                Sql.AppendLine("On t1.lpncode=t2.pallteno");
                 Sql.AppendLine("order by shelf_no asc");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(Sql.ToString(), con)
@@ -223,7 +269,8 @@ namespace GoWMS.Server.Data
                         St_desc = rdr["st_desc"].ToString(),
                         Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"],
                         Backcolor = rdr["backcolor"].ToString(),
-                        Focecolor = rdr["focecolor"].ToString()
+                        Focecolor = rdr["focecolor"].ToString(),
+                        Suno= rdr["suno"].ToString()
 
                     };
                     lstobj.Add(objrd);

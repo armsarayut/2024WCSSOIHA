@@ -39,5 +39,10 @@ namespace GoWMS.Server.Models.Public
 		public string Ship_To_Code { get; set; }
 		public string Ship_Name { get; set; }
 		public Int32? Delivery_Priority { get; set; }
-	}
+
+        public Decimal? DisResult_Qty { get; set; }
+        public Decimal? DisShortge_Qty { get; set; }
+
+
+    }
 }

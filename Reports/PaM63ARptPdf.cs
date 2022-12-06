@@ -366,7 +366,7 @@ namespace GoWMS.Server.Reports
                 };
                 bodyTable.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase(string.Format(VarGlobals.FormatN3, listRpt.Qty), _fontstyebody))
+                cell = new PdfPCell(new Phrase(string.Format(VarGlobals.FormatN3, listRpt.DisQty), _fontstyebody))
                 {
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     VerticalAlignment = Element.ALIGN_MIDDLE,

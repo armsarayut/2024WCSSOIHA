@@ -281,6 +281,18 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
 
+                    sql.AppendLine("SELECT subQ.* ");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.result_qty");
+                    sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disresult_qty");
+
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.shortge_qty");
+                    sql.AppendLine(" ELSE subQ.shortge_qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disshortge_qty");
+
+                    sql.AppendLine("FROM(");
                     sql.AppendLine("SELECT");
                     sql.AppendLine("t1.created, t1.work_type, t1.create_by, t1.batch_number, t1.item_code,");
                     sql.AppendLine("t2.itemname as item_name, t1.su_no, t1.movement_type, t1.movemet_reason, t1.order_no, t1.seq_no,");
@@ -294,7 +306,13 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("WHERE (1=1)");
                     sql.AppendLine("AND (t1.work_type in ('01'))");
                     sql.AppendLine("AND (t1.created >= @startdate AND t1.created < @stopdate)");
+                    sql.AppendLine(")subQ");
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
                     sql.AppendLine("ORDER BY created ASC");
+
                     // sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
 
@@ -341,7 +359,9 @@ namespace GoWMS.Server.Data
                             Queue_No = rdr["queue_no"].ToString(),
                             Ship_To_Code = rdr["ship_to_code"].ToString(),
                             Ship_Name = rdr["ship_name"].ToString(),
-                            Delivery_Priority = rdr["delivery_priority"] == DBNull.Value ? null : (int?)rdr["delivery_priority"]
+                            Delivery_Priority = rdr["delivery_priority"] == DBNull.Value ? null : (int?)rdr["delivery_priority"],
+                            DisResult_Qty = rdr["disresult_qty"] == DBNull.Value ? null : (decimal?)rdr["disresult_qty"],
+                            DisShortge_Qty = rdr["disshortge_qty"] == DBNull.Value ? null : (decimal?)rdr["disshortge_qty"]
                         };
                         lstobj.Add(objrd);
                     }
@@ -501,6 +521,15 @@ namespace GoWMS.Server.Data
                 try
                 {
                     StringBuilder sql = new StringBuilder();
+
+
+                    sql.AppendLine("SELECT subQ.*");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.result_qty");
+                    sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disresult_qty");
+
+                    sql.AppendLine("FROM(");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t1.created::date as created , t1.po_no, t1.batch_number, t1.item_code,");
                     sql.AppendLine("t2.itemname as item_name, t1.movement_type, t1.movemet_reason, ");
@@ -514,8 +543,18 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("AND (t1.created >= @startdate AND t1.created < @stopdate)");
                     sql.AppendLine("GROUP BY t1.created::date, t1.po_no, t1.batch_number, t1.item_code,");
                     sql.AppendLine("t2.itemname, t1.movement_type, t1.movemet_reason");
-                    sql.AppendLine("ORDER BY t1.created::date , t1.item_code asc");
+                    sql.AppendLine(")subQ");
+
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
+                    sql.AppendLine("ORDER BY created , item_code asc");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
+
+
+
+
                     sql.AppendLine(";");
 
                     NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
@@ -538,7 +577,8 @@ namespace GoWMS.Server.Data
                             Movement_Type = rdr["movement_type"].ToString(),
                             Movemet_Reason = rdr["movemet_reason"].ToString(),
                             Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"],
-                            Po_no = rdr["po_no"].ToString()
+                            Po_no = rdr["po_no"].ToString(),
+                            DisResult_Qty = rdr["disresult_qty"] == DBNull.Value ? null : (decimal?)rdr["disresult_qty"]
                         };
                         lstobj.Add(objrd);
                     }
@@ -618,6 +658,13 @@ namespace GoWMS.Server.Data
                 {
                     StringBuilder sql = new StringBuilder();
 
+                    sql.AppendLine("SELECT subQ.*");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.qty");
+                    sql.AppendLine(" ELSE subQ.qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disqty");
+
+                    sql.AppendLine("FROM (");
                     sql.AppendLine("select row_number() over(order by t2.itembrand asc, t1.batch_number asc, t1.item_code asc) AS rn,");
                     sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
                     sql.AppendLine(", t3.srm_no ");
@@ -627,6 +674,11 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("left join wcs.set_shelf t3");
                     sql.AppendLine("on t1.palletcode=t3.lpncode");
                     sql.AppendLine("where (1=1)");
+                    sql.AppendLine(")subQ");
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
                     sql.AppendLine("order by brand,batch_number,item_code");
                     sql.AppendLine(";");
 
@@ -665,7 +717,8 @@ namespace GoWMS.Server.Data
                             Su_No = rdr["su_no"].ToString(),
                             Palletcode = rdr["palletcode"].ToString(),
                             Shelfname = rdr["shelfname"].ToString(),
-                            Srm_No = rdr["srm_no"] == DBNull.Value ? null : (int?)rdr["srm_no"]
+                            Srm_No = rdr["srm_no"] == DBNull.Value ? null : (int?)rdr["srm_no"],
+                            DisQty = rdr["disqty"] == DBNull.Value ? null : (decimal?)rdr["disqty"]
                         };
                         lstobj.Add(objrd);
                     }
@@ -757,6 +810,14 @@ namespace GoWMS.Server.Data
                 try
                 {
                     StringBuilder sql = new StringBuilder();
+
+                    sql.AppendLine("SELECT subQ.*");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.totalstock");
+                    sql.AppendLine(" ELSE subQ.totalstock * t3.weightnet ");
+                    sql.AppendLine(" END AS distotalstock");
+
+                    sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, sum(t1.qty) AS totalstock, count(t1.palletcode) as countpallet ");
                     sql.AppendLine("FROM public.sap_stock t1");
@@ -764,6 +825,11 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("ON t1.item_code=t2.itemcode");
                     sql.AppendLine("WHERE (1=1)");
                     sql.AppendLine("GROUP BY t2.itembrand, t1.batch_number, t1.item_code, t2.itemname");
+                    sql.AppendLine(")subQ");
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
                     sql.AppendLine("ORDER BY brand,batch_number,item_code");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
@@ -785,7 +851,8 @@ namespace GoWMS.Server.Data
                             Item_Code = rdr["item_code"].ToString(),
                             Item_Name = rdr["item_name"].ToString(),
                             Totalstock = rdr["totalstock"] == DBNull.Value ? null : (decimal?)rdr["totalstock"],
-                            Countpallet = rdr["countpallet"] == DBNull.Value ? null : (long?)rdr["countpallet"]
+                            Countpallet = rdr["countpallet"] == DBNull.Value ? null : (long?)rdr["countpallet"],
+                            DisTotalstock = rdr["distotalstock"] == DBNull.Value ? null : (decimal?)rdr["distotalstock"]
 
                         };
                         lstobj.Add(objrd);
@@ -870,6 +937,13 @@ namespace GoWMS.Server.Data
                 try
                 {
                     StringBuilder sql = new StringBuilder();
+                    sql.AppendLine("SELECT subQ.*");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.qty");
+                    sql.AppendLine(" ELSE subQ.qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disqty");
+
+                    sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
                     sql.AppendLine(" , DATE_PART('day', now()::timestamp - t1.receiving_date::timestamp) as aging");
@@ -879,6 +953,11 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("LEFT JOIN wcs.set_shelf t3");
                     sql.AppendLine("ON t1.palletcode=t3.lpncode");
                     sql.AppendLine("WHERE (1=1)");
+                    sql.AppendLine(")subQ");
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
                     sql.AppendLine("ORDER BY brand,batch_number,item_code");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
@@ -903,7 +982,8 @@ namespace GoWMS.Server.Data
                             Su_No = rdr["su_no"].ToString(),
                             Palletcode = rdr["palletcode"].ToString(),
                             Shelfname = rdr["shelfname"].ToString(),
-                            Aging = rdr["aging"] == DBNull.Value ? null : (double?)rdr["aging"]
+                            Aging = rdr["aging"] == DBNull.Value ? null : (double?)rdr["aging"],
+                            DisQty = rdr["disqty"] == DBNull.Value ? null : (decimal?)rdr["disqty"],
 
                         };
                         lstobj.Add(objrd);
@@ -1303,6 +1383,13 @@ namespace GoWMS.Server.Data
                 try
                 {
                     StringBuilder sql = new StringBuilder();
+                    sql.AppendLine("SELECT subQ.*");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.result_qty");
+                    sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disresult_qty");
+
+                    sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t1.idx, t1.created, t1.entity_lock, t1.modified, t1.client_id, t1.client_ip, t1.seq_no, ");
                     sql.AppendLine("t1.work_type, t1.order_no, t1.order_line, t1.ship_to_code, t1.ship_name, ");
@@ -1317,6 +1404,11 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("WHERE (1=1)");
                     sql.AppendLine("AND (t1.work_type in ('05'))");
                     sql.AppendLine("AND (t1.created >= @startdate and t1.created < @stopdate)");
+                    sql.AppendLine(")subQ");
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
                     sql.AppendLine("ORDER BY idx asc");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
@@ -1368,7 +1460,8 @@ namespace GoWMS.Server.Data
                             Pallet_No = rdr["pallet_no"].ToString(),
                             Crane_No = rdr["crane_no"].ToString(),
                             Location_No = rdr["location_no"].ToString(),
-                            Status = rdr["status"] == DBNull.Value ? null : (int?)rdr["status"]
+                            Status = rdr["status"] == DBNull.Value ? null : (int?)rdr["status"],
+                            DisResult_Qty = rdr["disresult_qty"] == DBNull.Value ? null : (decimal?)rdr["disresult_qty"],
                         };
                         lstobj.Add(objrd);
                     }
@@ -1540,6 +1633,13 @@ namespace GoWMS.Server.Data
                 try
                 {
                     StringBuilder sql = new StringBuilder();
+                    sql.AppendLine("SELECT subQ.*");
+                    sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                    sql.AppendLine(" THEN   subQ.result_qty");
+                    sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
+                    sql.AppendLine(" END AS disresult_qty");
+
+                    sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t1.created::date as created, t1.order_no, t1.ship_to_code, t1.ship_name, t1.batch_number ,");
                     sql.AppendLine("t1.item_code, t2.itemname as item_name, t1.movement_type, t1.movemet_reason,  ");
@@ -1552,7 +1652,12 @@ namespace GoWMS.Server.Data
                     sql.AppendLine("AND (t1.created >= @startdate and t1.created < @stopdate)");
                     sql.Append("group  by t1.created::date , t1.order_no, t1.ship_to_code, t1.ship_name,");
                     sql.AppendLine("t1.item_code, t2.itemname, t1.movement_type, t1.movemet_reason , t1.batch_number ");
-                    sql.AppendLine("order by t1.created::date , order_no asc, item_code asc");
+                    sql.AppendLine(")subQ");
+
+                    sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                    sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
+                    sql.AppendLine("order by created , order_no asc, item_code asc");
                     //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
                     sql.AppendLine(";");
 
@@ -1578,7 +1683,8 @@ namespace GoWMS.Server.Data
                             Item_Code = rdr["item_code"].ToString(),
                             Item_Name = rdr["item_name"].ToString(),
                             Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"],
-                            Batch_number = rdr["batch_number"].ToString()
+                            Batch_number = rdr["batch_number"].ToString(),
+                            DisResult_Qty = rdr["disresult_qty"] == DBNull.Value ? null : (decimal?)rdr["disresult_qty"],
                         };
                         lstobj.Add(objrd);
                     }

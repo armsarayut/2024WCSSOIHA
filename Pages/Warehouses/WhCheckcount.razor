@@ -70,7 +70,7 @@ else
                 <MudTh><MudTableSortLabel SortBy="new Func<Sap_StoreoutInfo, object>(x=>x.Item_Code)">@L["MATERIAL"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Sap_StoreoutInfo, object>(x=>x.Su_No)">@L["PACKID"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Sap_StoreoutInfo, object>(x=>x.Po_No)">@L["BATCH"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<Sap_StoreoutInfo, object>(x=>x.Stock_Qty)">@L["QTY"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Sap_StoreoutInfo, object>(x=>x.DisStock_Qty)">@L["QTY"]</MudTableSortLabel></MudTh>
                 <MudTh>@L["ACTION"]</MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -88,7 +88,7 @@ else
                 <MudTd Class="clm-row-small" DataLabel=@L["MATERIAL"]>@context.Item_Code</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["PACKID"]>@context.Su_No</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["BATCH"]>@context.Po_No</MudTd>
-                <MudTd Class="clm-row-small" DataLabel=@L["QTY"]>@string.Format(VarGlobals.FormatN3, context.Stock_Qty)</MudTd>
+                <MudTd Class="clm-row-small" DataLabel=@L["QTY"]>@string.Format(VarGlobals.FormatN3, context.DisStock_Qty)</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["ACTION"]>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Check" Color="Color.Error" @onclick="@(()=>CountMap(@context.Su_No))" />
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Clear" Color="Color.Warning" @onclick="@(()=>DeleteMap(@context.Su_No))" />
@@ -254,9 +254,9 @@ else
             if (bValidate)
             {
                 mPalletcode = str.ToUpper();
-                msgAction = "Enter DnSEQ";
+                msgAction = "Enter SU";
                 elevation = 1;
-                Snackbar.Add("Enter DnSEQ", Severity.Normal);
+                Snackbar.Add("Enter SU", Severity.Normal);
 
                 Elements = await Task.Run(() => ObjWhService.GetPicklist(mPalletcode));
 
@@ -313,7 +313,7 @@ else
                 }
                 else
                 {
-                    Snackbar.Add("Please enter DnSEQ", Severity.Info);
+                    Snackbar.Add("Please enter SU", Severity.Info);
                 }
             }
             else
@@ -333,13 +333,13 @@ else
                     Elements.ToList()[iCorrect].Bcount = true;
                     Elements.ToList()[iCorrect].Movement_Type = "CYC";
                     Elements.ToList()[iCorrect].Request_Qty = 0;
-                    this.InsertAuditrial("Counting DnSEQ: [" + mPackid + "] is OK", pageheader);
+                    this.InsertAuditrial("Counting SU: [" + mPackid + "] is OK", pageheader);
 
-                    Snackbar.Add("Counting DnSEQ: [" + mPackid + "] is OK", Severity.Success);
+                    Snackbar.Add("Counting SU: [" + mPackid + "] is OK", Severity.Success);
                 }
                 else
                 {
-                    Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+                    Snackbar.Add("Find not found SU please enter again", Severity.Warning);
                 }
 
             }
@@ -362,13 +362,13 @@ else
                 Elements.ToList()[iCorrect].Bcount = true;
                 Elements.ToList()[iCorrect].Movement_Type = "Z01";
                 Elements.ToList()[iCorrect].Request_Qty = Elements.ToList()[iCorrect].Stock_Qty;
-                this.InsertAuditrial("Counting DnSEQ: [" + pack + "] is not found", pageheader);
+                this.InsertAuditrial("Counting SU: [" + pack + "] is not found", pageheader);
 
-                Snackbar.Add("Count DnSEQ: [" + pack + "] is OK", Severity.Success);
+                Snackbar.Add("Count SU: [" + pack + "] is OK", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+                Snackbar.Add("Find not found SU please enter again", Severity.Warning);
             }
         }
 
@@ -390,14 +390,14 @@ else
                 Elements.ToList()[iCorrect].Bcount = true;
                 Elements.ToList()[iCorrect].Movement_Type = "CYC";
                 Elements.ToList()[iCorrect].Request_Qty = 0;
-                this.InsertAuditrial("Counting DnSEQ: [" + pack + "] is OK", pageheader);
+                this.InsertAuditrial("Counting SU: [" + pack + "] is OK", pageheader);
 
-                Snackbar.Add("Count DnSEQ: [" + pack + "] is OK", Severity.Success);
+                Snackbar.Add("Count SU: [" + pack + "] is OK", Severity.Success);
 
             }
             else
             {
-                Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+                Snackbar.Add("Find not found SU please enter again", Severity.Warning);
             }
         }
 
@@ -420,11 +420,11 @@ else
             Elements.ToList()[iCorrect].Movement_Type = "CYC";
             Elements.ToList()[iCorrect].Request_Qty = 0;
 
-            Snackbar.Add("Reset DnSEQ: [" + pack + "] is OK", Severity.Success);
+            Snackbar.Add("Reset SU: [" + pack + "] is OK", Severity.Success);
         }
         else
         {
-            Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+            Snackbar.Add("Find not found SU please enter again", Severity.Warning);
         }
         this.StateHasChanged();
 
@@ -453,13 +453,13 @@ else
                     Elements.ToList()[iCorrect].Bcount = true;
                     Elements.ToList()[iCorrect].Movement_Type = "Z01";
                     Elements.ToList()[iCorrect].Request_Qty = Elements.ToList()[iCorrect].Stock_Qty;
-                    this.InsertAuditrial("Counting DnSEQ: [" + pack + "] is not found", pageheader);
+                    this.InsertAuditrial("Counting SU: [" + pack + "] is not found", pageheader);
 
                     //Snackbar.Add("Count DnSEQ: [" + pack + "] is OK", Severity.Success);
                 }
                 else
                 {
-                    Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+                    Snackbar.Add("Find not found SU please enter again", Severity.Warning);
                 }
             }
         }
@@ -490,14 +490,14 @@ else
                     Elements.ToList()[iCorrect].Bcount = true;
                     Elements.ToList()[iCorrect].Movement_Type = "CYC";
                     Elements.ToList()[iCorrect].Request_Qty = 0;
-                    this.InsertAuditrial("Counting DnSEQ: [" + pack + "] is OK", pageheader);
+                    this.InsertAuditrial("Counting SU: [" + pack + "] is OK", pageheader);
 
                     // Snackbar.Add("Count DnSEQ: [" + pack + "] is OK", Severity.Success);
 
                 }
                 else
                 {
-                    Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+                    Snackbar.Add("Find not found SU please enter again", Severity.Warning);
                 }
             }
         }
@@ -531,7 +531,7 @@ else
             }
             else
             {
-                Snackbar.Add("Find not found DnSEQ please enter again", Severity.Warning);
+                Snackbar.Add("Find not found SU please enter again", Severity.Warning);
             }
         }
 

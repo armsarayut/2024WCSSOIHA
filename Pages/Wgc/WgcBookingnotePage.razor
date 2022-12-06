@@ -82,27 +82,41 @@ else
             </ToolBarContent>
 
             <HeaderContent>
-
+                <MudTh>@L["STATUS"]</MudTh>
               <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Apicreated)">@L["DNDate"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Apikaror)">@L["SoNo"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApimaterialCode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApipackageID)">@L["Seq"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApijobCode)">@L["BatchNo"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApigrQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
-                <MudTh>@L["Adjust"]</MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.DisApigrQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
+                <MudTh>@L["ACTION"]</MudTh>
 
             </HeaderContent>
 
             <RowTemplate>
-                <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Apicreated).ToString(VarGlobals.FormatDT)</MudTd>
-                <MudTd DataLabel="@L["SoNo"]">@context.Apikaror</MudTd>
-                <MudTd DataLabel="@L["ItemCode"]">@context.ApimaterialCode</MudTd>
-                <MudTd DataLabel=@L["Seq"]>@context.ApipackageID</MudTd>
-                <MudTd DataLabel="@L["BatchNo"]">@context.ApijobCode</MudTd>
-                <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.ApigrQuantity)</MudTd>
-                 <MudTd DataLabel="@L["Adjust"]">
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
-            </MudTd>
+                    @if(context.Quantity>0)
+                    {
+                       <MudTd DataLabel="@L["STATUS"]">
+                            <MudIcon Icon="@Icons.Filled.EmojiEmotions" Color="Color.Success" />
+                       </MudTd>
+                    }
+                    else
+                    {
+                         <MudTd DataLabel="@L["STATUS"]">
+                            <MudIcon Icon="@Icons.Filled.MoodBad" Color="Color.Error" />
+                        </MudTd>
+                    }
+                    <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Apicreated).ToString(VarGlobals.FormatDT)</MudTd>
+                    <MudTd DataLabel="@L["SoNo"]">@context.Apikaror</MudTd>
+                    <MudTd DataLabel="@L["ItemCode"]">@context.ApimaterialCode</MudTd>
+                    <MudTd DataLabel=@L["Seq"]>@context.ApipackageID</MudTd>
+                    <MudTd DataLabel="@L["BatchNo"]">@context.ApijobCode</MudTd>
+                    <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisApigrQuantity)</MudTd>
+                     <MudTd DataLabel="@L["ACTION"]">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
+                    </MudTd>
+           
+                
             </RowTemplate>
 
             <PagerContent>
@@ -254,7 +268,7 @@ else
 
     async Task SelectOrder()
     {
-        var result = selectedItems.GroupBy(t => t.Itemcode)
+        var result = selectedItems.Where(w => w.Quantity != null).GroupBy(t => t.Itemcode)
                    .Select(t => new
                    {
                        Itemcode = t.Key,
@@ -297,54 +311,63 @@ else
         bool? result = await CheckRoleAdd();
         if (result == true)
         {
-            if (selectedItems.Count()>0)
+            if (selectedItems.Where(w => w.Quantity == null).Count() > 0)
             {
-                var resultlist = selectedItems.GroupBy(t => t.Itemcode)
-                    .Select(t => new
-                    {
-                        Itemcode = t.Key,
-                        Qty = t.Sum(ta => ta.Quantity),
-                    }).ToList();
-
-                System.Text.StringBuilder strPopup = new System.Text.StringBuilder();
-                Int16 i = 0;
-                mboxcontent = "";
-
-                References.Clear();
-
-                if (resultlist.Count > 0)
-                {
-                    foreach (var rec in resultlist)
-                    {
-                        i++;
-                        strPopup.Clear();
-                        strPopup.Append(i.ToString() + ". รายการ : ");
-                        strPopup.Append(rec.Itemcode.ToString());
-                        strPopup.Append(" จำนวน : ");
-                        strPopup.AppendLine(rec.Qty.ToString());
-
-                        References.Add(strPopup.ToString());
-                    }
-                    result = await mbox.Show();
-                    state = result == null ? "Cancelled" : "Confirmed";
-
-                    if (state == "Confirmed")
-                    {
-                        this.InsertAuditrial("Set Picking List : " + strPopup.ToString(), pageheader);
-                        //await SelectOrderPick();
-                        await Task.Run(() => SelectOrderPick());
-
-                    }
-
-                    Elements = await Task.Run(() => ObjOubService.GetStockListApiInfo());
-                    //selectedItems.Clear();
-                    searchString = null;
-
-                    this.StateHasChanged();
-                }
+                Snackbar.Add("The selected item is not yet in stock.", Severity.Warning);
             }else{
-                Snackbar.Add("Please select item!", Severity.Warning);
-            }
+                 if (selectedItems.Where(w => w.Quantity != null).Count() > 0)
+                {
+                    var resultlist = selectedItems.Where(w => w.Quantity != null).GroupBy(t => t.Itemcode)
+                        .Select(t => new
+                        {
+                            Itemcode = t.Key,
+                            Qty = t.Sum(ta => ta.Quantity),
+                        }).ToList();
+
+                    System.Text.StringBuilder strPopup = new System.Text.StringBuilder();
+                    Int16 i = 0;
+                    mboxcontent = "";
+
+                    References.Clear();
+
+                    if (resultlist.Count > 0)
+                    {
+                        foreach (var rec in resultlist)
+                        {
+                            i++;
+                            strPopup.Clear();
+                            strPopup.Append(i.ToString() + ". รายการ : ");
+                            strPopup.Append(rec.Itemcode.ToString());
+                            strPopup.Append(" จำนวน : ");
+                            strPopup.AppendLine(rec.Qty.ToString());
+
+                            References.Add(strPopup.ToString());
+                        }
+                        result = await mbox.Show();
+                        state = result == null ? "Cancelled" : "Confirmed";
+
+                        if (state == "Confirmed")
+                        {
+                            this.InsertAuditrial("Set Picking List : " + strPopup.ToString(), pageheader);
+                            //await SelectOrderPick();
+                            await Task.Run(() => SelectOrderPick());
+
+                        }
+
+                        Elements = await Task.Run(() => ObjOubService.GetStockListApiInfo());
+                        //selectedItems.Clear();
+                        searchString = null;
+
+                        this.StateHasChanged();
+                    }
+                }else{
+                    Snackbar.Add("Please select item!", Severity.Warning);
+                }
+
+                
+                }
+
+            
 
            
         }
@@ -370,17 +393,17 @@ else
 
         if (selectedItems.Count > 0)
         {
-            var pallets = selectedItems.GroupBy(g => g.Pallteno).OrderBy(o => o.Key).Select(s => s.Key);
+            var pallets = selectedItems.Where(w => w.Quantity != null).GroupBy(g => g.Pallteno).OrderBy(o => o.Key).Select(s => s.Key);
 
             foreach (var valpal in pallets)
             {
                 
-                var so = selectedItems.Where(w => w.Pallteno == valpal).Select(c => c.Apikaror).First();
+                var so = selectedItems.Where(w => w.Pallteno == valpal && w.Quantity != null).Select(c => c.Apikaror).First();
 
 
                 //string so = "MO-" + ObjFunService.GetRunning("sq002", 4);
 
-                var strRES = selectedItems.Where(w => w.Pallteno == valpal).OrderBy(x => x.Pallettag).Select(x => new { efidx = x.Efidx, quantity = x.Quantity, packageid = x.Pallettag, materialcode = x.Itemcode, palletno = x.Pallteno, sono = so, customer = cus, lotno = x.Docno, batchno = x.Docnote, matematerialdescription = x.Itemname, unit = x.Unit, deliverydate = requestdate }).ToList();
+                var strRES = selectedItems.Where(w => w.Pallteno == valpal && w.Quantity != null).OrderBy(x => x.Pallettag).Select(x => new { efidx = x.Efidx, quantity = x.Quantity, packageid = x.Pallettag, materialcode = x.Itemcode, palletno = x.Pallteno, sono = so, customer = cus, lotno = x.Docno, batchno = x.Docnote, matematerialdescription = x.Itemname, unit = x.Unit, deliverydate = requestdate }).ToList();
 
 
                 var jsonRES = JsonSerializer.Serialize(strRES, serializeOptions);

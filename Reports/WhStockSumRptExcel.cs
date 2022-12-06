@@ -41,7 +41,7 @@ namespace GoWMS.Server.Reports
                     rptRows++;
                     worksheet.Cell(rptRows, 1).Value = "'" + rpt.Item_code;
                     worksheet.Cell(rptRows, 2).Value = "'" + rpt.lot;
-                    worksheet.Cell(rptRows, 3).Value = "'" + rpt.Totalstock;
+                    worksheet.Cell(rptRows, 3).Value = "'" + rpt.DisTotalstock;
                 }
                 #endregion
                 workbook.SaveAs(_memoryStream);

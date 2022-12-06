@@ -77,16 +77,16 @@ else
                     <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
                     <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallettag)">@L["SEQ"]</MudTableSortLabel></MudTh>
                     <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Docnote)">@L["batch"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Quantity)">@L["Stock"]</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallteno)">@L["PALLET"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.DisQuantity)">@L["Stock"]</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallteno)">@L["PalletGo"]</MudTableSortLabel></MudTh>
                 </HeaderContent>
 
                 <RowTemplate>
                     <MudTd DataLabel=@L["ItemCode"]>@context.Itemcode</MudTd>
                     <MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>
                     <MudTd DataLabel=@L["batch"]>@context.Docnote</MudTd>
-                    <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.Quantity)</MudTd>
-                    <MudTd DataLabel=@L["PALLET"]>@context.Pallteno</MudTd>
+                    <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisQuantity)</MudTd>
+                <MudTd DataLabel=@L["PalletGo"]>@context.Pallteno</MudTd>
                 </RowTemplate>
    
             <PagerContent>
@@ -242,7 +242,7 @@ else
                        .Select(t => new
                        {
                            Itemcode = t.Key,
-                           Qty = t.Sum(ta => ta.Quantity),
+                           Qty = t.Sum(ta => ta.DisQuantity),
                        }).ToList();
 
             System.Text.StringBuilder strPopup = new System.Text.StringBuilder();
@@ -285,7 +285,7 @@ else
                          .Select(t => new
                          {
                              Itemcode = t.Key,
-                             Qty = t.Sum(ta => ta.Quantity),
+                             Qty = t.Sum(ta => ta.DisQuantity),
                          }).ToList();
 
                 System.Text.StringBuilder strPopup = new System.Text.StringBuilder();

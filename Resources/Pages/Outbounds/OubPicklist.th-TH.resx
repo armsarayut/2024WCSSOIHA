@@ -121,10 +121,10 @@
     <value>ชุด</value>
   </data>
   <data name="DNSEQ" xml:space="preserve">
-    <value>ลำดับที่</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="Excel" xml:space="preserve">
-    <value>เอกเซล</value>
+    <value>excel</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
     <value>รหัสสินค้า</value>
@@ -136,10 +136,10 @@
     <value>คิวการหยิบ</value>
   </data>
   <data name="PALLETGO" xml:space="preserve">
-    <value>พาเลทหลัก</value>
+    <value>พาเลท</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>พีดีเอฟ</value>
+    <value>pdf</value>
   </data>
   <data name="QTY" xml:space="preserve">
     <value>จำนวน</value>
@@ -154,7 +154,7 @@
     <value>ค้นหา</value>
   </data>
   <data name="SONO" xml:space="preserve">
-    <value>ใบจอง</value>
+    <value>ใบงาน</value>
   </data>
   <data name="UNIT" xml:space="preserve">
     <value>หน่วย</value>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Batch" xml:space="preserve">
-    <value>Batchที่ผลิต</value>
+    <value>ชุด</value>
   </data>
   <data name="CUSTOMERCODE" xml:space="preserve">
     <value>รหัสลูกค้า</value>
@@ -127,7 +127,7 @@
     <value>วันที่</value>
   </data>
   <data name="DNNO" xml:space="preserve">
-    <value>เลขที่เอกสาร</value>
+    <value>ใบงาน</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
     <value>รหัสสินค้า</value>
@@ -136,7 +136,7 @@
     <value>ชื่อสินค้า</value>
   </data>
   <data name="Lot" xml:space="preserve">
-    <value>ลอท</value>
+    <value>ล๊อต</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>การคืน</value>

@@ -12,15 +12,22 @@
 @inject ReportService UserlogService
 @inject ErpApiService ObjApiService
 @inject NavigationManager navigationManager
+@inject IJSRuntime js
 @inject IStringLocalizer<WgcBookingnotePage> L
 
 <MudDialog>
     <DialogContent>
 
-        <MudTextField @bind-Value="pOrder" Counter="50" MaxLength="50" Label="@L["SoNo"]" Variant="Variant.Outlined" />
+      @*  <MudTextField @bind-Value="pOrder" Counter="50" MaxLength="50" Label="@L["SoNo"]" Variant="Variant.Outlined" />
         <MudTextField @bind-Value="pItemcode" Counter="50" MaxLength="50" Label="@L["ItemCode"]" Variant="Variant.Outlined" />
         <MudTextField @bind-Value="pSuno" Counter="20" MaxLength="20" Label="@L["Seq"]" Variant="Variant.Outlined" />
-        <MudTextField @bind-Value="pBatchno" Counter="50" MaxLength="50" Label="@L["BatchNo"]" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="pBatchno" Counter="50" MaxLength="50" Label="@L["BatchNo"]" Variant="Variant.Outlined" />*@
+
+        <MudTextField TabIndex="1" Id="jobno" @bind-Value="pOrder" Counter="50" MaxLength="50" Label="@L["SoNo"]" Variant="Variant.Outlined" @onkeyup="@KeyUpJobNext" />
+        <MudTextField TabIndex="2" Id="itemcode" @bind-Value="pItemcode" Counter="50" MaxLength="50" Label="@L["ItemCode"]" Variant="Variant.Outlined" @onkeyup="@tKeyUpItemNext" />
+        <MudTextField TabIndex="3" Id="suno" @bind-Value="pSuno" Counter="10" MaxLength="10" Label="@L["Seq"]" Variant="Variant.Outlined" @onkeyup="@tKeyUpSuNext" />
+        <MudTextField TabIndex="4" Id="batchno" @bind-Value="pBatchno" Counter="50" MaxLength="50" Label="@L["BatchNo"]" Variant="Variant.Outlined" />
+
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -51,6 +58,20 @@
         await GetUserAthu();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Focus the element
+            await Focus("batchno");
+        }
+    }
+
+    public async Task Focus(string elementId)
+    {
+        await js.InvokeVoidAsync("jsfunction.focusElement", elementId);
+    }
+
     async Task GetUserAthu()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -73,6 +94,17 @@
 
         if (pOrder.Length > 0 && pItemcode.Length > 0 && pSuno.Length > 0 && pBatchno.Length > 0 && pTypor.Length > 0)
         {
+
+            if (pBatchno.Substring(0, 1) == "T")
+            {
+                pBatchno = pBatchno.Substring(1, pBatchno.Length - 1);
+            }
+
+            if (pItemcode.Substring(0, 1) != "P")
+            {
+                pItemcode = "P" + pItemcode;
+            }
+
             if (ObjApiService.CreateManualApi(pOrder, pItemcode, pSuno, pBatchno, pTypor, ref msgReturn))
             {
                 this.InsertAuditrial("Manual : Add Order PUT [JOB : " + pItemcode + " , PART : " + pItemcode + " , SU : " + pSuno + " , BATCH : " + pBatchno, pageheader);
@@ -102,6 +134,38 @@
     private void InsertAuditrial(String actdesc, String munname)
     {
         bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
+    }
+
+    private async Task KeyUpJobNext(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+
+            await Focus("itemcode");
+
+
+        }
+    }
+    private async Task tKeyUpItemNext(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+
+            await Focus("suno");
+
+
+        }
+    }
+
+    private async Task tKeyUpSuNext(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+
+            await Focus("batchno");
+
+
+        }
     }
 }
 

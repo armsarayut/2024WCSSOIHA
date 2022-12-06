@@ -67,5 +67,9 @@ namespace GoWMS.Server.Models.Oub
         public string Apitypor { get; set; }
         public string Apikaror { get; set; }
 
+        public decimal? DisApigrQuantity { get; set; }
+        public decimal? DisapigrQuantityKG { get; set; }
+
+
     }
 }

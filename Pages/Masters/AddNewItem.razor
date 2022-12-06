@@ -12,21 +12,25 @@
 @inject ReportService UserlogService
 @inject ErpApiService ObjApiService
 @inject MasService ObjService
+@inject IJSRuntime js
 @inject NavigationManager navigationManager
+
 @inject IStringLocalizer<MasItemPage> L
 
 <MudDialog>
     <DialogContent>
-        <MudSelect @bind-Value="enumValue" Label="Select Category" HelperText="Enum" OpenIcon="@Icons.Material.Filled.Category" AdornmentColor="Color.Secondary">
+        <MudSelect @bind-Value="enumValue" Label="Select Category" OpenIcon="@Icons.Material.Filled.Category" AdornmentColor="Color.Secondary">
             @foreach (ItemCat item in Enum.GetValues(typeof(ItemCat)))
             {
                 <MudSelectItem Value="@item">@item</MudSelectItem>
             }
         </MudSelect>
 
-        <MudTextField @bind-Value="pItemcode" Counter="50" MaxLength="50" Label="@L["ITEMCODE"]" Variant="Variant.Outlined" />
-        <MudTextField @bind-Value="pItemname" Counter="255" MaxLength="255" Label="@L["ITEMNAME"]" Variant="Variant.Outlined" />
-        <MudTextField @bind-Value="pUnit" Counter="10" MaxLength="10" Label="@L["UNIT"]" Variant="Variant.Outlined" />
+        <MudTextField TabIndex="1" Id="IDItemcode" @bind-Value="pItemcode" Counter="50" MaxLength="50" Label="@L["ITEMCODE"]" Variant="Variant.Outlined" @onkeyup="@KeyUpItemcodeNext" />
+        <MudTextField TabIndex="2" Id="IDItemname" @bind-Value="pItemname" Counter="255" MaxLength="255" Label="@L["ITEMNAME"]" Variant="Variant.Outlined" @onkeyup="@KeyUpItemnameNext" />
+        <MudTextField TabIndex="3" Id="IDUnit" @bind-Value="pUnit" Counter="10" MaxLength="10" Label="@L["UNIT"]" Variant="Variant.Outlined" />
+        <MudNumericField @bind-Value="pQtypallet" Label="Qty" Format="F3" Variant="Variant.Outlined" Min="1" />
+
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -40,6 +44,9 @@
     [Parameter] public string pItemname { get; set; }
     [Parameter] public string pUnit{ get; set; }
     [Parameter] public ItemCat pEnumValue { get; set; }
+    [Parameter] public decimal pQtypallet { get; set; }
+
+    //public decimal doubleValue { get; set; } = 1;
 
     public enum ItemCat { FG, MAT }
     private ItemCat enumValue { get; set; } = ItemCat.FG;
@@ -63,6 +70,12 @@
     {
         await GetUserAthu();
     }
+
+     public async Task Focus(string elementId)
+    {
+        await js.InvokeVoidAsync("jsfunction.focusElement", elementId);
+    }
+
 
     async Task GetUserAthu()
     {
@@ -88,7 +101,7 @@
 
         if (pItemcode.Length > 0 && pItemname.Length > 0 && pUnit.Length > 0 )
         {
-            resultReturn = await Task.Run(() => ObjService.UpsertItem(enumValue.ToString(), pItemcode, pItemname, pUnit));
+            resultReturn = await Task.Run(() => ObjService.UpsertItem(enumValue.ToString(), pItemcode, pItemname, pUnit, (decimal)pQtypallet));
 
             if (resultReturn.Bret == true)
             {
@@ -122,6 +135,28 @@
     {
         bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
     }
+
+    private async Task KeyUpItemcodeNext(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+
+            await Focus("IDItemname");
+
+         
+        }
+    }
+    private async Task KeyUpItemnameNext(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+
+            await Focus("IDUnit");
+
+
+        }
+    }
+
 }
 
 

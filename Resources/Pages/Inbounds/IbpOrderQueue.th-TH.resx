@@ -121,19 +121,19 @@
     <value>การกระทำ</value>
   </data>
   <data name="BatchNo" xml:space="preserve">
-    <value>Batchที่ผลิต</value>
+    <value>ชุด</value>
   </data>
   <data name="DNDate" xml:space="preserve">
-    <value>วันที่เอกสาร</value>
+    <value>วันที่ใบงาน</value>
   </data>
   <data name="DNNo" xml:space="preserve">
-    <value>เลทที่เอกสาร</value>
+    <value>ใบงาน</value>
   </data>
   <data name="DNSeq" xml:space="preserve">
-    <value>เลขกำกับสินค้า</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="Excel" xml:space="preserve">
-    <value>เอกเซล</value>
+    <value>excel</value>
   </data>
   <data name="GRDatetime" xml:space="preserve">
     <value>วันที่รับ</value>
@@ -154,7 +154,7 @@
     <value>พาเลท</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>พีดีเอฟ</value>
+    <value>pdf</value>
   </data>
   <data name="Qty" xml:space="preserve">
     <value>จำนวน</value>

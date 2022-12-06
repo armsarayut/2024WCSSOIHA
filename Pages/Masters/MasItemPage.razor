@@ -55,21 +55,16 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Itemcode)">@L["ITEMCODE"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Itemname)">@L["ITEMNAME"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Itemunit)">@L["UNIT"]</MudTableSortLabel></MudTh>
+             <MudTh><MudTableSortLabel SortBy="new Func<Mas_Item_Go, object>(x=>x.Weightnet)">@L["QTY"]</MudTableSortLabel></MudTh>
             <MudTh>@L["ACTION"]</MudTh>
-
-          @*  <MudTh>@L["ITEMCODE"]</MudTh>
-            <MudTh>@L["ITEMNAME"]</MudTh>
-            <MudTh>@L["UNIT"]</MudTh>*@
-            @*<MudTh>@L["NETWEIGHT"]</MudTh>
-            <MudTh>@L["GROSSWEIGHT"]</MudTh>
-            <MudTh>@L["WEIGHTUNIT"]</MudTh>*@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel=@L["ITEMCODE"]>@context.Itemcode</MudTd>
             <MudTd DataLabel=@L["ITEMNAME"]>@context.Itemname</MudTd>
             <MudTd DataLabel=@L["UNIT"]>@context.Itemunit</MudTd>
+            <MudTd DataLabel="@L["QTY"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.Weightnet)</MudTd>
             <MudTd DataLabel="@L["ACTION"]">
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" Color="Color.Secondary" @onclick="@(()=>EditItem(@context.Itemcode, @context.Itemname, context.Itemunit, context.Itemcat))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Edit" Color="Color.Secondary" @onclick="@(()=>EditItem(@context.Itemcode, @context.Itemname, context.Itemunit, context.Itemcat, context.Weightnet.Value))" />
             </MudTd>
 
            @* <MudTd DataLabel=@L["NETWEIGHT"]>@context.Weightnet</MudTd>
@@ -251,7 +246,7 @@ else
             parameters.Add("pItemname", "");
             parameters.Add("pUnit", "");
             parameters.Add("pEnumValue", 0);
-
+            parameters.Add("pQtypallet", (decimal)1.0);
 
             var dialog = DialogService.Show<AddNewItem>("NEW ITEM", parameters, maxWidth);
 
@@ -259,7 +254,7 @@ else
 
             if (!resultDialog.Cancelled)
             {
-                 Elements = await Task.Run(() => ObjService.GetAllMasterItems());
+                Elements = await Task.Run(() => ObjService.GetAllMasterItems());
 
                 this.StateHasChanged();
             }
@@ -269,7 +264,7 @@ else
     }
 
 
-    private async Task EditItem(string itemcode, string itemname, string unit, string itemcat)
+    private async Task EditItem(string itemcode, string itemname, string unit, string itemcat, decimal qty)
     {
         bool? result = await CheckRoleEdit();
         if (result == true)
@@ -281,14 +276,21 @@ else
             parameters.Add("pItemcode", itemcode);
             parameters.Add("pItemname", itemname);
             parameters.Add("pUnit", unit);
-            if (itemcat=="FG")
+            if (itemcat == "FG")
             {
-                 parameters.Add("pEnumValue", 0);
+                parameters.Add("pEnumValue", 0);
             }
-            else{
+            else
+            {
                 parameters.Add("pEnumValue", 1);
             }
-           
+
+            if (qty==null)
+            {
+                qty = 1;
+            }
+
+            parameters.Add("pQtypallet", (decimal)qty);
 
             var dialog = DialogService.Show<AddNewItem>("EDIT ITEM : " + itemcode, parameters, maxWidth);
 

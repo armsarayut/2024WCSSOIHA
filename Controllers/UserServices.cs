@@ -67,6 +67,12 @@ namespace GoWMS.Server.Controllers
             ResultReturn retlist = await Task.Run(() => objDAL.UpsertRegister(ugid, usid, uspass, usfirstname));
             return retlist;
         }
+        public bool CancleUser(long idx)
+        {
+            bool bret = objDAL.CancleUser(idx);
+
+            return bret;
+        }
 
 
     }

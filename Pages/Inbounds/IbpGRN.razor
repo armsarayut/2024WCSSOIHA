@@ -72,7 +72,7 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceipt_Go, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceipt_Go, object>(x=>x.Pallettag)">@L["DNSeq"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceipt_Go, object>(x=>x.Lotno)">@L["BatchNo"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceipt_Go, object>(x=>x.Quantity)">@L["Qty"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceipt_Go, object>(x=>x.DisQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
             <MudTh>@L["Adjust"]</MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -81,7 +81,7 @@ else
             <MudTd DataLabel="@L["ItemCode"]">@context.Itemcode</MudTd>
             <MudTd DataLabel=@L["DNSeq"]>@context.Pallettag</MudTd>
              <MudTd DataLabel="@L["BatchNo"]">@context.Lotno</MudTd>
-            <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.Quantity)</MudTd>
+            <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisQuantity)</MudTd>
             <MudTd DataLabel="@L["Adjust"]">
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning"  @onclick="@(()=>CancelGR((long)context.Efidx, context.Pono,context.Pallettag))" />
             </MudTd>

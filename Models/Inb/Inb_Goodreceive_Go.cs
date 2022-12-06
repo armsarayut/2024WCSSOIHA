@@ -44,5 +44,10 @@ namespace GoWMS.Server.Models.Inb
 		public string Storagearea { get; set; }
 		public string Storagebin { get; set; }
 
-	}
+        public Decimal? DisQuantity { get; set; }
+        public Decimal? DisWeight { get; set; }
+        public Decimal? DisTotalquantity { get; set; }
+        public Decimal? DisTotalweight { get; set; }
+
+    }
 }

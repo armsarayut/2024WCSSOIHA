@@ -121,7 +121,7 @@
     <value>พื้นที่</value>
   </data>
   <data name="Excel" xml:space="preserve">
-    <value>เอกเซล</value>
+    <value>excel</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>รหัสสินค้า</value>
@@ -142,24 +142,24 @@
     <value>รายการคงคลัง</value>
   </data>
   <data name="PalletErp" xml:space="preserve">
-    <value>พาเลทอ้างอิง</value>
+    <value>พาเลท</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>พาเลหลัก</value>
+    <value>พาเลท</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>พีดีเอฟ</value>
+    <value>pdf</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>ค้นหา</value>
   </data>
   <data name="SEQ" xml:space="preserve">
-    <value>ลำดับที่</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>คงคลัง</value>
+    <value>จำนวน</value>
   </data>
   <data name="TotalStock" xml:space="preserve">
-    <value>รวมคงคลัง</value>
+    <value>จำนวนทั้งหมด</value>
   </data>
 </root>

@@ -124,27 +124,27 @@
     <value>ชื่อสินค้า</value>
   </data>
   <data name="Lot" xml:space="preserve">
-    <value>ลอท</value>
+    <value>ชุด</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>รอบนับ</value>
   </data>
   <data name="PalletErp" xml:space="preserve">
-    <value>พาเลทอ้างอิง</value>
+    <value>พาเลท</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>พาเลทหลัก</value>
+    <value>พาเลท</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>ค้นหา</value>
   </data>
   <data name="SEQ" xml:space="preserve">
-    <value>ลำดับที่</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="START" xml:space="preserve">
     <value>เริ่ม</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>คงคลัง</value>
+    <value>จำนวน</value>
   </data>
 </root>

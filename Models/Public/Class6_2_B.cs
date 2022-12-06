@@ -15,5 +15,7 @@ namespace GoWMS.Server.Models.Public
         public string Movemet_Reason { get; set; }
         public Decimal? Result_Qty { get; set; }
         public string Po_no { get; set; }
+
+        public Decimal? DisResult_Qty { get; set; }
     }
 }

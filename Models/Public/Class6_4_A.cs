@@ -41,5 +41,7 @@ namespace GoWMS.Server.Models.Public
 		public string Location_No { get; set; }
 		public Int32? Status { get; set; }
 
-	}
+        public Decimal? DisResult_Qty { get; set; }
+
+    }
 }

@@ -124,7 +124,7 @@
     <value>เวลาจบ</value>
   </data>
   <data name="Excel" xml:space="preserve">
-    <value>เอกเซล</value>
+    <value>excel</value>
   </data>
   <data name="Location" xml:space="preserve">
     <value>ตำแหน่ง</value>
@@ -136,7 +136,7 @@
     <value>พาเลทหลัก</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>พีดีเอฟ</value>
+    <value>pdf</value>
   </data>
   <data name="Queuetime" xml:space="preserve">
     <value>เวลาคิว</value>

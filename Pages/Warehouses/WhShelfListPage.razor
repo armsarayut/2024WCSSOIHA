@@ -14,6 +14,8 @@
 @using GoWMS.Server.Reports
 @using System.Security.Claims
 
+@inject NavigationManager navigationManager
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 @inject ReportService UserlogService
@@ -32,6 +34,9 @@ else
     <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
 
     <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+        <MudTooltip Text=RackLayout Color="Color.Inherit" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Outlined.ViewColumn" Color="Color.Info" OnClick="OpenLayout"></MudIconButton>
+        </MudTooltip>
         <MudSpacer />
         <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
@@ -226,6 +231,10 @@ else
         {
             var exmsg = e.Message.ToString();
         }
+    }
+    public async Task OpenLayout()
+    {
+        navigationManager.NavigateTo("/2/2_3_1");
     }
 
     #region "Role"

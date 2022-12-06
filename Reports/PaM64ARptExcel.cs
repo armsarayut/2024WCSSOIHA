@@ -50,7 +50,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 4).Value = "'" + rpt.Item_Name;
                     worksheet.Cell(rptRows, 5).Value = "'" + rpt.Su_No;
                     worksheet.Cell(rptRows, 6).Value = "'" + rpt.Batch_Number;
-                    worksheet.Cell(rptRows, 7).Value = "'" + string.Format(VarGlobals.FormatN3, rpt.Result_Qty);
+                    worksheet.Cell(rptRows, 7).Value = "'" + string.Format(VarGlobals.FormatN3, rpt.DisResult_Qty);
 
 
                 }

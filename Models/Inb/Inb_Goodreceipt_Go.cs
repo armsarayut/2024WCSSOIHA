@@ -34,6 +34,9 @@ namespace GoWMS.Server.Models.Inb
 		public DateTime? Docdate { get; set; }
 		public string Docnote { get; set; }
 		public string Grntype { get; set; }
+		public Decimal? DisQuantity { get; set; }
+		public decimal? DisTotalquantity { get; set; }
 
-	}
+
+    }
 }

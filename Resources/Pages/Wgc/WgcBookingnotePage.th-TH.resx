@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ACTION" xml:space="preserve">
+    <value>การกระทำ</value>
+  </data>
+  <data name="ADD" xml:space="preserve">
+    <value>เพิ่ม</value>
+  </data>
   <data name="BatchNo" xml:space="preserve">
     <value>ชุด</value>
   </data>
@@ -142,13 +148,13 @@
     <value>รายการสั่งจอง</value>
   </data>
   <data name="PALLETERP" xml:space="preserve">
-    <value>พาเลทอ้างอิง</value>
+    <value>พาเลท</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
     <value>พาเลท</value>
   </data>
   <data name="PalletNo" xml:space="preserve">
-    <value>เลขพาเลท</value>
+    <value>พาเลท</value>
   </data>
   <data name="Qty" xml:space="preserve">
     <value>จำนวน</value>
@@ -157,16 +163,19 @@
     <value>ค้นหา</value>
   </data>
   <data name="Seq" xml:space="preserve">
-    <value>ลำดับที่</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="SoNo" xml:space="preserve">
-    <value>ใบเบิก</value>
+    <value>ใบงาน</value>
   </data>
   <data name="START" xml:space="preserve">
     <value>สร้างเบิก</value>
   </data>
   <data name="StartPick" xml:space="preserve">
     <value>เริ่มหยิบ</value>
+  </data>
+  <data name="STATUS" xml:space="preserve">
+    <value>มีในคลัง</value>
   </data>
   <data name="Stock" xml:space="preserve">
     <value>คงคลัง</value>

@@ -99,9 +99,14 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                 StringBuilder Sql = new StringBuilder();
-                Sql.AppendLine("select *");
+                Sql.AppendLine("select  efidx, efstatus, created, modified, innovator, device, itemcat, itemcode, itemname, itemunit, itembrand");
+                Sql.AppendLine(",CASE WHEN weightnet IS NULL ");
+                Sql.AppendLine("THEN 1.000 ");
+                Sql.AppendLine("ELSE weightnet ");
+                Sql.AppendLine("END AS weightnet ");
+                Sql.AppendLine(", weightgross, weightuint, vendor");
                 Sql.AppendLine("from wms.mas_item_go");
-                Sql.AppendLine("order by efidx");
+                Sql.AppendLine("order by itemcode");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(Sql.ToString(), con)
                 {
@@ -321,7 +326,7 @@ namespace GoWMS.Server.Data
             return bret;
         }
 
-        public async Task<ResultReturn> UpsertItem(string itemcat, string itemcode, string itemname, string itemunit)
+        public async Task<ResultReturn> UpsertItem(string itemcat, string itemcode, string itemname, string itemunit , decimal qtypallet)
         {
 
             ResultReturn listRet = new ResultReturn
@@ -342,12 +347,14 @@ namespace GoWMS.Server.Data
                 sql.AppendLine("SET itemcat = @itemcat");
                 sql.AppendLine(", itemname = @itemname");
                 sql.AppendLine(", itemunit = @itemunit");
+                sql.AppendLine(", weightnet = @weightnet");
+                
                 sql.AppendLine("WHERE itemcode = @itemcode");
                 sql.AppendLine(";");
                 sql.AppendLine("insert into wms.mas_item_go");
-                sql.AppendLine("(itemcat, itemcode, itemname, itemunit)");
+                sql.AppendLine("(itemcat, itemcode, itemname, itemunit, weightnet)");
                 sql.AppendLine("SELECT ");
-                sql.AppendLine("@uitemcat, @uitemcode, @uitemname, @uitemunit");
+                sql.AppendLine("@uitemcat, @uitemcode, @uitemname, @uitemunit, @uweightnet");
                 sql.AppendLine("WHERE NOT EXISTS (SELECT 1 FROM wms.mas_item_go WHERE itemcode = @usitemcode)");
                 sql.AppendLine(";");
 
@@ -365,8 +372,8 @@ namespace GoWMS.Server.Data
                 string puitemname = "@uitemname";
                 string puitemunit = "@uitemunit";
                 string pusitemcode = "@usitemcode";
-
-
+                string pweightnet = "@weightnet";
+                string puweightnet = "@uweightnet";
 
                 cmd.Parameters.Add(new NpgsqlParameter<string>(pitemcat, itemcat));
                 cmd.Parameters.Add(new NpgsqlParameter<string>(pitemname, itemname));
@@ -377,6 +384,8 @@ namespace GoWMS.Server.Data
                 cmd.Parameters.Add(new NpgsqlParameter<string>(puitemname, itemname));
                 cmd.Parameters.Add(new NpgsqlParameter<string>(puitemunit, itemunit));
                 cmd.Parameters.Add(new NpgsqlParameter<string>(pusitemcode, itemcode));
+                cmd.Parameters.Add(new NpgsqlParameter<decimal>(pweightnet, qtypallet));
+                cmd.Parameters.Add(new NpgsqlParameter<decimal>(puweightnet, qtypallet));
 
 
                 con.Open();

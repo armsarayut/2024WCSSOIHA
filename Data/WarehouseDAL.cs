@@ -120,13 +120,35 @@ namespace GoWMS.Server.Data
             {
                 StringBuilder sqlQurey = new StringBuilder();
 
+                sqlQurey.AppendLine("SELECT subQ.*");
+                sqlQurey.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sqlQurey.AppendLine(" THEN subQ.request_qty ");
+                sqlQurey.AppendLine(" ELSE subQ.request_qty *  t3.weightnet");
+                sqlQurey.AppendLine("END AS disrequest_qty");
+
+                sqlQurey.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sqlQurey.AppendLine(" THEN subQ.stock_qty ");
+                sqlQurey.AppendLine(" ELSE subQ.stock_qty *  t3.weightnet");
+                sqlQurey.AppendLine("END AS disstock_qty");
+
+                sqlQurey.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sqlQurey.AppendLine(" THEN subQ.transfer_qty ");
+                sqlQurey.AppendLine(" ELSE subQ.transfer_qty *  t3.weightnet");
+                sqlQurey.AppendLine("END AS distransfer_qty");
+
+                sqlQurey.AppendLine("FROM (");
                 sqlQurey.AppendLine("select row_number() over(order by t1.item_code asc) AS rn, t1.idx, ");
                 sqlQurey.AppendLine("t1.item_code, t1.item_name, t1.request_qty, t1.unit, t1.su_no, ");
                 sqlQurey.AppendLine("t1.pallet_no, t1.stock_qty, t1.transfer_qty, t1.movement_type ");
                 sqlQurey.AppendLine("from public.sap_storeout t1");
                 sqlQurey.AppendLine("where (1=1)");
                 sqlQurey.AppendLine("and t1.pallet_no = @pallet_no");
-                sqlQurey.AppendLine("order by t1.item_code asc ");
+                sqlQurey.AppendLine(")subQ");
+
+                sqlQurey.AppendLine("left join wms.mas_item_go t3");
+                sqlQurey.AppendLine("on subQ.item_code=t3.itemcode");
+
+                sqlQurey.AppendLine("order by rn asc ");
                 sqlQurey.AppendLine(";");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sqlQurey.ToString(), con)
@@ -151,7 +173,10 @@ namespace GoWMS.Server.Data
                         Stock_Qty = rdr["stock_qty"] == DBNull.Value ? null : (decimal?)rdr["stock_qty"],
                         Transfer_Qty = rdr["transfer_qty"] == DBNull.Value ? null : (decimal?)rdr["transfer_qty"],
                         Movement_Type = rdr["movement_type"].ToString(),
-                        Bcount=false
+                        Bcount=false,
+                        DisRequest_Qty = rdr["request_qty"] == DBNull.Value ? null : (decimal?)rdr["request_qty"],
+                        DisStock_Qty = rdr["disstock_qty"] == DBNull.Value ? null : (decimal?)rdr["disstock_qty"],
+                        DisTransfer_Qty = rdr["distransfer_qty"] == DBNull.Value ? null : (decimal?)rdr["distransfer_qty"],
                     };
                     lstModels.Add(listRead);
                 }
@@ -183,7 +208,8 @@ namespace GoWMS.Server.Data
 
                     if (dRequestqty == 0)
                     {
-                        dStock = (decimal)s.Stock_Qty;
+                        dStock = 1;
+                        //dStock = (decimal)s.Stock_Qty;
                     }
                     else
                     {

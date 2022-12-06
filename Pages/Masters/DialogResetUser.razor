@@ -41,12 +41,8 @@
     [Parameter] public string MPassword { get; set; }
     [Parameter] public string MUsername { get; set; }
     [Parameter] public string MEmail { get; set; }
+    [Parameter] public long MGroup { get; set; }
 
-    /*
-            string MPassword { get; set; }
-            string MUsername { get; set; }
-            string MEmail { get; set; }
-    */
     private HashSet<Usergroups> selectedItems = new HashSet<Usergroups>();
     private IEnumerable<Usergroups> Elements = new List<Usergroups>();
 
@@ -103,17 +99,38 @@
                 sGroup = item.Ugdesc;
             }
 
-            var key = Configuration.GetSection("Appkey")["Pass"].ToString();
-            //var encrypted = Security.EncryptString(Password, key);
-            var encrypted = EncryptProvider.DESEncrypt(MPassword, key);
-
-
-            resultReturn = await Task.Run(() => ObjUserService.UpsertRegister(iCmd, MEmail, encrypted, MUsername));
-
-            if (resultReturn.Bret == true)
+            if (iCmd!=0)
             {
-                this.InsertAuditrial("Setting User : " + MEmail + " in Usergroup : " + sGroup, pageheader);
+                var key = Configuration.GetSection("Appkey")["Pass"].ToString();
+                //var encrypted = Security.EncryptString(Password, key);
+                var encrypted = EncryptProvider.DESEncrypt(MPassword, key);
 
+
+                resultReturn = await Task.Run(() => ObjUserService.UpsertRegister(iCmd, MEmail, encrypted, MUsername));
+
+                if (resultReturn.Bret == true)
+                {
+                    this.InsertAuditrial("Setting User : " + MEmail + " in Usergroup : " + sGroup, pageheader);
+
+                    MudDialog.Close(DialogResult.Ok(true));
+                }
+            }
+            else
+            {
+                var key = Configuration.GetSection("Appkey")["Pass"].ToString();
+                //var encrypted = Security.EncryptString(Password, key);
+                var encrypted = EncryptProvider.DESEncrypt(MPassword, key);
+
+
+                resultReturn = await Task.Run(() => ObjUserService.UpsertRegister(MGroup, MEmail, encrypted, MUsername));
+
+                if (resultReturn.Bret == true)
+                {
+                    this.InsertAuditrial("Setting User : " + MEmail , pageheader);
+
+                    MudDialog.Close(DialogResult.Ok(true));
+                }
+                //this.InsertAuditrial("Cancel Setting User : " + MEmail , pageheader);
                 MudDialog.Close(DialogResult.Ok(true));
             }
 

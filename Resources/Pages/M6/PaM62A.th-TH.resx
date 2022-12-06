@@ -121,10 +121,10 @@
     <value>ชุด</value>
   </data>
   <data name="DATETIME" xml:space="preserve">
-    <value>วัน</value>
+    <value>วันที่</value>
   </data>
   <data name="EXCEL" xml:space="preserve">
-    <value>Excel</value>
+    <value>excel</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>นำออก</value>
@@ -136,10 +136,10 @@
     <value>ชื่อสินค้า</value>
   </data>
   <data name="ORDERNO" xml:space="preserve">
-    <value>คำสั่งซื้อ</value>
+    <value>ใบงาน</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>Pdf</value>
+    <value>pdf</value>
   </data>
   <data name="QTY" xml:space="preserve">
     <value>จำนวน</value>
@@ -148,6 +148,6 @@
     <value>ค้นหา</value>
   </data>
   <data name="SEQ" xml:space="preserve">
-    <value>ลำดับ</value>
+    <value>หน่วยอนุกรม</value>
   </data>
 </root>

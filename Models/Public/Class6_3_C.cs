@@ -16,5 +16,7 @@ namespace GoWMS.Server.Models.Public
         public string Palletcode { get; set; }
         public string Shelfname { get; set; }
         public double? Aging { get; set; }
+
+        public Decimal? DisQty { get; set; }
     }
 }

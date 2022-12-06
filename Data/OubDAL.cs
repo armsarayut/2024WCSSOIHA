@@ -22,14 +22,54 @@ namespace GoWMS.Server.Data
             List<Sap_Storeout> lstobj = new List<Sap_Storeout>();
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
-                NpgsqlCommand cmd = new NpgsqlCommand("select * " +
-                    "from public.sap_storeout  " +
-                    "where  status <@status " +
-                    "order by idx", con)
+                StringBuilder sql = new StringBuilder();
+
+                sql.AppendLine("SELECT subQ.*");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.request_qty");
+                sql.AppendLine(" ELSE subQ.request_qty * t3.weightnet ");
+                sql.AppendLine(" END AS disrequest_qty");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.stock_qty");
+                sql.AppendLine(" ELSE subQ.stock_qty * t3.weightnet ");
+                sql.AppendLine(" END AS disstock_qty");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.transfer_qty");
+                sql.AppendLine(" ELSE subQ.transfer_qty * t3.weightnet ");
+                sql.AppendLine(" END AS distransfer_qty");
+
+
+                sql.AppendLine("FROM(");
+                sql.AppendLine("SELECT *");
+                sql.AppendLine("FROM public.sap_storeout");
+                sql.AppendLine("WHERE status < @status");
+                sql.AppendLine(")subQ");
+
+                sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
+                sql.AppendLine("order by idx");
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
                     CommandType = CommandType.Text
                 };
                 cmd.Parameters.AddWithValue("@status", 3);
+
+
+                //NpgsqlCommand cmd = new NpgsqlCommand("select * " +
+                //    "from public.sap_storeout  " +
+                //    "where  status <@status " +
+                //    "order by idx", con)
+                //{
+                //    CommandType = CommandType.Text
+                //};
+                //cmd.Parameters.AddWithValue("@status", 3);
+
+
                 con.Open();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -80,7 +120,10 @@ namespace GoWMS.Server.Data
                         Ref_Line = rdr["ref_line"].ToString(),
                         Unit = rdr["unit"].ToString(),
                         Vendor_Code = rdr["vendor_code"].ToString(),
-                        Batch_No = rdr["batch_no"].ToString()
+                        Batch_No = rdr["batch_no"].ToString(),
+                        DisRequest_Qty = rdr["disrequest_qty"] == DBNull.Value ? null : (decimal?)rdr["disrequest_qty"],
+                        DisStock_Qty = rdr["disstock_qty"] == DBNull.Value ? null : (decimal?)rdr["disstock_qty"],
+                        DisTransfer_Qty = rdr["distransfer_qty"] == DBNull.Value ? null : (decimal?)rdr["distransfer_qty"]
                     };
                     lstobj.Add(objrd);
                 }
@@ -102,7 +145,13 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine("from wms.inv_stock_go ");
                 Sql.AppendLine("order by itemcode, ");
                 */
+                Sql.AppendLine("SELECT subQ.*");
+                Sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                Sql.AppendLine(" THEN   subQ.apiGR_Quantity");
+                Sql.AppendLine(" ELSE subQ.apiGR_Quantity * t3.weightnet ");
+                Sql.AppendLine(" END AS disapigr_quantity");
 
+                Sql.AppendLine("FROM (");
                 Sql.AppendLine("SELECT t1.efidx , t1.efstatus, t1.created, t1.modified, t1.innovator, t1.device");
                 Sql.AppendLine(", t1.pono, t1.pallettag, t1.itemtag, t1.itemcode, t1.itemname, t1.itembar, t1.unit");
                 Sql.AppendLine(", t1.weightunit, t1.quantity, t1.weight, t1.lotno, t1.totalquantity, t1.totalweight");
@@ -123,6 +172,11 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine("ON t0.lenum = t1.pallettag");
                 Sql.AppendLine("WHERE t0.typor=@typor");
                 Sql.AppendLine("AND t0.efstatus=@efstatus");
+                Sql.AppendLine(")subQ");
+
+                Sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                Sql.AppendLine("ON subQ.apiMaterial_Code=t3.itemcode");
+
                 Sql.AppendLine("order by itemcode ASC, docdate ASC, pallettag ASC");
 
 
@@ -194,7 +248,8 @@ namespace GoWMS.Server.Data
                         Apijob = rdr["apiJob"].ToString(),
                         ApijobCode = rdr["apiJob_Code"].ToString(),
                         Apitypor = rdr["apitypor"].ToString(),
-                        Apikaror = rdr["apikaror"].ToString()
+                        Apikaror = rdr["apikaror"].ToString(),
+                        DisApigrQuantity = rdr["disapigr_quantity"] == DBNull.Value ? null : (decimal?)rdr["disapigr_quantity"],
                     };
                     lstobj.Add(objrd);
                 }
@@ -209,14 +264,53 @@ namespace GoWMS.Server.Data
             List<Sap_Storeout> lstobj = new List<Sap_Storeout>();
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
-                NpgsqlCommand cmd = new NpgsqlCommand("select * " +
-                    "from public.sap_storeout  " +
-                    "where (1=1)  " +
-                    "and status =0 " +
-                    "order by idx", con)
+
+                StringBuilder sql = new StringBuilder();
+
+                sql.AppendLine("SELECT subQ.*");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.request_qty");
+                sql.AppendLine(" ELSE subQ.request_qty * t3.weightnet ");
+                sql.AppendLine(" END AS disrequest_qty");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.stock_qty");
+                sql.AppendLine(" ELSE subQ.stock_qty * t3.weightnet ");
+                sql.AppendLine(" END AS disstock_qty");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.transfer_qty");
+                sql.AppendLine(" ELSE subQ.transfer_qty * t3.weightnet ");
+                sql.AppendLine(" END AS distransfer_qty");
+
+
+                sql.AppendLine("FROM(");
+                sql.AppendLine("SELECT *");
+                sql.AppendLine("FROM public.sap_storeout");
+                sql.AppendLine("WHERE status = @status");
+                sql.AppendLine(")subQ");
+
+                sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                sql.AppendLine("ON subQ.item_code=t3.itemcode");
+
+                sql.AppendLine("order by idx");
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
                     CommandType = CommandType.Text
                 };
+                cmd.Parameters.AddWithValue("@status", 0);
+
+
+                //NpgsqlCommand cmd = new NpgsqlCommand("select * " +
+                //    "from public.sap_storeout  " +
+                //    "where (1=1)  " +
+                //    "and status =0 " +
+                //    "order by idx", con)
+                //{
+                //    CommandType = CommandType.Text
+                //};
                 con.Open();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -267,7 +361,10 @@ namespace GoWMS.Server.Data
                         Ref_Line = rdr["ref_line"].ToString(),
                         Unit = rdr["unit"].ToString(),
                         Vendor_Code = rdr["vendor_code"].ToString(),
-                        Batch_No = rdr["batch_no"].ToString()
+                        Batch_No = rdr["batch_no"].ToString(),
+                        DisRequest_Qty = rdr["disrequest_qty"] == DBNull.Value ? null : (decimal?)rdr["disrequest_qty"],
+                        DisStock_Qty = rdr["disstock_qty"] == DBNull.Value ? null : (decimal?)rdr["disstock_qty"],
+                        DisTransfer_Qty = rdr["distransfer_qty"] == DBNull.Value ? null : (decimal?)rdr["distransfer_qty"]
                     };
                     lstobj.Add(objrd);
                 }

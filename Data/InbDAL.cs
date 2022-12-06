@@ -135,6 +135,15 @@ namespace GoWMS.Server.Data
                 //sql.AppendLine("where efstatus <> @efstatus");
                 //sql.AppendLine("order by efidx");
 
+                sql.AppendLine("SELECT subQ.*");
+                sql.AppendLine(", CASE WHEN t3.weightnet ISNULL");
+                sql.AppendLine("THEN subQ.GR_Quantity");
+                sql.AppendLine("ELSE subQ.GR_Quantity * t3.weightnet");
+                sql.AppendLine("END AS disgr_quantity");
+
+     
+
+                sql.AppendLine("FROM (");
                 sql.AppendLine("SELECT efidx, efstatus, created, modified, innovator, device,lenum as Package_ID, lenum as Roll_ID");
                 sql.AppendLine(",matnr as Material_Code, '-' as Material_Description");
                 //sql.AppendLine(",SUBSTRING (matnr FROM 2) as Material_Code, '-' as Material_Description");
@@ -143,6 +152,9 @@ namespace GoWMS.Server.Data
                 sql.AppendLine(",lgnum as  WH_Code, lgnum as Warehouse, matnr as Job, matbatch as Job_Code, typor, karor");
                 sql.AppendLine("FROM api.postasrsorders");
                 sql.AppendLine("WHERE typor=@typor");
+                sql.AppendLine(")subQ");
+                sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                sql.AppendLine("ON subQ.Material_Code=t3.itemcode");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
@@ -195,7 +207,9 @@ namespace GoWMS.Server.Data
                         Docby = rdr["WH_Code"].ToString(),
                         Docdate = rdr["Receiving_Date"] == DBNull.Value ? null : (DateTime?)rdr["Receiving_Date"],
                         Docnote = rdr["Warehouse"].ToString(),
-                        Grntype = rdr["typor"].ToString()
+                        Grntype = rdr["typor"].ToString(),
+                        DisQuantity = rdr["disgr_quantity"] == DBNull.Value ? null : (decimal?)rdr["disgr_quantity"],
+                        DisTotalquantity = rdr["disgr_quantity"] == DBNull.Value ? null : (decimal?)rdr["disgr_quantity"],
                     };
                     lstobj.Add(objrd);
                 }
@@ -270,10 +284,39 @@ namespace GoWMS.Server.Data
             {
                 StringBuilder sql = new StringBuilder();
 
+
+                sql.AppendLine("SELECT subQ.*");
+                sql.AppendLine(", CASE WHEN t3.weightnet ISNULL");
+                sql.AppendLine("THEN subQ.quantity");
+                sql.AppendLine("ELSE subQ.quantity * t3.weightnet");
+                sql.AppendLine("END AS disquantity");
+                sql.AppendLine(", CASE WHEN t3.weightnet ISNULL");
+                sql.AppendLine("THEN subQ.weight");
+                sql.AppendLine("ELSE subQ.weight * t3.weightnet");
+                sql.AppendLine("END AS disweight");
+                sql.AppendLine(", subQ.lotno");
+                sql.AppendLine(", CASE WHEN t3.weightnet ISNULL");
+                sql.AppendLine("THEN subQ.totalquantity");
+                sql.AppendLine("ELSE subQ.totalquantity * t3.weightnet");
+                sql.AppendLine("END AS Distotalquantity");
+                sql.AppendLine(", CASE WHEN t3.weightnet ISNULL");
+                sql.AppendLine("THEN subQ.totalweight");
+                sql.AppendLine("ELSE subQ.totalweight * t3.weightnet");
+                sql.AppendLine("END AS distotalweight");
+                sql.AppendLine("FROM (");
                 sql.AppendLine("select * ");
                 sql.AppendLine("from wms.inb_goodreceive_go");
                 sql.AppendLine("where efstatus <> @efstatus");
+                sql.AppendLine(")subQ");
+                sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                sql.AppendLine("ON subQ.itemcode=t3.itemcode");
                 sql.AppendLine("order by efidx");
+
+
+                //sql.AppendLine("select * ");
+                //sql.AppendLine("from wms.inb_goodreceive_go");
+                //sql.AppendLine("where efstatus <> @efstatus");
+                //sql.AppendLine("order by efidx");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
@@ -321,7 +364,12 @@ namespace GoWMS.Server.Data
                         Storagetime = rdr["storagetime"] == DBNull.Value ? null : (DateTime?)rdr["storagetime"],
                         Storageno = rdr["storageno"].ToString(),
                         Storagearea = rdr["storagearea"].ToString(),
-                        Storagebin = rdr["storagebin"].ToString()
+                        Storagebin = rdr["storagebin"].ToString(),
+                        DisQuantity = rdr["disquantity"] == DBNull.Value ? null : (decimal?)rdr["disquantity"],
+                        DisWeight = rdr["disweight"] == DBNull.Value ? null : (decimal?)rdr["disweight"],
+                        DisTotalquantity = rdr["distotalquantity"] == DBNull.Value ? null : (decimal?)rdr["distotalquantity"],
+                        DisTotalweight = rdr["distotalweight"] == DBNull.Value ? null : (decimal?)rdr["distotalweight"]
+
                     };
                     lstobj.Add(objrd);
                 }

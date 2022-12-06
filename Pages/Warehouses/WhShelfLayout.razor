@@ -1,0 +1,1819 @@
+﻿@page "/2/2_3_1"
+@using System
+@using System.IO
+@using System.Linq
+@using System.Text
+@using System.Threading
+@using System.Threading.Tasks
+@using System.Collections.Generic
+
+@using GoWMS.Server.Data
+@using GoWMS.Server.Controllers
+@using GoWMS.Server.Models
+@using GoWMS.Server.Models.Inv
+@using GoWMS.Server.Reports
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+@inject ReportService UserlogService
+@inject InvService ObjService
+@inject UserServices OpjUserService
+@inject IStringLocalizer<WhShelfLayout> L
+@attribute [Authorize]
+
+<MudGrid>
+    <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+
+<MudItem xs="12">BANK:01
+    <MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:1</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:2</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:3</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:4</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:5</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:6</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:7</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:8</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:9</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:10</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:11</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:12</MudPaper>
+    </MudItem>
+    <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px">BAY:13</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:5</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B01L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B01L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B01L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B02L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B02L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B02L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B03L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B03L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B03L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B04L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B04L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B04L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B05L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B05L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B05L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B06L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B06L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B06L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B07L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B07L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B07L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B08L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B08L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B08L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B09L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B09L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B09L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B10L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B10L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B10L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B11L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B11L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B11L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B12L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B12L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B12L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B13L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B13L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B13L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:4</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B01L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B01L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B01L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B02L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B02L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B02L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B03L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B03L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B03L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B04L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B04L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B04L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B05L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B05L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B05L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B06L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B06L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B06L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B07L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B07L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B07L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B08L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B08L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B08L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B09L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B09L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B09L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B10L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B10L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B10L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B11L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B11L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B11L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B12L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B12L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B12L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B13L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B13L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B13L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:3</MudPaper>
+    </MudItem>
+   <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B01L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B01L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B01L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B02L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B02L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B02L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B03L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B03L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B03L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B04L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B04L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B04L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B05L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B05L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B05L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B06L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B06L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B06L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B07L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B07L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B07L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B08L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B08L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B08L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B09L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B09L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B09L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B10L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B10L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B10L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B11L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B11L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B11L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B12L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B12L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B12L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B13L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B13L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B13L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:2</MudPaper>
+    </MudItem>
+   <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B01L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B01L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B01L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B02L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B02L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B02L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B03L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B03L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B03L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B04L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B04L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B04L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B05L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B05L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B05L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B06L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B06L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B06L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B07L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B07L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B07L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B08L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B08L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B08L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B09L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B09L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B09L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B10L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B10L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B10L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B11L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B11L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B11L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B12L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B12L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B12L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B13L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B13L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B13L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:1</MudPaper>
+    </MudItem>
+  <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B01L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B01L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B01L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B02L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B02L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B02L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B03L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B03L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B03L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B04L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B04L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B04L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B05L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B05L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B05L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B06L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B06L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B06L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B07L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B07L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B07L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B08L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B08L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B08L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B09L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B09L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B09L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B10L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B10L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B10L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B11L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B11L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B11L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B12L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B12L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B12L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B1B13L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B1B13L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B1B13L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+</MudItem>
+
+<MudItem xs="12">BANK:02
+     <MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:1</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:2</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:3</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:4</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:5</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:6</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:7</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:8</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:9</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:10</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:11</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:12</MudPaper>
+    </MudItem>
+    <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px">BAY:13</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:5</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B01L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B01L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B01L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B02L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B02L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B02L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B03L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B03L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B03L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B04L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B04L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B04L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B05L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B05L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B05L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B06L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B06L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B06L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B07L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B07L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B07L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B08L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B08L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B08L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B09L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B09L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B09L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B10L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B10L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B10L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B11L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B11L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B11L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B12L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B12L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B12L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B13L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B13L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B13L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:4</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B01L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B01L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B01L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B02L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B02L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B02L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B03L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B03L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B03L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B04L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B04L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B04L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B05L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B05L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B05L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B06L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B06L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B06L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B07L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B07L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B07L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B08L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B08L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B08L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B09L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B09L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B09L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B10L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B10L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B10L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B11L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B11L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B11L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B12L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B12L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B12L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B13L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B13L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B13L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:3</MudPaper>
+    </MudItem>
+   <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B01L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B01L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B01L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B02L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B02L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B02L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B03L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B03L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B03L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B04L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B04L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B04L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B05L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B05L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B05L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B06L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B06L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B06L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B07L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B07L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B07L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B08L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B08L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B08L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B09L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B09L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B09L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B10L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B10L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B10L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B11L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B11L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B11L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B12L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B12L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B12L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B13L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B13L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B13L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:2</MudPaper>
+    </MudItem>
+   <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B01L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B01L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B01L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B02L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B02L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B02L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B03L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B03L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B03L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B04L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B04L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B04L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B05L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B05L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B05L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B06L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B06L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B06L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B07L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B07L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B07L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B08L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B08L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B08L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B09L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B09L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B09L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B10L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B10L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B10L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B11L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B11L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B11L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B12L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B12L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B12L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B13L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B13L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B13L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:1</MudPaper>
+    </MudItem>
+  <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B01L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B01L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B01L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B02L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B02L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B02L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B03L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B03L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B03L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B04L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B04L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B04L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B07L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B07L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B07L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B08L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B08L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B08L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B10L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B10L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B10L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B11L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B11L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B11L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B12L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B12L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B12L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B2B13L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B2B13L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B2B13L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+</MudItem>
+
+<MudItem xs="12">
+    BANK:03
+    <MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:1</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:2</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:3</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:4</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:5</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:6</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:7</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:8</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:9</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:10</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:11</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:12</MudPaper>
+    </MudItem>
+    <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px">BAY:13</MudPaper>
+    </MudItem>
+</MudGrid>
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:5</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B01L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B01L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B01L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B02L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B02L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B02L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B03L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B03L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B03L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B04L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B04L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B04L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B05L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B05L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B05L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B06L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B06L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B06L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B07L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B07L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B07L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B08L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B08L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B08L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B09L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B09L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B09L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B10L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B10L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B10L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B11L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B11L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B11L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B12L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B12L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B12L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B13L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B13L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B13L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:4</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B01L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B01L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B01L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B02L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B02L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B02L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B03L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B03L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B03L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B04L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B04L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B04L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B05L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B05L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B05L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B06L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B06L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B06L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B07L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B07L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B07L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B08L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B08L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B08L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B09L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B09L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B09L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B10L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B10L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B10L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B11L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B11L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B11L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B12L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B12L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B12L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B13L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B13L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B13L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:3</MudPaper>
+    </MudItem>
+   <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B01L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B01L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B01L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B02L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B02L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B02L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B03L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B03L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B03L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B04L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B04L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B04L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B05L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B05L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B05L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B06L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B06L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B06L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B07L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B07L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B07L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B08L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B08L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B08L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B09L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B09L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B09L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B10L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B10L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B10L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B11L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B11L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B11L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B12L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B12L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B12L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B13L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B13L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B13L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:2</MudPaper>
+    </MudItem>
+   <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B01L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B01L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B01L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B02L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B02L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B02L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B03L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B03L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B03L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B04L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B04L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B04L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B05L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B05L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B05L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B06L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B06L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B06L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B07L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B07L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B07L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B08L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B08L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B08L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B09L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B09L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B09L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B10L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B10L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B10L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B11L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B11L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B11L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B12L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B12L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B12L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B13L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B13L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B13L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:1</MudPaper>
+    </MudItem>
+  <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B01L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B01L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B01L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B02L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B02L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B02L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B03L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B03L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B03L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B04L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B04L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B04L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B07L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B07L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B07L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B08L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B08L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B08L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B10L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B10L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B10L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B11L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B11L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B11L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B12L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B12L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B12L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B3B13L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B3B13L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B3B13L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+    </MudItem>
+</MudGrid>
+
+</MudItem>
+
+    <MudItem xs="12">
+        BANK:04
+        <MudGrid Spacing="@spacing" Justify="Justify.Center">
+     <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px"></MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:1</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:2</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:3</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:4</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">BAY:5</MudPaper>
+    </MudItem>
+  <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:6</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:7</MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:8</MudPaper>
+    </MudItem>
+    <MudItem>
+       <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:9</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:10</MudPaper>
+    </MudItem>
+    <MudItem>
+         <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:11</MudPaper>
+    </MudItem>
+    <MudItem>
+          <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px" >BAY:12</MudPaper>
+    </MudItem>
+    <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Height="50px" Width="100px">BAY:13</MudPaper>
+    </MudItem>
+</MudGrid>
+
+        <MudGrid Spacing="@spacing" Justify="Justify.Center">
+             <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:5</MudPaper>
+    </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B01L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B01L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B01L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B02L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B02L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B02L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B03L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B03L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B03L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B04L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B04L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B04L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B07L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B07L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B07L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B08L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B08L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B08L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+               <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B10L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B10L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B10L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B11L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B11L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B11L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B12L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B12L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B12L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B13L5.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B13L5.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B13L5.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="@spacing" Justify="Justify.Center">
+             <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:4</MudPaper>
+    </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B01L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B01L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B01L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B02L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B02L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B02L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B03L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B03L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B03L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B04L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B04L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B04L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+               <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B07L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B07L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B07L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B08L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B08L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B08L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B10L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B10L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B10L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B11L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B11L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B11L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B12L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B12L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B12L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B13L4.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B13L4.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B13L4.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="@spacing" Justify="Justify.Center">
+             <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:3</MudPaper>
+    </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B01L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B01L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B01L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B02L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B02L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B02L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B03L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B03L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B03L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B04L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B04L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B04L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B05L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B05L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B05L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B06L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B06L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B06L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B07L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B07L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B07L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B08L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B08L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B08L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B09L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B09L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B09L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B10L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B10L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B10L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B11L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B11L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B11L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B12L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B12L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B12L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B13L3.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B13L3.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B13L3.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="@spacing" Justify="Justify.Center">
+             <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:2</MudPaper>
+    </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B01L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B01L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B01L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B02L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B02L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B02L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B03L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B03L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B03L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B04L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B04L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B04L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B05L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B05L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B05L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B06L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B06L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B06L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B07L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B07L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B07L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B08L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B08L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B08L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B09L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B09L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B09L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B10L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B10L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B10L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B11L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B11L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B11L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B12L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B12L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B12L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B13L2.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B13L2.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B13L2.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Spacing="@spacing" Justify="Justify.Center">
+             <MudItem>
+        <MudPaper Class="d-flex align-center justify-center mud-width-full "  Height="50px" Width="100px">LEVEL:1</MudPaper>
+    </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B01L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B01L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B01L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B02L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B02L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B02L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B03L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B03L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B03L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B04L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B04L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B04L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B07L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B07L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B07L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B08L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B08L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B08L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="color:White; background:White;" Height="50px" Width="100px"></MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B10L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B10L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B10L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B11L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B11L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B11L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B12L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B12L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B12L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+            <MudItem>
+                <MudPaper Class="d-flex align-center justify-center mud-width-full " Style="@($"color:{B4B13L1.Select(s => s.Focecolor).FirstOrDefault()}; background:{B4B13L1.Select(s => s.Backcolor).FirstOrDefault()};")" Height="50px" Width="100px">@B4B13L1.Select(s => s.Suno).FirstOrDefault()</MudPaper>
+            </MudItem>
+        </MudGrid>
+
+    </MudItem>
+</MudGrid>
+
+
+
+
+
+@code {
+    public int spacing { get; set; } = 1;
+    private Vrpt_shelf_listInfo selectedItem = null;
+    private HashSet<Vrpt_shelf_listInfo> selectedItems = new HashSet<Vrpt_shelf_listInfo>();
+    private IEnumerable<Vrpt_shelf_listInfo> Elements = new List<Vrpt_shelf_listInfo>();
+
+    private List<Vrpt_shelf_listInfo> B1B01L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B02L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B03L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B04L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B05L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B06L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B07L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B08L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B09L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B10L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B11L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B12L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B13L1 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B1B01L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B02L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B03L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B04L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B05L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B06L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B07L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B08L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B09L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B10L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B11L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B12L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B13L2 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B1B01L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B02L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B03L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B04L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B05L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B06L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B07L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B08L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B09L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B10L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B11L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B12L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B13L3 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B1B01L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B02L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B03L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B04L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B05L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B06L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B07L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B08L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B09L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B10L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B11L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B12L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B13L4 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B1B01L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B02L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B03L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B04L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B05L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B06L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B07L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B08L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B09L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B10L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B11L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B12L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B1B13L5 = new List<Vrpt_shelf_listInfo>();
+
+
+
+    private List<Vrpt_shelf_listInfo> B2B01L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B02L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B03L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B04L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B2B05L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B2B06L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B07L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B08L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B2B09L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B10L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B11L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B12L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B13L1 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B2B01L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B02L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B03L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B04L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B05L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B06L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B07L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B08L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B09L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B10L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B11L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B12L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B13L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B14L2 = new List<Vrpt_shelf_listInfo>();
+
+    private List<Vrpt_shelf_listInfo> B2B01L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B02L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B03L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B04L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B05L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B06L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B07L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B08L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B09L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B10L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B11L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B12L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B13L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B14L3 = new List<Vrpt_shelf_listInfo>();
+
+    private List<Vrpt_shelf_listInfo> B2B01L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B02L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B03L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B04L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B05L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B06L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B07L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B08L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B09L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B10L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B11L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B12L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B13L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B14L4 = new List<Vrpt_shelf_listInfo>();
+
+    private List<Vrpt_shelf_listInfo> B2B01L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B02L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B03L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B04L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B05L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B06L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B07L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B08L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B09L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B10L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B11L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B12L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B13L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B2B14L5 = new List<Vrpt_shelf_listInfo>();
+
+
+
+    private List<Vrpt_shelf_listInfo> B3B01L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B02L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B03L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B04L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B3B05L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B3B06L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B07L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B08L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B3B09L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B10L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B11L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B12L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B13L1 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B3B01L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B02L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B03L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B04L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B05L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B06L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B07L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B08L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B09L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B10L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B11L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B12L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B13L2 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B3B01L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B02L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B03L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B04L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B05L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B06L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B07L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B08L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B09L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B10L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B11L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B12L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B13L3 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B3B01L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B02L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B03L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B04L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B05L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B06L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B07L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B08L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B09L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B10L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B11L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B12L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B13L4 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B3B01L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B02L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B03L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B04L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B05L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B06L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B07L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B08L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B09L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B10L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B11L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B12L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B3B13L5 = new List<Vrpt_shelf_listInfo>();
+
+
+
+    private List<Vrpt_shelf_listInfo> B4B01L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B02L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B03L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B04L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B05L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B06L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B07L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B08L1 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B09L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B10L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B11L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B12L1 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B13L1 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B4B01L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B02L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B03L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B04L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B05L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B06L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B07L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B08L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B09L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B10L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B11L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B12L2 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B13L2 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B4B01L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B02L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B03L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B04L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B05L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B06L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B07L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B08L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B09L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B10L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B11L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B12L3 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B13L3 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B4B01L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B02L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B03L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B04L4 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B05L4 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B06L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B07L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B08L4 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B09L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B10L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B11L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B12L4 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B13L4 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> B4B01L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B02L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B03L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B04L5 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B05L5 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B06L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B07L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B08L5 = new List<Vrpt_shelf_listInfo>();
+    //private List<Vrpt_shelf_listInfo> B4B09L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B10L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B11L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B12L5 = new List<Vrpt_shelf_listInfo>();
+    private List<Vrpt_shelf_listInfo> B4B13L5 = new List<Vrpt_shelf_listInfo>();
+
+
+    private List<Vrpt_shelf_listInfo> Bank01 = new List<Vrpt_shelf_listInfo>();
+
+      public string mPagedesc { get; set; } = "2.3.1.RackLayout";
+    private string mPagename { get; set; } = "/2/2_3_1";
+
+    private readonly string pageheader = "2.3.1.RackLayout";
+    string sUsername { get; set; } = "";
+    string sRole { get; set; } = "";
+    string sGroupID { get; set; } = "";
+    string sUserID { get; set; } = "";
+    List<Userroleinfo> Roles = new List<Userroleinfo>();
+    private ResultReturn resultReturn = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        InvService objCS = new InvService();
+
+        //////// Intial Menu and Privilege//////
+        resultReturn = await Task.Run(() => OpjUserService.InsertMenu(mPagename, mPagedesc));
+        resultReturn = await Task.Run(() => OpjUserService.InsertPrivilege(mPagename));
+        //////////////////////////////////////////
+        /////
+        await GetUserAthu();
+        this.InsertAuditrial("View", pageheader);
+        Roles = await Task.Run(() => OpjUserService.GetUserRole(mPagename, long.Parse(sGroupID)));
+
+
+        Elements = await Task.Run(() => objCS.GetShelfList());
+
+        await Task.Run(() => RenderLayoutBank1());
+      
+        await Task.Run(() => RenderLayoutBank2());
+
+        await Task.Run(() => RenderLayoutBank3());
+
+        await Task.Run(() => RenderLayoutBank4());
+
+    }
+
+    async Task GetUserAthu()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        sGroupID = user.Claims.FirstOrDefault(
+        c => c.Type == ClaimTypes.Role)?.Value;
+
+        sUserID = user.Claims.FirstOrDefault(
+            c => c.Type == ClaimTypes.Actor)?.Value;
+    }
+
+    private void InsertAuditrial(String actdesc, String munname)
+    {
+        bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
+    }
+
+    private async Task RenderLayoutBank1()
+    {
+
+        if(Elements.Count()>0)
+        {
+
+            //var s = Elements.Where(x => x.Shelfbank == 1).ToList();
+
+            //Bank01 = Elements.Where(x => x.Shelfbank == 1).ToList();
+            Int16 iBank =1;
+
+            B1B01L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 1).ToList();
+            B1B02L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 1).ToList();
+            B1B03L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 1).ToList();
+            B1B04L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 1).ToList();
+            B1B05L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 1).ToList();
+            B1B06L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 1).ToList();
+            B1B07L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 1).ToList();
+            B1B08L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 1).ToList();
+            B1B09L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 1).ToList();
+            B1B10L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 1).ToList();
+            B1B11L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 1).ToList();
+            B1B12L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 1).ToList();
+            B1B13L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 1).ToList();
+    
+            B1B01L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 2).ToList();
+            B1B02L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 2).ToList();
+            B1B03L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 2).ToList();
+            B1B04L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 2).ToList();
+            B1B05L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 2).ToList();
+            B1B06L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 2).ToList();
+            B1B07L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 2).ToList();
+            B1B08L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 2).ToList();
+            B1B09L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 2).ToList();
+            B1B10L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 2).ToList();
+            B1B11L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 2).ToList();
+            B1B12L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 2).ToList();
+            B1B13L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 2).ToList();
+
+            B1B01L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 3).ToList();
+            B1B02L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 3).ToList();
+            B1B03L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 3).ToList();
+            B1B04L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 3).ToList();
+            B1B05L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 3).ToList();
+            B1B06L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 3).ToList();
+            B1B07L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 3).ToList();
+            B1B08L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 3).ToList();
+            B1B09L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 3).ToList();
+            B1B10L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 3).ToList();
+            B1B11L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 3).ToList();
+            B1B12L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 3).ToList();
+            B1B13L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 3).ToList();
+
+            B1B01L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 4).ToList();
+            B1B02L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 4).ToList();
+            B1B03L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 4).ToList();
+            B1B04L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 4).ToList();
+            B1B05L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 4).ToList();
+            B1B06L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 4).ToList();
+            B1B07L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 4).ToList();
+            B1B08L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 4).ToList();
+            B1B09L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 4).ToList();
+            B1B10L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 4).ToList();
+            B1B11L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 4).ToList();
+            B1B12L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 4).ToList();
+            B1B13L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 4).ToList();
+
+            B1B01L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 5).ToList();
+            B1B02L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 5).ToList();
+            B1B03L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 5).ToList();
+            B1B04L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 5).ToList();
+            B1B05L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 5).ToList();
+            B1B06L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 5).ToList();
+            B1B07L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 5).ToList();
+            B1B08L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 5).ToList();
+            B1B09L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 5).ToList();
+            B1B10L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 5).ToList();
+            B1B11L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 5).ToList();
+            B1B12L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 5).ToList();
+            B1B13L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 5).ToList();
+
+
+            Int16 iff = 0;
+
+
+
+        }
+    }
+     private async Task RenderLayoutBank2()
+    {
+            Int16 iBank =2;
+
+            B2B01L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 1).ToList();
+            B2B02L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 1).ToList();
+            B2B03L1 = Elements.Where(x => x.Shelfbank ==iBank && x.Shelfbay == 3 && x.Shelflevel == 1).ToList();
+            B2B04L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 1).ToList();
+            //B2B05L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 1).ToList();
+            //B2B06L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 1).ToList();
+            B2B07L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 1).ToList();
+            B2B08L1 = Elements.Where(x => x.Shelfbank ==iBank && x.Shelfbay == 8 && x.Shelflevel == 1).ToList();
+            //B2B09L1 = Elements.Where(x => x.Shelfbank == 1 && x.Shelfbay == 9 && x.Shelflevel == 1).ToList();
+            B2B10L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 1).ToList();
+            B2B11L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 1).ToList();
+            B2B12L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 1).ToList();
+            B2B13L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 1).ToList();
+    
+            B2B01L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 2).ToList();
+            B2B02L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 2).ToList();
+            B2B03L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 2).ToList();
+            B2B04L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 2).ToList();
+            B2B05L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 2).ToList();
+            B2B06L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 2).ToList();
+            B2B07L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 2).ToList();
+            B2B08L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 2).ToList();
+            B2B09L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 2).ToList();
+            B2B10L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 2).ToList();
+            B2B11L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 2).ToList();
+            B2B12L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 2).ToList();
+            B2B13L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 2).ToList();
+
+            B2B01L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 3).ToList();
+            B2B02L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 3).ToList();
+            B2B03L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 3).ToList();
+            B2B04L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 3).ToList();
+            B2B05L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 3).ToList();
+            B2B06L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 3).ToList();
+            B2B07L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 3).ToList();
+            B2B08L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 3).ToList();
+            B2B09L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 3).ToList();
+            B2B10L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 3).ToList();
+            B2B11L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 3).ToList();
+            B2B12L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 3).ToList();
+            B2B13L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 3).ToList();
+
+            B2B01L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 4).ToList();
+            B2B02L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 4).ToList();
+            B2B03L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 4).ToList();
+            B2B04L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 4).ToList();
+            B2B05L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 4).ToList();
+            B2B06L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 4).ToList();
+            B2B07L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 4).ToList();
+            B2B08L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 4).ToList();
+            B2B09L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 4).ToList();
+            B2B10L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 4).ToList();
+            B2B11L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 4).ToList();
+            B2B12L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 4).ToList();
+            B2B13L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 4).ToList();
+
+            B2B01L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 5).ToList();
+            B2B02L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 5).ToList();
+            B2B03L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 5).ToList();
+            B2B04L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 5).ToList();
+            B2B05L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 5).ToList();
+            B2B06L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 5).ToList();
+            B2B07L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 5).ToList();
+            B2B08L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 5).ToList();
+            B2B09L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 5).ToList();
+            B2B10L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 5).ToList();
+            B2B11L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 5).ToList();
+            B2B12L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 5).ToList();
+            B2B13L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 5).ToList();
+
+
+            Int16 iff = 0;
+    }
+     private async Task RenderLayoutBank3()
+    {
+        Int16 iBank =3;
+
+            B3B01L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 1).ToList();
+            B3B02L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 1).ToList();
+            B3B03L1 = Elements.Where(x => x.Shelfbank ==iBank && x.Shelfbay == 3 && x.Shelflevel == 1).ToList();
+            B3B04L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 1).ToList();
+            //B3B05L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 1).ToList();
+            //B3B06L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 1).ToList();
+            B3B07L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 1).ToList();
+            B3B08L1 = Elements.Where(x => x.Shelfbank ==iBank && x.Shelfbay == 8 && x.Shelflevel == 1).ToList();
+            //B3B09L1 = Elements.Where(x => x.Shelfbank == 1 && x.Shelfbay == 9 && x.Shelflevel == 1).ToList();
+            B3B10L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 1).ToList();
+            B3B11L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 1).ToList();
+            B3B12L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 1).ToList();
+            B3B13L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 1).ToList();
+    
+            B3B01L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 2).ToList();
+            B3B02L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 2).ToList();
+            B3B03L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 2).ToList();
+            B3B04L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 2).ToList();
+            B3B05L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 2).ToList();
+            B3B06L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 2).ToList();
+            B3B07L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 2).ToList();
+            B3B08L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 2).ToList();
+            B3B09L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 2).ToList();
+            B3B10L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 2).ToList();
+            B3B11L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 2).ToList();
+            B3B12L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 2).ToList();
+            B3B13L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 2).ToList();
+
+            B3B01L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 3).ToList();
+            B3B02L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 3).ToList();
+            B3B03L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 3).ToList();
+            B3B04L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 3).ToList();
+            B3B05L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 3).ToList();
+            B3B06L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 3).ToList();
+            B3B07L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 3).ToList();
+            B3B08L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 3).ToList();
+            B3B09L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 3).ToList();
+            B3B10L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 3).ToList();
+            B3B11L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 3).ToList();
+            B3B12L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 3).ToList();
+            B3B13L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 3).ToList();
+
+            B3B01L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 4).ToList();
+            B3B02L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 4).ToList();
+            B3B03L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 4).ToList();
+            B3B04L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 4).ToList();
+            B3B05L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 4).ToList();
+            B3B06L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 4).ToList();
+            B3B07L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 4).ToList();
+            B3B08L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 4).ToList();
+            B3B09L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 4).ToList();
+            B3B10L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 4).ToList();
+            B3B11L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 4).ToList();
+            B3B12L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 4).ToList();
+            B3B13L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 4).ToList();
+
+            B3B01L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 5).ToList();
+            B3B02L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 5).ToList();
+            B3B03L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 5).ToList();
+            B3B04L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 5).ToList();
+            B3B05L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 5).ToList();
+            B3B06L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 5).ToList();
+            B3B07L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 5).ToList();
+            B3B08L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 5).ToList();
+            B3B09L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 5).ToList();
+            B3B10L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 5).ToList();
+            B3B11L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 5).ToList();
+            B3B12L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 5).ToList();
+            B3B13L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 5).ToList();
+
+
+            Int16 iff = 0;
+    }
+     private async Task RenderLayoutBank4()
+    {
+        Int16 iBank =4;
+
+            B4B01L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 1).ToList();
+            B4B02L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 1).ToList();
+            B4B03L1 = Elements.Where(x => x.Shelfbank ==iBank && x.Shelfbay == 3 && x.Shelflevel == 1).ToList();
+            B4B04L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 1).ToList();
+            //B4B05L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 1).ToList();
+            //B4B06L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 1).ToList();
+            B4B07L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 1).ToList();
+            B4B08L1 = Elements.Where(x => x.Shelfbank ==iBank && x.Shelfbay == 8 && x.Shelflevel == 1).ToList();
+            //B409L1 = Elements.Where(x => x.Shelfbank == 1 && x.Shelfbay == 9 && x.Shelflevel == 1).ToList();
+            B4B10L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 1).ToList();
+            B4B11L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 1).ToList();
+            B4B12L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 1).ToList();
+            B4B13L1 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 1).ToList();
+    
+            B4B01L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 2).ToList();
+            B4B02L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 2).ToList();
+            B4B03L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 2).ToList();
+            B4B04L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 2).ToList();
+            B4B05L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 2).ToList();
+            B4B06L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 2).ToList();
+            B4B07L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 2).ToList();
+            B4B08L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 2).ToList();
+            B4B09L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 2).ToList();
+            B4B10L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 2).ToList();
+            B4B11L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 2).ToList();
+            B4B12L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 2).ToList();
+            B4B13L2 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 2).ToList();
+
+            B4B01L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 3).ToList();
+            B4B02L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 3).ToList();
+            B4B03L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 3).ToList();
+            B4B04L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 3).ToList();
+            B4B05L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 3).ToList();
+            B4B06L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 3).ToList();
+            B4B07L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 3).ToList();
+            B4B08L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 3).ToList();
+            B4B09L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 3).ToList();
+            B4B10L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 3).ToList();
+            B4B11L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 3).ToList();
+            B4B12L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 3).ToList();
+            B4B13L3 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 3).ToList();
+
+            B4B01L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 4).ToList();
+            B4B02L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 4).ToList();
+            B4B03L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 4).ToList();
+            B4B04L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 4).ToList();
+            //B4B05L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 4).ToList();
+            //B4B06L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 4).ToList();
+            B4B07L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 4).ToList();
+            B4B08L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 4).ToList();
+            //B4B09L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 4).ToList();
+            B4B10L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 4).ToList();
+            B4B11L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 4).ToList();
+            B4B12L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 4).ToList();
+            B4B13L4 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 4).ToList();
+
+            B4B01L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 1 && x.Shelflevel == 5).ToList();
+            B4B02L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 2 && x.Shelflevel == 5).ToList();
+            B4B03L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 3 && x.Shelflevel == 5).ToList();
+            B4B04L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 4 && x.Shelflevel == 5).ToList();
+            //B4B05L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 5 && x.Shelflevel == 5).ToList();
+            //B4B06L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 6 && x.Shelflevel == 5).ToList();
+            B4B07L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 7 && x.Shelflevel == 5).ToList();
+            B4B08L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 8 && x.Shelflevel == 5).ToList();
+            //B4B09L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 9 && x.Shelflevel == 5).ToList();
+            B4B10L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 10 && x.Shelflevel == 5).ToList();
+            B4B11L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 11 && x.Shelflevel == 5).ToList();
+            B4B12L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 12 && x.Shelflevel == 5).ToList();
+            B4B13L5 = Elements.Where(x => x.Shelfbank == iBank && x.Shelfbay == 13 && x.Shelflevel == 5).ToList();
+
+
+            Int16 iff = 0;
+    }
+
+
+
+
+
+   
+
+}
+

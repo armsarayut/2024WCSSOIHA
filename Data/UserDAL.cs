@@ -512,7 +512,45 @@ namespace GoWMS.Server.Data
             return listRet;
         }
 
+        public bool CancleUser(long idx)
+        {
+            bool bRet = false;
+            using NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            try
+            {
 
+
+
+                StringBuilder sql = new StringBuilder();
+
+                using var cmd = new NpgsqlCommand(connection: con, cmdText: null);
+                sql.AppendLine("DELETE FROM public.set_users");
+                sql.AppendLine("WHERE idx = @idx");
+                sql.AppendLine(";");
+
+                cmd.Parameters.AddWithValue("@idx", idx);
+
+
+                con.Open();
+                cmd.CommandText = sql.ToString();
+                cmd.ExecuteNonQuery();
+
+                bRet = true;
+
+            }
+            catch (NpgsqlException ex)
+            {
+                Log.Error(ex.ToString());
+                bRet = false;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+
+            return bRet;
+        }
 
 
         public bool SetPrivilege(long idx, bool acc, bool add, bool edi, bool del, bool rpt, bool apv)

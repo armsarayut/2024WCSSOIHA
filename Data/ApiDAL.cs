@@ -214,10 +214,29 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                 StringBuilder sql = new StringBuilder();
+                sql.AppendLine("SELECT subQ.*");
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.gr_quantity");
+                sql.AppendLine(" ELSE subQ.gr_quantity * t3.weightnet ");
+                sql.AppendLine(" END AS disgr_quantity");
+
+                sql.AppendLine(", CASE WHEN t3.weightnet IS NULL ");
+                sql.AppendLine(" THEN   subQ.gr_quantity_kg");
+                sql.AppendLine(" ELSE subQ.gr_quantity_kg * t3.weightnet ");
+                sql.AppendLine(" END AS disgr_quantity_kg");
+
+                sql.AppendLine("FROM (");
                 sql.AppendLine("select * ");
                 sql.AppendLine("from wms.api_receivingorders_go");
                 sql.AppendLine("Where Lpncode = @pallet");
+                sql.AppendLine(")subQ");
+
+                sql.AppendLine("LEFT JOIN wms.mas_item_go t3");
+                sql.AppendLine("ON subQ.material_code=t3.itemcode");
+
                 sql.AppendLine("order by efidx");
+
+
                 NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
                     CommandType = CommandType.Text
@@ -252,7 +271,9 @@ namespace GoWMS.Server.Data
                         Document_Number = rdr["document_number"].ToString(),
                         Job = rdr["job"].ToString(),
                         Job_Code = rdr["job_code"].ToString(),
-                        Lpncode = rdr["Lpncode"].ToString()
+                        Lpncode = rdr["Lpncode"].ToString(),
+                        DisGr_Quantity = rdr["disgr_quantity"] == DBNull.Value ? null : (decimal?)rdr["disgr_quantity"],
+                        DisGr_Quantity_Kg = rdr["gr_quantity_kg"] == DBNull.Value ? null : (decimal?)rdr["gr_quantity_kg"]
                     };
                     lstobj.Add(objrd);
                 }
@@ -284,6 +305,29 @@ namespace GoWMS.Server.Data
             con.Close();
         }
 
+
+        public void CancelReceivingOrdersBypackID( string pack)
+        {
+            using NpgsqlConnection con = new NpgsqlConnection(connectionString);
+            StringBuilder sql = new StringBuilder();
+
+            sql.AppendLine("delete wms.api_receivingorders_go");
+            sql.AppendLine("Where package_id = @Pack ;");
+
+            NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+            {
+                CommandType = CommandType.Text
+            };
+
+
+            cmd.Parameters.AddWithValue("@Pack", pack);
+  
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+
         public void UpdateReceivingOrdersBypallet(string pallet)
         {
             using NpgsqlConnection con = new NpgsqlConnection(connectionString);
@@ -302,6 +346,8 @@ namespace GoWMS.Server.Data
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+
 
         public void UpdateReceivingOrdersBypack(string pallet, string pack)
         {
@@ -331,7 +377,7 @@ namespace GoWMS.Server.Data
             {
 
                 StringBuilder sql = new StringBuilder();
-                //sql.AppendLine("Delete from wms.api_receivingorders_go Where package_id = @package_idchk ;");
+          
                 sql.AppendLine("Insert into wms.api_receivingorders_go");
                 sql.AppendLine("(package_id, roll_id, material_code, material_description, receiving_Date, gr_quantity, unit, gr_quantity_kg, wh_code, warehouse, locationno,  document_number, job, job_code, lpncode, matcategory)");
                 sql.AppendLine("Values");
@@ -339,7 +385,6 @@ namespace GoWMS.Server.Data
                 using var cmd = new NpgsqlCommand(connection: con, cmdText: null);
 
                 var i = 0;
-
                 foreach (var s in listOrder)
                 {
                     if (i != 0) sql.AppendLine(",");
@@ -411,7 +456,41 @@ namespace GoWMS.Server.Data
             }
         }
 
-        public async Task InsertDeliveryOrder(List<Api_Deliveryorder_Go> listOrder)
+        public async Task<Int64> GetHaveReceivingOrdersBypack(string pallet, string packid)
+        {
+            Int64 lRet = 0;
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+
+                StringBuilder sql = new StringBuilder();
+
+                sql.AppendLine("select count(lpncode) ");
+                sql.AppendLine("from wms.api_receivingorders_go");
+                sql.AppendLine("where package_id=@package_id");
+                sql.AppendLine("and lpncode<>@lpncode");
+
+
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+
+                cmd.Parameters.AddWithValue("@package_id", packid);
+                cmd.Parameters.AddWithValue("@lpncode", pallet);
+
+                con.Open();
+                lRet = Convert.ToInt64(cmd.ExecuteScalar());
+
+                con.Close();
+            }
+
+            return lRet;
+        }
+
+
+
+            public async Task InsertDeliveryOrder(List<Api_Deliveryorder_Go> listOrder)
         {
             using NpgsqlConnection con = new NpgsqlConnection(connectionString);
             try

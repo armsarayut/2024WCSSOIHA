@@ -130,7 +130,7 @@
     <value>คำอธิบาย(ไทย)</value>
   </data>
   <data name="EXCEL" xml:space="preserve">
-    <value>Excel</value>
+    <value>excel</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>นำออก</value>
@@ -139,7 +139,7 @@
     <value>เครื่องจักร</value>
   </data>
   <data name="PDF" xml:space="preserve">
-    <value>Pdf</value>
+    <value>pdf</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>ค้นหา</value>

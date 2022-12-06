@@ -17,6 +17,7 @@ namespace GoWMS.Server.Models.Public
         public string Shelfname { get; set; }
         public Int32? Srm_No { get; set; }
 
-        
+        public decimal? DisQty { get; set; }
+
     }
 }

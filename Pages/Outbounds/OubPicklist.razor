@@ -55,7 +55,7 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Item_Code)">@L["ITEMCODE"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Su_No)">@L["DNSEQ"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Po_No)">@L["BATCH"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Request_Qty)">@L["QTY"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.DisRequest_Qty)">@L["QTY"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Pallet_No)">@L["PALLETGO"]</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -64,7 +64,7 @@ else
             <MudTd DataLabel=@L["ITEMCODE"]>@context.Item_Code</MudTd>
             <MudTd DataLabel=@L["DNSEQ"]>@context.Su_No</MudTd>
             <MudTd DataLabel=@L["BATCH"]>@context.Po_No</MudTd>           
-            <MudTd DataLabel=@L["QTY"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.Request_Qty)</MudTd>
+            <MudTd DataLabel=@L["QTY"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisRequest_Qty)</MudTd>
             <MudTd DataLabel=@L["PALLETGO"]>@context.Pallet_No</MudTd>
         </RowTemplate>
         <PagerContent>

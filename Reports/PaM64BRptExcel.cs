@@ -47,7 +47,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 3).Value = "'" + rpt.Item_Code;
                     worksheet.Cell(rptRows, 4).Value = "'" + rpt.Item_Name;
                     worksheet.Cell(rptRows, 5).Value = "'" + rpt.Batch_number;
-                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN3, rpt.Result_Qty);
+                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN3, rpt.DisResult_Qty);
 
                 }
                 #endregion

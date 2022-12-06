@@ -133,19 +133,19 @@
     <value>พาเลทอ้างอิง</value>
   </data>
   <data name="PalletGo" xml:space="preserve">
-    <value>พาเลทหลัก</value>
+    <value>พาเลท</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>ค้นหา</value>
   </data>
   <data name="SEQ" xml:space="preserve">
-    <value>ลำดับที่</value>
+    <value>หน่วยอนุกรม</value>
   </data>
   <data name="START" xml:space="preserve">
     <value>สั่งเบิก</value>
   </data>
   <data name="Stock" xml:space="preserve">
-    <value>คงคลัง</value>
+    <value>จำนวน</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>รวม</value>

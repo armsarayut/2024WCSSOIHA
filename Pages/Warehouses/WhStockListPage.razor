@@ -65,7 +65,7 @@ else
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallettag)">@L["SEQ"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Docno)">@L["Lot"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Quantity)">@L["Stock"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.DisQuantity)">@L["Stock"]</MudTableSortLabel></MudTh>
               
                 
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallteno)">@L["PalletGo"]</MudTableSortLabel></MudTh>
@@ -77,7 +77,7 @@ else
                 <MudTd DataLabel=@L["ItemCode"]>@context.Itemcode</MudTd>
                 <MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>
                  <MudTd DataLabel=@L["Lot"]>@context.Docno</MudTd>
-                <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, @context.Quantity)</MudTd>
+                <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, @context.DisQuantity)</MudTd>
 
             @*    <MudTd DataLabel=@L["ItemName"]>@context.Itemname</MudTd>*@
                 
@@ -112,12 +112,12 @@ else
             <HeaderContent>
                 <MudTh><MudTableSortLabel SortBy="new Func<InvStockSum, object>(x=>x.Item_code)">@L["ItemCode"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<InvStockSum, object>(x=>x.lot)">@L["Lot"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<InvStockSum, object>(x=>x.Totalstock)">@L["TotalStock"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<InvStockSum, object>(x=>x.DisTotalstock)">@L["TotalStock"]</MudTableSortLabel></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@L["ItemCode"]>@context.Item_code</MudTd>
                 <MudTd DataLabel=@L["Lot"]>@context.lot</MudTd>
-                <MudTd DataLabel=@L["TotalStock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, @context.Totalstock) </MudTd>
+                <MudTd DataLabel=@L["TotalStock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, @context.DisTotalstock) </MudTd>
             </RowTemplate>
             <PagerContent>
                 <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
