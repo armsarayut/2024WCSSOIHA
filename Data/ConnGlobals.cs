@@ -16,11 +16,11 @@ namespace GoWMS.Server.Data
         }
 
         #region Local Database
-        private static readonly string NpgServer = "localhost"; // Develop
-        //private static readonly string NpgServer = "203.159.93.86"; // QAS Host
+        //private static readonly string NpgServer = "localhost"; // Develop
+        private static readonly string NpgServer = "203.159.93.86"; // QAS Host
         //private static readonly string NpgServer = "10.144.12.162"; // QAS OnSite
 
-        private static readonly string NpgDB = "GOPG-KIMBALL-DEV"; // Develop
+        private static readonly string NpgDB = "GOPG-YSS-DEV"; // Develop
         //private static readonly string NpgDB = "Gowes"; // Production
 
         private static readonly string NpgPort = "5434";
@@ -51,7 +51,7 @@ namespace GoWMS.Server.Data
             _PortString = root.GetSection("DBHost").GetSection("Port").Value;
             _Dbname = root.GetSection("DBHost").GetSection("Name").Value;
 
-            bool bLocal = false;
+            bool bLocal = true;
 
             if (bLocal)
             {
