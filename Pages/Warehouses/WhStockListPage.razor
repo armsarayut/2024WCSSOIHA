@@ -63,8 +63,8 @@ else
             </ToolBarContent>
             <HeaderContent>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallettag)">@L["SEQ"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Docno)">@L["Lot"]</MudTableSortLabel></MudTh>
+                @*<MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Pallettag)">@L["SEQ"]</MudTableSortLabel></MudTh>*@
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.Docnote)">@L["Lot"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoInfo, object>(x=>x.DisQuantity)">@L["Stock"]</MudTableSortLabel></MudTh>
               
                 
@@ -75,8 +75,8 @@ else
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel=@L["ItemCode"]>@context.Itemcode</MudTd>
-                <MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>
-                 <MudTd DataLabel=@L["Lot"]>@context.Docno</MudTd>
+                @*<MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>*@
+                 <MudTd DataLabel=@L["Lot"]>@context.Docnote</MudTd>
                 <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, @context.DisQuantity)</MudTd>
 
             @*    <MudTd DataLabel=@L["ItemName"]>@context.Itemname</MudTd>*@

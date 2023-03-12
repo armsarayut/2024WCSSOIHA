@@ -231,14 +231,26 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                  StringBuilder Sql = new StringBuilder();
+                //Sql.AppendLine("SELECT t1.modified, t1.srm_no, t1.shelf_no, t1.shelfcode, t1.shelfname");
+                //Sql.AppendLine(", t1.shelfbank, t1.shelfframe, t1.shelfbay, t1.shelflevel, t1.shelfstatus");
+                //Sql.AppendLine(", t1.lpncode, t1.refercode, t1.actual_weight, t1.actual_size, t1.desc_size, t1.st_desc, t1.backcolor, t1.focecolor");
+                //Sql.AppendLine(",t2.pallettag as suno");
+                //Sql.AppendLine("from  wcs.vrpt_shelf_list t1");
+                //Sql.AppendLine("left join wms.inv_stock_go t2");
+                //Sql.AppendLine("On t1.lpncode=t2.pallteno");
+                //Sql.AppendLine("order by shelf_no asc");
+
+
                 Sql.AppendLine("SELECT t1.modified, t1.srm_no, t1.shelf_no, t1.shelfcode, t1.shelfname");
                 Sql.AppendLine(", t1.shelfbank, t1.shelfframe, t1.shelfbay, t1.shelflevel, t1.shelfstatus");
                 Sql.AppendLine(", t1.lpncode, t1.refercode, t1.actual_weight, t1.actual_size, t1.desc_size, t1.st_desc, t1.backcolor, t1.focecolor");
-                Sql.AppendLine(",t2.pallettag as suno");
+                Sql.AppendLine(",'-' as suno");
+                //Sql.AppendLine(",t2.pallettag as suno");
                 Sql.AppendLine("from  wcs.vrpt_shelf_list t1");
-                Sql.AppendLine("left join wms.inv_stock_go t2");
-                Sql.AppendLine("On t1.lpncode=t2.pallteno");
+                //Sql.AppendLine("left join wms.inv_stock_go t2");
+                //Sql.AppendLine("On t1.lpncode=t2.pallteno");
                 Sql.AppendLine("order by shelf_no asc");
+
 
                 NpgsqlCommand cmd = new NpgsqlCommand(Sql.ToString(), con)
                 {

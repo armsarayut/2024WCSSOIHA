@@ -42,6 +42,7 @@
   <ItemGroup>
     <Folder Include="Models\NewFolder\" />
     <Folder Include="Pages\Admins\" />
+    <Folder Include="Pages\Apis\" />
     <Folder Include="Pages\Services\" />
     <Folder Include="Pages\Setups\" />
   </ItemGroup>

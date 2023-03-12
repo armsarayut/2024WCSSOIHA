@@ -74,7 +74,7 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docdate)">@L["DNDate"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pono)">@L["DNNo"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pallettag)">@L["DNSeq"]</MudTableSortLabel></MudTh>
+            @*<MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pallettag)">@L["DNSeq"]</MudTableSortLabel></MudTh>*@
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docnote)">@L["BatchNo"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.DisQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pallteno)">@L["Pallet"]</MudTableSortLabel></MudTh>
@@ -84,7 +84,7 @@ else
              <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Docdate).ToString(VarGlobals.FormatDT)</MudTd>
             <MudTd DataLabel="@L["DNNo"]">@context.Pono</MudTd>
             <MudTd DataLabel="@L["ItemCode"]">@context.Itemcode</MudTd>
-            <MudTd DataLabel=@L["DNSeq"]>@context.Pallettag</MudTd>
+           @* <MudTd DataLabel=@L["DNSeq"]>@context.Pallettag</MudTd>*@
              <MudTd DataLabel="@L["BatchNo"]">@context.Docnote</MudTd>
             <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisQuantity)</MudTd>
             <MudTd DataLabel="@L["Pallet"]">@context.Pallteno</MudTd>

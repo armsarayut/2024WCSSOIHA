@@ -3,6 +3,7 @@
 @using GoWMS.Server.Controllers
 @using GoWMS.Server.Models
 @using GoWMS.Server.Models.Api
+@using GoWMS.Server.Models.Yss
 @using System.Security.Claims
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -64,7 +65,7 @@ else
               Height="@(fixed_header || fixed_footer ?"500px":"")"
               Dense="@dense" Hover="@hover"
               Bordered="@bordered"
-              Striped="@striped" Filter="new Func<ApiKardexconfirmStatus,bool>(FilterFunc)" @bind-SelectedItem="selectedItem">
+          Striped="@striped" Filter="new Func<Posttaskorders,bool>(FilterFunc)" @bind-SelectedItem="selectedItem">
         <ToolBarContent>
 
             <MudSpacer />
@@ -77,62 +78,61 @@ else
 
         <HeaderContent>
             <MudTh>@L["STATUS"]</MudTh>
-            <MudTh>@L["JOB"]</MudTh>
-            <MudTh>@L["PART"]</MudTh>
-            <MudTh>@L["SU"]</MudTh>
-            <MudTh>@L["BIN"]</MudTh>
-            <MudTh>@L["MSGID"]</MudTh>
-            <MudTh>@L["MSGNO"]</MudTh>
-            <MudTh>@L["MSGTY"]</MudTh>
-            <MudTh>@L["TEXT"]</MudTh>
-            <MudTh>@L["FailedRead"]</MudTh>
-            <MudTh>@L["FailedConf"]</MudTh>
-            <MudTh>@L["Created"]</MudTh>
-            <MudTh>@L["Sent"]</MudTh>
+            <MudTh>@L["TASKTYPE"]</MudTh>
+            <MudTh>@L["TASKNO"]</MudTh>
+            <MudTh>@L["BATCHNO"]</MudTh>
+            <MudTh>@L["ITEMNO"]</MudTh>
+            <MudTh>@L["QTY"]</MudTh>
+            <MudTh>@L["PALLET"]</MudTh>
+             <MudTh>@L["CREATEBY"]</MudTh>
+            <MudTh>@L["CREATED"]</MudTh>
+            <MudTh>@L["GATE"]</MudTh>
+            <MudTh>@L["TRANSACTION"]</MudTh>
+            
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel=@L["STATUS"]>
-                @if(context.kardexconfirm_status=="Warning")
+                @if(context.Efstatus==0)
+                {
+                    <MudAlert Severity="Severity.Normal"
+                      Variant="Variant.Filled"
+                      Dense="true"
+                      >
+                        Intransit
+                    </MudAlert>
+                }
+                else @if (context.Efstatus == 1)
                 {
                     <MudAlert Severity="Severity.Warning"
                       Variant="Variant.Filled"
                       Dense="true"
-                      Style="@($"color:{context.focecolor}; background:{context.backcolor};")">
-                        @context.kardexconfirm_status
-                    </MudAlert>
-                }
-                else @if(context.kardexconfirm_status=="Error")
-                {
-                    <MudAlert Severity="Severity.Error"
-                      Variant="Variant.Filled"
-                      Dense="true"
-                      Style="@($"color:{context.focecolor}; background:{context.backcolor};")">
-                        @context.kardexconfirm_status
+                      >
+                        Putaway
                     </MudAlert>
                 }
                 else
                 {
-                    <MudAlert Severity="Severity.Info"
+                    <MudAlert Severity="Severity.Success"
                       Variant="Variant.Filled"
                       Dense="true"
-                      Style="@($"color:{context.focecolor}; background:{context.backcolor};")">
-                        @context.kardexconfirm_status
+                      >
+                        Onstock
                     </MudAlert>
                 }
                
             </MudTd>
-            <MudTd DataLabel=@L["JOB"]>@context.karor</MudTd>
-            <MudTd DataLabel=@L["PART"]>@context.matnr</MudTd>
-            <MudTd DataLabel=@L["SU"]>@context.lenum</MudTd>
-            <MudTd DataLabel=@L["BIN"]>@context.kxbin</MudTd>
-            <MudTd DataLabel=@L["MSGID"]>@context.msgid</MudTd>
-            <MudTd DataLabel=@L["MSGNO"]>@context.msgno</MudTd>
-            <MudTd DataLabel=@L["MSGTY"]>@context.msgty</MudTd>
-            <MudTd DataLabel=@L["TEXT"]>@context.text</MudTd>
-            <MudTd DataLabel=@L["FailedRead"]>@context.failed_read</MudTd>
-            <MudTd DataLabel=@L["FailedConf"]>@context.failed_conf</MudTd>
-            <MudTd DataLabel=@L["Created"]>@context.created</MudTd>
-            <MudTd DataLabel=@L["Sent"]>@context.send_to_kardex</MudTd>
+            
+            <MudTd DataLabel=@L["TASKTYPE"]>@context.Tasktype</MudTd>
+            <MudTd DataLabel=@L["TASKNO"]>@context.Taskno</MudTd>
+            <MudTd DataLabel=@L["BATCHNO"]>@context.Batchno</MudTd>
+            <MudTd DataLabel=@L["ITEMNO"]>@context.Itemno</MudTd>
+            <MudTd DataLabel=@L["QTY"]>@context.Qty</MudTd>
+            <MudTd DataLabel=@L["PALLET"]>@context.Palletcode</MudTd>
+            <MudTd DataLabel=@L["CREATEBY"]>@context.Sendby</MudTd>
+           <MudTd DataLabel=@L["CREATED"]>@context.Senddate</MudTd>
+            <MudTd DataLabel=@L["GATE"]>@context.Pickgate</MudTd>
+            <MudTd DataLabel=@L["TRANSACTION"]>@context.Created</MudTd>
+           
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
@@ -142,10 +142,10 @@ else
 }
 
 @code {
-    public string mPagedesc { get; set; } = "9.1.Confirmation";
+    public string mPagedesc { get; set; } = "9.1.API-Moniroting";
     private string mPagename { get; set; } = "/9/9_1";
 
-    private string pageheader { get; set; } = "9.1.Confirmation";
+    private string pageheader { get; set; } = "9.1.API-Moniroting";
     private string msgAction = "Enter Palletcode";
     private string mPalletcode { get; set; } = "";
     private string mPackid { get; set; } = "";
@@ -157,9 +157,9 @@ else
     private bool fixed_header = true;
     private bool fixed_footer = true;
     private string searchString = "";
-    private ApiKardexconfirmStatus selectedItem = null;
-    private HashSet<ApiKardexconfirmStatus> selectedItems = new HashSet<ApiKardexconfirmStatus>();
-    private IEnumerable<ApiKardexconfirmStatus> Elements = new List<ApiKardexconfirmStatus>();
+    private Posttaskorders selectedItem = null;
+    private HashSet<Posttaskorders> selectedItems = new HashSet<Posttaskorders>();
+    private IEnumerable<Posttaskorders> Elements = new List<Posttaskorders>();
 
     public int elevation = 0;
     private ResultReturn resultReturn = null;
@@ -200,7 +200,7 @@ else
          fromDateTime = fromDate.Value.Date;
         toDateTime = toDate.Value.Date.AddDays(1);
 
-        Elements = await Task.Run(() => objCS.GetApiKardexconfirmStatusesBySended(fromDateTime.Value, toDateTime.Value));
+        Elements = await Task.Run(() => objCS.GetAllApiPosttaskordersBySended(fromDateTime.Value, toDateTime.Value));
     }
 
     async Task GetUserAthu()
@@ -221,17 +221,17 @@ else
     }
 
 
-    private bool FilterFunc(ApiKardexconfirmStatus element)
+    private bool FilterFunc(Posttaskorders element)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if (element.karor.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Taskno.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.matnr.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Tasktype.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.lenum.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        if (element.Batchno.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if ($"{element.kxbin} {element.msgid} {element.msgno} {element.msgty} {element.text} {element.failed_read} {element.failed_conf} {element.kardexconfirm_status}".Contains(searchString))
+        if ($"{element.Itemno} {element.Palletcode } {element.Sendby}".Contains(searchString))
             return true;
         return false;
     }
@@ -248,7 +248,7 @@ else
     {
         DateTime newDateTimeFM = fromDate.Value.Date;
         DateTime newDateTimeTO = toDate.Value.Date.AddDays(1);
-        Elements = await Task.Run(() => ObjErpService.GetApiKardexconfirmStatusesBySended(newDateTimeFM, newDateTimeTO));
+        Elements = await Task.Run(() => ObjErpService.GetAllApiPosttaskordersBySended(newDateTimeFM, newDateTimeTO));
     }
 
 

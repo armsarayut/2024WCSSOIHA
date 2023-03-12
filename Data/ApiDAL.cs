@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GoWMS.Server.Controllers;
 using GoWMS.Server.Models;
 using GoWMS.Server.Models.Api;
+using GoWMS.Server.Models.Yss;
 using NpgsqlTypes;
 using System.Text;
 using Serilog;
@@ -1310,6 +1311,112 @@ namespace GoWMS.Server.Data
             strReturn = sRet;
 
             return bRet;
+        }
+
+
+
+
+        public IEnumerable<Posttaskorders> GetAllApiPosttaskorders()
+        {
+            List<Posttaskorders> lstobj = new List<Posttaskorders>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.AppendLine("select efidx, efstatus, created, modified, innovator, device, taskno, tasktype, palletcode, itemno, batchno, qty, senddate, sendby, pickgate ");
+                sql.AppendLine("from api.posttaskorders");
+                sql.AppendLine("order by efidx");
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+                con.Open();
+
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Posttaskorders objrd = new Posttaskorders
+                    {
+                        Efidx = rdr["efidx"] == DBNull.Value ? null : (Int64?)rdr["efidx"],
+                        Efstatus = rdr["efstatus"] == DBNull.Value ? null : (Int32?)rdr["efstatus"],
+                        Created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"],
+                        Innovator = rdr["innovator"] == DBNull.Value ? null : (Int64?)rdr["innovator"],
+                        Device = rdr["device"].ToString(),
+
+                        Taskno = rdr["taskno"].ToString(),
+                        Tasktype = rdr["tasktype"].ToString(),
+                        Palletcode = rdr["palletcode"].ToString(),
+                        Itemno = rdr["itemno"].ToString(),
+                        Batchno = rdr["batchno"].ToString(),
+                        Qty = rdr["qty"] == DBNull.Value ? null : (decimal?)rdr["qty"],
+                        Senddate = rdr["senddate"] == DBNull.Value ? null : (DateTime?)rdr["senddate"],
+                        Sendby = rdr["sendby"].ToString(),
+                        Pickgate = rdr["pickgate"].ToString()
+
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
+
+        public IEnumerable<Posttaskorders> GetAllApiPosttaskordersBySended(DateTime dtStart, DateTime dtStop)
+        {
+            List<Posttaskorders> lstobj = new List<Posttaskorders>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                StringBuilder sql = new StringBuilder();
+                //sql.AppendLine("select karor, matnr, lgnum, lenum, typor, ");
+                //sql.AppendLine("kxbin, kquit2, msgid, msgno, msgty, text, ");
+                //sql.AppendLine("failed_read, failed_conf, kardexconfirm_status, ");
+                //sql.AppendLine("created, send_to_kardex,backcolor, focecolor");
+                //sql.AppendLine("from api.vkardexconfirm_status");
+                //sql.AppendLine("where (send_to_kardex >= @startdate AND send_to_kardex < @stopdate)");
+                //sql.AppendLine("order by send_to_kardex");
+
+                sql.AppendLine("select efidx, efstatus, created, modified, innovator, device, taskno, tasktype, palletcode, itemno, batchno, qty, senddate, sendby, pickgate ");
+                sql.AppendLine("from api.posttaskorders");
+                sql.AppendLine("where (senddate >= @startdate AND senddate < @stopdate)");
+                sql.AppendLine("order by efidx");
+
+                NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                {
+                    CommandType = CommandType.Text
+                };
+                cmd.Parameters.AddWithValue("@startdate", NpgsqlDbType.Timestamp, dtStart);
+                cmd.Parameters.AddWithValue("@stopdate", NpgsqlDbType.Timestamp, dtStop);
+                con.Open();
+
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Posttaskorders objrd = new Posttaskorders
+                    {
+                        Efidx = rdr["efidx"] == DBNull.Value ? null : (Int64?)rdr["efidx"],
+                        Efstatus = rdr["efstatus"] == DBNull.Value ? null : (Int32?)rdr["efstatus"],
+                        Created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
+                        Modified = rdr["modified"] == DBNull.Value ? null : (DateTime?)rdr["modified"],
+                        Innovator = rdr["innovator"] == DBNull.Value ? null : (Int64?)rdr["innovator"],
+                        Device = rdr["device"].ToString(),
+
+                        Taskno = rdr["taskno"].ToString(),
+                        Tasktype = rdr["tasktype"].ToString(),
+                        Palletcode = rdr["palletcode"].ToString(),
+                        Itemno = rdr["itemno"].ToString(),
+                        Batchno = rdr["batchno"].ToString(),
+                        Qty = rdr["qty"] == DBNull.Value ? null : (decimal?)rdr["qty"],
+                        Senddate = rdr["senddate"] == DBNull.Value ? null : (DateTime?)rdr["senddate"],
+                        Sendby = rdr["sendby"].ToString(),
+                        Pickgate = rdr["pickgate"].ToString()
+
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
         }
 
     }

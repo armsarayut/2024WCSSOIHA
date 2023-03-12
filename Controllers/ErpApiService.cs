@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using GoWMS.Server.Data;
 using GoWMS.Server.Models;
 using GoWMS.Server.Models.Api;
+using GoWMS.Server.Models.Yss;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Bcpg;
+
 
 namespace GoWMS.Server.Controllers
 {
@@ -165,6 +166,18 @@ namespace GoWMS.Server.Controllers
         public  Task<Int64> GetHaveReceivingOrdersBypack(string pallet, string packid)
         {
             return objDAL.GetHaveReceivingOrdersBypack(pallet, packid);
+        }
+
+        public IEnumerable<Posttaskorders> GetAllApiPosttaskorders()
+        {
+            List<Posttaskorders> retlist = objDAL.GetAllApiPosttaskorders().ToList();
+            return retlist;
+        }
+
+        public IEnumerable<Posttaskorders> GetAllApiPosttaskordersBySended(DateTime dtStart, DateTime dtStop)
+        {
+            List<Posttaskorders> retlist = objDAL.GetAllApiPosttaskordersBySended(dtStart, dtStop).ToList();
+            return retlist;
         }
 
     }

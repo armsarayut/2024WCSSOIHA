@@ -121,13 +121,13 @@
     <value>ACTION</value>
   </data>
   <data name="BatchNo" xml:space="preserve">
-    <value>BATCH</value>
+    <value>BATCHNO</value>
   </data>
   <data name="DNDate" xml:space="preserve">
     <value>DATE</value>
   </data>
   <data name="DNNo" xml:space="preserve">
-    <value>JOB</value>
+    <value>TASKNO</value>
   </data>
   <data name="DNSeq" xml:space="preserve">
     <value>SU</value>
@@ -139,13 +139,13 @@
     <value>GRDatetime</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEMNO</value>
   </data>
   <data name="ItemName" xml:space="preserve">
-    <value>NAME</value>
+    <value>ITEMNAME</value>
   </data>
   <data name="LotNo" xml:space="preserve">
-    <value>LOT</value>
+    <value>BATCHNO</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Good Receive</value>

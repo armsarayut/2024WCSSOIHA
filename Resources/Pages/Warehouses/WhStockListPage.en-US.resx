@@ -124,16 +124,16 @@
     <value>Excel</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEMNO</value>
   </data>
   <data name="ItemName" xml:space="preserve">
-    <value>NAME</value>
+    <value>ITEMNAME</value>
   </data>
   <data name="Location" xml:space="preserve">
     <value>LOCATION</value>
   </data>
   <data name="Lot" xml:space="preserve">
-    <value>BATCH</value>
+    <value>BATCHNO</value>
   </data>
   <data name="pageHeader" xml:space="preserve">
     <value>Stock Summary</value>
