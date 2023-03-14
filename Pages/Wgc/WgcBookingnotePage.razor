@@ -37,23 +37,23 @@
 @if (Elements == null)
 {
     // <p><em>Loading...</em></p>
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
 
     @if (StkGroup)
     {
-        <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+        <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
-        <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+        <MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
 @*            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Done"
                Color="Color.Success"
                OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>*@
 
-             <MudButtonGroup Color="Color.Default" Variant="Variant.Outlined">
-            <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
-                <MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="Color.Tertiary" OnClick=@AddNewGr>@L["ADD"]</MudButton>
+             <MudButtonGroup Color="MudBlazor.Color.Default" Variant="Variant.Outlined">
+            <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="MudBlazor.Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="MudBlazor.Color.Tertiary" OnClick=@AddNewGr>@L["ADD"]</MudButton>
              </MudButtonGroup>
 
             <MudSpacer />
@@ -97,13 +97,13 @@ else
                     @if(context.Quantity>0)
                     {
                        <MudTd DataLabel="@L["STATUS"]">
-                            <MudIcon Icon="@Icons.Filled.EmojiEmotions" Color="Color.Success" />
+                            <MudIcon Icon="@Icons.Filled.EmojiEmotions" Color="MudBlazor.Color.Success" />
                        </MudTd>
                     }
                     else
                     {
                          <MudTd DataLabel="@L["STATUS"]">
-                            <MudIcon Icon="@Icons.Filled.MoodBad" Color="Color.Error" />
+                            <MudIcon Icon="@Icons.Filled.MoodBad" Color="MudBlazor.Color.Error" />
                         </MudTd>
                     }
                     <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Apicreated).ToString(VarGlobals.FormatDT)</MudTd>
@@ -113,7 +113,7 @@ else
                     <MudTd DataLabel="@L["BatchNo"]">@context.ApijobCode</MudTd>
                     <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisApigrQuantity)</MudTd>
                      <MudTd DataLabel="@L["ACTION"]">
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="MudBlazor.Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
                     </MudTd>
            
                 
@@ -139,7 +139,7 @@ else
             }
         </MessageContent>
         <YesButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
         </YesButton>
     </MudMessageBox>
 }
@@ -296,7 +296,7 @@ else
         var parameters = new DialogParameters();
         parameters.Add("ContentText", sContentText);
         parameters.Add("ButtonText", "Yes");
-        parameters.Add("Color", Color.Success);
+        parameters.Add("Color", MudBlazor.Color.Success);
 
         var formModal = DialogService.Show<DialogTemplateExample_Dialog>("Confirm", parameters);
 

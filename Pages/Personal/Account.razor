@@ -4,8 +4,8 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
-<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Account</MudText>
-<MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6">
+<MudText Typo="Typo.h5" Color="MudBlazor.Color.Primary" Class="mb-4">Account</MudText>
+<MudTabs Elevation="25" Color="MudBlazor.Color.Transparent" Rounded="true" PanelClass="mt-6">
     <MudTabPanel Text="General">
         <MudGrid>
             <MudItem xs="12" sm="4" md="3">
@@ -25,8 +25,8 @@
                             </MudAvatar>
                                 
                         </div>
-                        <MudText Align="Align.Center">@FirstName @LastName</MudText>
-                        <MudText Align="Align.Center">@JobTitle</MudText>
+                        <MudText Align="MudBlazor.Align.Center">@FirstName @LastName</MudText>
+                        <MudText Align="MudBlazor.Align.Center">@JobTitle</MudText>
                     </MudCardContent>
                     <MudCardActions Class="d-flex justify-center">
                         <MudButton OnClick="DeletePicture" Color="@AvatarButtonColor">@AvatarButtonText</MudButton>
@@ -61,12 +61,12 @@
                                 <MudText Typo="Typo.body2">
                                     Means that only your friends will be able to see your contact details.
                                 </MudText>
-                                <MudSwitch @bind-Checked="@FriendSwitch" Color="Color.Secondary" />
+                                <MudSwitch @bind-Checked="@FriendSwitch" Color="MudBlazor.Color.Secondary" />
                             </MudItem>
                         </MudGrid>
                     </MudCardContent>
                     <MudCardActions Class="pb-4 pl-4">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges("Profile details saved", Severity.Success))">Save Changes</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges("Profile details saved", Severity.Success))">Save Changes</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -89,10 +89,10 @@
                             What type of system notifications you want to recieve to your email.
                         </MudText>
                         <div class="d-flex flex-column mt-6">
-                            <MudCheckBox @bind-Checked="@NotificationEmail_1" Label="Threat Detection" Color="Color.Primary"></MudCheckBox>
-                            <MudCheckBox @bind-Checked="@NotificationEmail_2" Label="Server Errors" Color="Color.Error"></MudCheckBox>
-                            <MudCheckBox @bind-Checked="@NotificationEmail_3" Label="Server Warnings" Color="Color.Warning"></MudCheckBox>
-                            <MudCheckBox @bind-Checked="@NotificationEmail_4" Label="Spam" Color="Color.Success"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_1" Label="Threat Detection" Color="MudBlazor.Color.Primary"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_2" Label="Server Errors" Color="MudBlazor.Color.Error"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_3" Label="Server Warnings" Color="MudBlazor.Color.Warning"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_4" Label="Spam" Color="MudBlazor.Color.Success"></MudCheckBox>
                         </div>
                     </MudItem>
                     <MudItem xs="12" sm="8">
@@ -103,16 +103,16 @@
                             What type of system notifications you want to recieve in the phone application.
                         </MudText>
                         <div class="d-flex flex-column mt-6">
-                            <MudCheckBox @bind-Checked="@NotificationChat_1" Label="Threat Detection" Color="Color.Primary"></MudCheckBox>
-                            <MudCheckBox @bind-Checked="@NotificationChat_2" Label="Server Errors" Color="Color.Error"></MudCheckBox>
-                            <MudCheckBox @bind-Checked="@NotificationChat_3" Label="Server Warnings" Color="Color.Warning"></MudCheckBox>
-                            <MudCheckBox @bind-Checked="@NotificationChat_4" Label="Spam" Color="Color.Success"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationChat_1" Label="Threat Detection" Color="MudBlazor.Color.Primary"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationChat_2" Label="Server Errors" Color="MudBlazor.Color.Error"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationChat_3" Label="Server Warnings" Color="MudBlazor.Color.Warning"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationChat_4" Label="Spam" Color="MudBlazor.Color.Success"></MudCheckBox>
                         </div>
                     </MudItem>
                 </MudGrid>
             </MudCardContent>
             <MudCardActions Class="pb-4 pl-4">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges("Notification settings saved", Severity.Success))">Save Changes</MudButton>
+                <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges("Notification settings saved", Severity.Success))">Save Changes</MudButton>
             </MudCardActions>
         </MudCard>
     </MudTabPanel>
@@ -138,7 +138,7 @@
                     </MudGrid>
                 </MudCardContent>
                 <MudCardActions Class="pb-4 pl-4">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges("Current Password is incorrect", Severity.Error))">Change Password</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges("Current Password is incorrect", Severity.Error))">Change Password</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudForm>
@@ -149,7 +149,7 @@
     public string AvatarImageLink { get; set; } = "images/avatar_jonny.jpg";
     public string AvatarIcon { get; set; }
     public string AvatarButtonText { get; set; } = "Delete Picture";
-    public Color AvatarButtonColor { get; set; } = Color.Error;
+    public MudBlazor.Color AvatarButtonColor { get; set; } = MudBlazor.Color.Error;
     public string FirstName { get; set; } = "Jonny";
     public string LastName { get; set; } = "Larsson";
     public string JobTitle { get; set; } = "IT Consultant";
@@ -171,7 +171,7 @@
             AvatarImageLink = null;
             AvatarIcon = Icons.Material.Outlined.SentimentVeryDissatisfied;
             AvatarButtonText = "Upload Picture";
-            AvatarButtonColor = Color.Primary;
+            AvatarButtonColor = MudBlazor.Color.Primary;
         }
         else
         {

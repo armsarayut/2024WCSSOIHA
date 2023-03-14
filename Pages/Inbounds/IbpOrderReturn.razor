@@ -31,11 +31,11 @@
 </style>
 
 
-<MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+<MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
 <MudGrid>
     <MudItem xs="6" sm="3">
-        <MudText Typo="Typo.button" Color="Color.Secondary">@L["PalletGo"]</MudText>
+        <MudText Typo="Typo.button" Color="MudBlazor.Color.Secondary">@L["PalletGo"]</MudText>
         <div class="form-group">
             <input style="width: 100%; height: 40px" type="text" class="form-control" @bind-value="@stringputpalletgo" placeholder="Enter PalletGo" />
         </div>
@@ -44,15 +44,15 @@
 
 <MudForm>
     <MudRadioGroup @bind-SelectedOption="@SelectedOption">
-        <MudRadio Option="@("OPT1")" Color="Color.Primary">FromPack</MudRadio>
-        <MudRadio Option="@("OPT2")" Color="Color.Secondary">FromPallet</MudRadio>
-        <MudRadio Option="@("OPT3")" Color="Color.Tertiary">FromOrder</MudRadio>
+        <MudRadio Option="@("OPT1")" Color="MudBlazor.Color.Primary">FromPack</MudRadio>
+        <MudRadio Option="@("OPT2")" Color="MudBlazor.Color.Secondary">FromPallet</MudRadio>
+        <MudRadio Option="@("OPT3")" Color="MudBlazor.Color.Tertiary">FromOrder</MudRadio>
     </MudRadioGroup>
 </MudForm>
 
-<MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+<MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
     <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Done"
-               Color="Color.Error"
+               Color="MudBlazor.Color.Error"
                OnClick=@SelectOrderPick>@L["SETRETURN"]</MudButton>
             <MudSpacer />
         </MudAppBar>
@@ -60,7 +60,7 @@
         @if (Elements == null)
         {
 
-            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
         }
         else
         {
@@ -163,7 +163,7 @@
                     }
                 </MessageContent>
                 <YesButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
                 </YesButton>
             </MudMessageBox>
         }

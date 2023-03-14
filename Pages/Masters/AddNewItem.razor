@@ -19,7 +19,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudSelect @bind-Value="enumValue" Label="Select Category" OpenIcon="@Icons.Material.Filled.Category" AdornmentColor="Color.Secondary">
+        <MudSelect @bind-Value="enumValue" Label="Select Category" OpenIcon="@Icons.Material.Filled.Category" AdornmentColor="MudBlazor.Color.Secondary">
             @foreach (ItemCat item in Enum.GetValues(typeof(ItemCat)))
             {
                 <MudSelectItem Value="@item">@item</MudSelectItem>
@@ -34,7 +34,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 

@@ -11,7 +11,7 @@
 @inject IStringLocalizer<InpPutaway> L
 @attribute [Authorize]
 
-<MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+<MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
 <MudGrid>
 
@@ -47,7 +47,7 @@ else if (elevation == 4) // Error
 
 @if (Elements == null)
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
@@ -60,7 +60,7 @@ else
               @bind-SelectedItem="selectedItem">
         <ToolBarContent>
             <MudText Typo="Typo.h6">@L["MasterPallet"] : [ @mPalletcode ]</MudText>
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>

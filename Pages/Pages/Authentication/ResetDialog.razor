@@ -28,13 +28,13 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 
 
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" Link="/pages/authentication/login" Size="Size.Large" FullWidth="true" Class="mt-2">Edit</MudButton>
+<MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Link="/pages/authentication/login" Size="Size.Large" FullWidth="true" Class="mt-2">Edit</MudButton>
 
 @code {
             [CascadingParameter] MudDialogInstance MudDialog { get; set; }
@@ -46,7 +46,7 @@
                     string MUsername { get; set; }
                     string MEmail { get; set; }
             */
-            private HashSet<Usergroups> selectedItems = new HashSet<Usergroups>();
+    private IEnumerable<Usergroups> selectedItems = new HashSet<Usergroups>();
             private IEnumerable<Usergroups> Elements = new List<Usergroups>();
 
             private ResultReturn resultReturn = null;

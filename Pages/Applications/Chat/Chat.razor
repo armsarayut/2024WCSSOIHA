@@ -4,22 +4,22 @@
 <div class="d-flex flex-grow-1 flex-row">
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudPaper Elevation="25" Class="pa-3 mr-6" MinWidth="250px">
-            <MudButton EndIcon="@Icons.Material.Filled.Add" Color="Color.Secondary" FullWidth="true">Create Channel</MudButton>
+            <MudButton EndIcon="@Icons.Material.Filled.Add" Color="MudBlazor.Color.Secondary" FullWidth="true">Create Channel</MudButton>
             <ChatChannels />
         </MudPaper>
     </MudHidden>
     <MudPaper Elevation="25" Class="py-4 flex-grow-1">
         <MudToolBar Dense="true">
             <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                <MudIconButton OnClick="@(() => OpenDrawer(Anchor.Left))" Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Class="mr-2 ml-n2" />
+                <MudIconButton OnClick="@(() => OpenDrawer(Anchor.Left))" Icon="@Icons.Material.Outlined.Menu" Color="MudBlazor.Color.Inherit" Class="mr-2 ml-n2" />
             </MudHidden>
             <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
             <MudText Typo="Typo.h6">chat</MudText>
-            <MudToolBarSpacer />
+            <MudSpacer />
             <MudIconButton Icon="@Icons.Material.Outlined.Notifications" />
             <MudIconButton Icon="@Icons.Material.Outlined.PushPin" />
             <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                <MudIconButton OnClick="@(() => OpenDrawer(Anchor.Right))" Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Inherit" Class="ml-3" />
+                <MudIconButton OnClick="@(() => OpenDrawer(Anchor.Right))" Icon="@Icons.Material.Outlined.PeopleAlt" Color="MudBlazor.Color.Inherit" Class="ml-3" />
             </MudHidden>
         </MudToolBar>
         <div class="d-flex flex-column px-4" style="max-height:800px; overflow:scroll;">
@@ -33,7 +33,7 @@
             <MudTextField T="string" Placeholder="Message #chat" DisableUnderLine="true" Class="mt-n2 mx-4"></MudTextField>
             <MudIconButton Icon="@IconGift"></MudIconButton>
             <MudIconButton Icon="@IconGif"></MudIconButton>
-            <MudIconButton Icon="@Icons.Material.Outlined.Sick" Color="Color.Warning"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Outlined.Sick" Color="MudBlazor.Color.Warning"></MudIconButton>
         </MudPaper>
     </MudPaper>
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -46,7 +46,7 @@
 <MudDrawer @bind-Open="@open" Anchor="@ChatDrawer" Elevation="1" Variant="@DrawerVariant.Temporary">
     @if (ChatDrawer == Anchor.Left)
     {
-        <MudButton EndIcon="@Icons.Material.Filled.Add" Color="Color.Secondary" Class="mx-4 mt-6 mb-4">Create Channel</MudButton>
+        <MudButton EndIcon="@Icons.Material.Filled.Add" Color="MudBlazor.Color.Secondary" Class="mx-4 mt-6 mb-4">Create Channel</MudButton>
         <ChatChannels />
     }
     else if (ChatDrawer == Anchor.Right)
@@ -64,18 +64,18 @@
 
     ChatUser[] chatUsers = new ChatUser[]
 {
-        new ChatUser { UserName = "Garderoben", UserRoleColor = Colors.DeepPurple.Accent4, OnlineStatus = Color.Success, Spotify = true, AvatarUrl = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4"},
-        new ChatUser { UserName = "Henon", UserRoleColor = Colors.DeepPurple.Accent4, OnlineStatus = Color.Success, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/44090?s=460&v=4"},
-        new ChatUser { UserName = "Flaflo", UserRoleColor = Colors.Red.Accent3, OnlineStatus = Color.Success, Spotify = true, AvatarUrl = "https://avatars.githubusercontent.com/u/12973684?s=460&u=ea557f04c5d9c54f902f8c700292baefe59217d0&v=4"},
-        new ChatUser { UserName = "porkopek", UserRoleColor = Colors.Red.Accent3, OnlineStatus = Color.Warning, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/13745954?s=460&u=81ef9118f63113ad64bde35add178cbd9ca3bb38&v=4"},
-        new ChatUser { UserName = "mike-gh", UserRoleColor = Colors.Red.Accent3, OnlineStatus = Color.Warning, Spotify = false, AvatarColor = Color.Success},
-        new ChatUser { UserName = "tungi52", UserRoleColor = Colors.Red.Accent3, OnlineStatus = Color.Warning, Spotify = false, AvatarColor = Color.Success},
-        new ChatUser { UserName = "svenovic", UserRoleColor = Colors.Red.Accent3, OnlineStatus = Color.Dark, Spotify = false, AvatarColor = Color.Success},
-        new ChatUser { UserName = "Artroxa", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = Color.Success, Spotify = false, AvatarUrl = "https://avatars2.githubusercontent.com/u/71094850?s=460&u=66c16f5bb7d27dc751f6759a82a3a070c8c7fe4b&v=4"},
-        new ChatUser { UserName = "II ARROWS", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = Color.Success, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/14835013?s=460&u=8d9acfca411be6941ceb44f710c4357857350c2a&v=4"},
-        new ChatUser { UserName = "rangsk", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = Color.Success, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/10701249?s=460&u=f806998af6e29fd4402736ba2efc2649adae9e39&v=4"},
-        new ChatUser { UserName = "Svarta Änkan", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = Color.Error, Spotify = true, AvatarColor = Color.Error},
-        new ChatUser { UserName = "TommyG", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = Color.Warning, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/4773183?s=460&u=7d0ebb28e29ae5103a74070471ffd506cdbf03fd&v=4"},
+        new ChatUser { UserName = "Garderoben", UserRoleColor = Colors.DeepPurple.Accent4, OnlineStatus = MudBlazor.Color.Success, Spotify = true, AvatarUrl = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4"},
+        new ChatUser { UserName = "Henon", UserRoleColor = Colors.DeepPurple.Accent4, OnlineStatus = MudBlazor.Color.Success, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/44090?s=460&v=4"},
+        new ChatUser { UserName = "Flaflo", UserRoleColor = Colors.Red.Accent3, OnlineStatus = MudBlazor.Color.Success, Spotify = true, AvatarUrl = "https://avatars.githubusercontent.com/u/12973684?s=460&u=ea557f04c5d9c54f902f8c700292baefe59217d0&v=4"},
+        new ChatUser { UserName = "porkopek", UserRoleColor = Colors.Red.Accent3, OnlineStatus = MudBlazor.Color.Warning, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/13745954?s=460&u=81ef9118f63113ad64bde35add178cbd9ca3bb38&v=4"},
+        new ChatUser { UserName = "mike-gh", UserRoleColor = Colors.Red.Accent3, OnlineStatus = MudBlazor.Color.Warning, Spotify = false, AvatarColor = MudBlazor.Color.Success},
+        new ChatUser { UserName = "tungi52", UserRoleColor = Colors.Red.Accent3, OnlineStatus = MudBlazor.Color.Warning, Spotify = false, AvatarColor = MudBlazor.Color.Success},
+        new ChatUser { UserName = "svenovic", UserRoleColor = Colors.Red.Accent3, OnlineStatus = MudBlazor.Color.Dark, Spotify = false, AvatarColor = MudBlazor.Color.Success},
+        new ChatUser { UserName = "Artroxa", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = MudBlazor.Color.Success, Spotify = false, AvatarUrl = "https://avatars2.githubusercontent.com/u/71094850?s=460&u=66c16f5bb7d27dc751f6759a82a3a070c8c7fe4b&v=4"},
+        new ChatUser { UserName = "II ARROWS", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = MudBlazor.Color.Success, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/14835013?s=460&u=8d9acfca411be6941ceb44f710c4357857350c2a&v=4"},
+        new ChatUser { UserName = "rangsk", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = MudBlazor.Color.Success, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/10701249?s=460&u=f806998af6e29fd4402736ba2efc2649adae9e39&v=4"},
+        new ChatUser { UserName = "Svarta Änkan", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = MudBlazor.Color.Error, Spotify = true, AvatarColor = MudBlazor.Color.Error},
+        new ChatUser { UserName = "TommyG", UserRoleColor = Colors.BlueGrey.Lighten1, OnlineStatus = MudBlazor.Color.Warning, Spotify = false, AvatarUrl = "https://avatars.githubusercontent.com/u/4773183?s=460&u=7d0ebb28e29ae5103a74070471ffd506cdbf03fd&v=4"},
 };
 
     ChatMessage[] chatMessages = new ChatMessage[]

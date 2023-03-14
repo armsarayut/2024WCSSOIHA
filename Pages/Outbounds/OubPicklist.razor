@@ -26,17 +26,17 @@
 @if (Elements == null)
 {
     // <p><em>Loading...</em></p>
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
-    <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+    <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
-    <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+    <MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
         <MudSpacer />
-        <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
-            <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
-            <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
+        <MudTooltip Text=@L["Export"] Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="MudBlazor.Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
+            <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="MudBlazor.Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
         </MudTooltip>
     </MudAppBar>
 

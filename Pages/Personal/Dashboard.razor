@@ -14,11 +14,11 @@
 @inject DashService ObjDashService
 @attribute [Authorize]
 
-<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Dashboard</MudText>
+<MudText Typo="Typo.h5" Color="MudBlazor.Color.Primary" Class="mb-4">Dashboard</MudText>
 <MudGrid>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.Receipt" Color="Color.Primary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.Receipt" Color="MudBlazor.Color.Primary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["PendingReceving"]</MudText>
                 <MudText Typo="Typo.h5">@palletGR/@orderGR</MudText>
@@ -27,7 +27,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.Queue" Color="Color.Secondary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.Queue" Color="MudBlazor.Color.Secondary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["PendingPutaway"]</MudText>
                 <MudText Typo="Typo.h5">@palletPut/@orderPut</MudText>
@@ -36,7 +36,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Success" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Color="MudBlazor.Color.Success" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Pendingpicking"]</MudText>
                 <MudText Typo="Typo.h5">@palletPicking/@orderPicking</MudText>
@@ -45,7 +45,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.EventAvailable" Color="Color.Warning" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.EventAvailable" Color="MudBlazor.Color.Warning" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["CompleteOrder"]</MudText>
                 <MudText Typo="Typo.h5">@orderCompletePut/@orderCompletePick</MudText>
@@ -54,7 +54,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.Login" Color="Color.Primary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.Login" Color="MudBlazor.Color.Primary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Storage"]</MudText>
                 <MudText Typo="Typo.h5">@mstorage</MudText>
@@ -63,7 +63,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.Logout" Color="Color.Secondary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.Logout" Color="MudBlazor.Color.Secondary" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Retrieval"]</MudText>
                 <MudText Typo="Typo.h5">@mretrieval</MudText>
@@ -72,7 +72,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.SyncAlt" Color="Color.Success" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.SyncAlt" Color="MudBlazor.Color.Success" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Total"]</MudText>
                 <MudText Typo="Typo.h5">@asrstaskcompletenow / @asrstaskcompletelast</MudText>
@@ -81,7 +81,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:90px;">
-            <MudIcon Icon="@Icons.Material.Filled.Speed" Color="Color.Warning" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.Speed" Color="MudBlazor.Color.Warning" Class="mx-4" Style="width:50px; height:50px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["AverageTime"]</MudText>
                 <MudText Typo="Typo.h5">@asrstasktimenow / @asrstasktimelast</MudText>
@@ -101,7 +101,7 @@
                 <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-1" Style="@($"color:{Colors.Shades.White}; background:rgb(255, 64, 129);")"><MudText Typo="Typo.h6">@L["Total"]: @L1Total</MudText></MudPaper>
             </MudPaper>
             <br />
-            <MudChart ChartType="ChartType.Pie" InputData="@data1" @bind-SelectedIndex="Index1" InputLabels="@labels1" Width="150px" Height="150px" />
+            <MudChart ChartType="MudBlazor.ChartType.Pie" InputData="@data1" @bind-SelectedIndex="Index1" InputLabels="@labels1" Width="150px" Height="150px" />
         </MudCard>
     </MudItem>
 
@@ -185,12 +185,12 @@
 
     EarningReport[] earningReports = new EarningReport[]
 {
-        new EarningReport { Name = "SRM01", Title = "Disconnect", Avatar = "https://avatars2.githubusercontent.com/u/71094850?s=460&u=66c16f5bb7d27dc751f6759a82a3a070c8c7fe4b&v=4", Salary = "10:01", Severity = Color.Error, SeverityTitle = "High"},
-        new EarningReport { Name = "RGV01", Title = "Disconnect", Avatar = "https://avatars.githubusercontent.com/u/16208742?s=120&v=4", Salary = "10:02", Severity = Color.Error, SeverityTitle = "High"},
-        new EarningReport { Name = "CVY01", Title = "Barcode not found", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:05", Severity = Color.Warning, SeverityTitle = "Medium"},
-        new EarningReport { Name = "CVY02", Title = "Sensor not found", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:10", Severity = Color.Warning, SeverityTitle = "Medium"},
-        new EarningReport { Name = "SRM02", Title = "Distance error", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:10", Severity = Color.Error, SeverityTitle = "High"},
-        new EarningReport { Name = "SRM03", Title = "Limit X error", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:10", Severity = Color.Error, SeverityTitle = "High"},
+        new EarningReport { Name = "SRM01", Title = "Disconnect", Avatar = "https://avatars2.githubusercontent.com/u/71094850?s=460&u=66c16f5bb7d27dc751f6759a82a3a070c8c7fe4b&v=4", Salary = "10:01", Severity = MudBlazor.Color.Error, SeverityTitle = "High"},
+        new EarningReport { Name = "RGV01", Title = "Disconnect", Avatar = "https://avatars.githubusercontent.com/u/16208742?s=120&v=4", Salary = "10:02", Severity = MudBlazor.Color.Error, SeverityTitle = "High"},
+        new EarningReport { Name = "CVY01", Title = "Barcode not found", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:05", Severity = MudBlazor.Color.Warning, SeverityTitle = "Medium"},
+        new EarningReport { Name = "CVY02", Title = "Sensor not found", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:10", Severity = MudBlazor.Color.Warning, SeverityTitle = "Medium"},
+        new EarningReport { Name = "SRM02", Title = "Distance error", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:10", Severity = MudBlazor.Color.Error, SeverityTitle = "High"},
+        new EarningReport { Name = "SRM03", Title = "Limit X error", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "10:10", Severity = MudBlazor.Color.Error, SeverityTitle = "High"},
                 };
 
     class EarningReport
@@ -198,7 +198,7 @@
         public string Avatar;
         public string Name;
         public string Title;
-        public Color Severity;
+        public MudBlazor.Color Severity;
         public string SeverityTitle;
         public string Salary;
     }

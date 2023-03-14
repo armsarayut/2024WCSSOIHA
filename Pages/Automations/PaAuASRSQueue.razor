@@ -26,11 +26,11 @@
 
 @if (Elements == null)
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
-    <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+    <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
     <MudTable Items="@Elements.OrderBy(m => m.Created).OrderByDescending(m => m.Work_Priority)"
               FixedHeader="@fixed_header"
               FixedFooter="@fixed_footer"
@@ -73,7 +73,7 @@ else
             <MudTd Class="clm-row-small" DataLabel="URGENT">
                 @if (context.Work_Code == "05")
                     {
-                    <MudFab Color="Color.Error" OnClick="(()=> UpdateUrgent( context.Lpncode))" Icon="@Icons.Material.Filled.ArrowUpward" Size="Size.Small" IconSize="Size.Small" />
+                    <MudFab Color="MudBlazor.Color.Error" OnClick="(()=> UpdateUrgent( context.Lpncode))" Icon="@Icons.Material.Filled.ArrowUpward" Size="Size.Small" IconSize="Size.Small" />
                     }
             </MudTd>
         </RowTemplate>

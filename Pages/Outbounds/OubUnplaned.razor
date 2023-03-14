@@ -34,19 +34,19 @@
 @if (Elements == null)
 {
     // <p><em>Loading...</em></p>
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
 
     @if (StkGroup)
     {
-        <MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+        <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
-        <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+        <MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
 
- <MudButtonGroup Color="Color.Default" Variant="Variant.Outlined">
-                <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
+ <MudButtonGroup Color="MudBlazor.Color.Default" Variant="Variant.Outlined">
+                <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="MudBlazor.Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
         </MudButtonGroup>
                     <MudSpacer />
                 </MudAppBar>
@@ -109,7 +109,7 @@ else
                             }
                 </MessageContent>
                 <YesButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Success" StartIcon="@Icons.Material.Filled.DataSaverOn">Confirm!</MudButton>
                 </YesButton>
             </MudMessageBox>
             }
@@ -266,7 +266,7 @@ else
             var parameters = new DialogParameters();
             parameters.Add("ContentText", sContentText);
             parameters.Add("ButtonText", "Yes");
-            parameters.Add("Color", Color.Success);
+        parameters.Add("Color", MudBlazor.Color.Success);
 
             var formModal = DialogService.Show<DialogTemplateExample_Dialog>("Confirm", parameters);
 

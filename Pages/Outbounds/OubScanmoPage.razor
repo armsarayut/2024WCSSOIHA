@@ -10,7 +10,7 @@
 @inject ErpService ObjErpService
 @inject ErpApiService ObjApiService
 
-<MudText Typo="Typo.h6" Color="Color.Primary">@mPageHeader @mPalletcode</MudText>
+<MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@mPageHeader @mPalletcode</MudText>
 
 <MudGrid>
     <MudItem xs="12">
@@ -43,24 +43,24 @@
     </MudItem>
 </MudGrid>
 
-<MudText Typo="Typo.subtitle1" Color="Color.Primary">Select Category</MudText>
+<MudText Typo="Typo.subtitle1" Color="MudBlazor.Color.Primary">Select Category</MudText>
 
 <MudItem xs="12">
     <MudGrid Spacing="@spacing" Justify="Justify.Center">
         <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick=@NavigateFilm>Film</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" @onclick=@NavigateFilm>Film</MudButton>
         </MudItem>
         <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick=@NavigateInk>Ink</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Secondary" @onclick=@NavigateInk>Ink</MudButton>
         </MudItem>
         <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick=@NavigateCylinder>Cylinder</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Success" @onclick=@NavigateCylinder>Cylinder</MudButton>
         </MudItem>
         <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick=@NavigateOther>Other</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Warning" @onclick=@NavigateOther>Other</MudButton>
         </MudItem>
         <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Info" @onclick=@NavigateAll>All</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Info" @onclick=@NavigateAll>All</MudButton>
         </MudItem>
     </MudGrid>
 

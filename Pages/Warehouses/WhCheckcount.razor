@@ -19,7 +19,7 @@
 @inject ISnackbar Snackbar
 @attribute [Authorize]
 
-<MudText Typo="Typo.h6" Color="Color.Primary">@pageheader</MudText>
+<MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
 <MudGrid>
     <MudItem xs="12">
@@ -32,19 +32,19 @@
 
 @if (Elements == null)
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
-<MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
-    <MudTooltip Text="Check All" Color="Color.Inherit" Placement="Placement.Top">
-        <MudIconButton Icon="@Icons.Material.Filled.Check" Color="Color.Error" OnClick="@CountMapAll"></MudIconButton>
+<MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
+    <MudTooltip Text="Check All" Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
+        <MudIconButton Icon="@Icons.Material.Filled.Check" Color="MudBlazor.Color.Error" OnClick="@CountMapAll"></MudIconButton>
     </MudTooltip>
-    <MudTooltip Text="Claer All" Color="Color.Inherit" Placement="Placement.Top">
-        <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Warning" OnClick="@DeleteMapAll"></MudIconButton>
+    <MudTooltip Text="Claer All" Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
+        <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="MudBlazor.Color.Warning" OnClick="@DeleteMapAll"></MudIconButton>
     </MudTooltip>
-    <MudTooltip Text="Reset All" Color="Color.Inherit" Placement="Placement.Top">
-        <MudIconButton Icon="@Icons.Material.Filled.Restore" Color="Color.Primary" OnClick="@ResetMapAll"></MudIconButton>
+        <MudTooltip Text="Reset All" Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
+        <MudIconButton Icon="@Icons.Material.Filled.Restore" Color="MudBlazor.Color.Primary" OnClick="@ResetMapAll"></MudIconButton>
     </MudTooltip>
     <MudSpacer />
 </MudAppBar>
@@ -77,11 +77,11 @@ else
                 <MudTd DataLabel=@L["STATE"]>
                     @{if (@context.Bcount == true)
                             {
-                            <MudCheckBox Checked="true" Size="Size.Medium" Color="Color.Tertiary" ReadOnly="true">@context.Movement_Type</MudCheckBox>
+                            <MudCheckBox Checked="true" Size="Size.Medium" Color="MudBlazor.Color.Tertiary" ReadOnly="true">@context.Movement_Type</MudCheckBox>
                             }
                             else
                             {
-                            <MudCheckBox Checked="false" Size="Size.Medium" Color="Color.Secondary" ReadOnly="true">@context.Movement_Type</MudCheckBox>
+                            <MudCheckBox Checked="false" Size="Size.Medium" Color="MudBlazor.Color.Secondary" ReadOnly="true">@context.Movement_Type</MudCheckBox>
                             }
                     }
                 </MudTd>
@@ -90,9 +90,9 @@ else
                 <MudTd Class="clm-row-small" DataLabel=@L["BATCH"]>@context.Po_No</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["QTY"]>@string.Format(VarGlobals.FormatN3, context.DisStock_Qty)</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["ACTION"]>
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Check" Color="Color.Error" @onclick="@(()=>CountMap(@context.Su_No))" />
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Clear" Color="Color.Warning" @onclick="@(()=>DeleteMap(@context.Su_No))" />
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Restore" Color="Color.Info" @onclick="@(()=>ResetMap(@context.Su_No))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Check" Color="MudBlazor.Color.Error" @onclick="@(()=>CountMap(@context.Su_No))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Clear" Color="MudBlazor.Color.Warning" @onclick="@(()=>DeleteMap(@context.Su_No))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Restore" Color="MudBlazor.Color.Info" @onclick="@(()=>ResetMap(@context.Su_No))" />
                 </MudTd>
             </RowTemplate>
 

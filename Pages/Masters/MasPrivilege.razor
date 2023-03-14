@@ -17,16 +17,16 @@
 
 @if (Elements == null)
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else
 {
-    <MudText Typo="Typo.h6" Color="Color.Primary"> @pageheader </MudText>
-    <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+    <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary"> @pageheader </MudText>
+    <MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
         <MudSpacer />
-        <MudTooltip Text=@L["Export"] Color="Color.Inherit" Placement="Placement.Top">
-            <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
-            <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
+        <MudTooltip Text=@L["Export"] Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="MudBlazor.Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
+            <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="MudBlazor.Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
         </MudTooltip>
     </MudAppBar>
 
@@ -66,17 +66,17 @@ else
             <MudTd DataLabel=@L["GROUP"]>@context.Ugdesc</MudTd>
             <MudTd DataLabel=@L["MENU"]>@context.Menu_desc</MudTd>
             <MudTd DataLabel=@L["ACCESS"]><MudCheckBox   @bind-Checked="@context.Role_acc"/></MudTd>
-            <MudTd DataLabel=@L["ADD"]><MudCheckBox Color="Color.Tertiary" @bind-Checked="@context.Role_add"/></MudTd>
-            <MudTd DataLabel=@L["EDIT"]><MudCheckBox Color="Color.Secondary" @bind-Checked="@context.Role_edit"/></MudTd>
-            <MudTd DataLabel=@L["DELETE"]><MudCheckBox Color="Color.Warning" @bind-Checked="@context.Role_del"/></MudTd>
-            <MudTd DataLabel=@L["REPORT"]><MudCheckBox Color="Color.Info" @bind-Checked="@context.Role_rpt"/></MudTd>
-            <MudTd DataLabel=@L["APPROVE"]><MudCheckBox Color="Color.Error" @bind-Checked="@context.Role_apv"/></MudTd>
+            <MudTd DataLabel=@L["ADD"]><MudCheckBox Color="MudBlazor.Color.Tertiary" @bind-Checked="@context.Role_add"/></MudTd>
+            <MudTd DataLabel=@L["EDIT"]><MudCheckBox Color="MudBlazor.Color.Secondary" @bind-Checked="@context.Role_edit"/></MudTd>
+            <MudTd DataLabel=@L["DELETE"]><MudCheckBox Color="MudBlazor.Color.Warning" @bind-Checked="@context.Role_del"/></MudTd>
+            <MudTd DataLabel=@L["REPORT"]><MudCheckBox Color="MudBlazor.Color.Info" @bind-Checked="@context.Role_rpt"/></MudTd>
+            <MudTd DataLabel=@L["APPROVE"]><MudCheckBox Color="MudBlazor.Color.Error" @bind-Checked="@context.Role_apv"/></MudTd>
 
 
             <MudTd Class="clm-row-small" DataLabel=@L["ACTION"]>
 
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Save" Color="Color.Secondary" @onclick="@(()=>Commitconstance(@context.Idx.Value, @context.Role_acc.Value , @context.Role_add.Value, @context.Role_edit.Value, @context.Role_del.Value , @context.Role_rpt.Value, @context.Role_apv.Value, @context.Ugdesc, @context.Menu_desc))" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Refresh" Color="Color.Info" @onclick="@(()=>Refreshconstance())" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Save" Color="MudBlazor.Color.Secondary" @onclick="@(()=>Commitconstance(@context.Idx.Value, @context.Role_acc.Value , @context.Role_add.Value, @context.Role_edit.Value, @context.Role_del.Value , @context.Role_rpt.Value, @context.Role_apv.Value, @context.Ugdesc, @context.Menu_desc))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Refresh" Color="MudBlazor.Color.Info" @onclick="@(()=>Refreshconstance())" />
             </MudTd>
         </RowTemplate>
 

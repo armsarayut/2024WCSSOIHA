@@ -26,7 +26,7 @@
 
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.MdAndUp">
-            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="MudBlazor.Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
             <MudText Typo="Typo.h6" Class="ml-1">Warehouse Management System</MudText>
@@ -41,11 +41,11 @@
 
 
         </MudHidden>
-        <MudAppBarSpacer />
+        <MudSpacer />
         <ChooseLanguage />
 
-        <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())" />
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="@((e) => btnLogout_Click())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="MudBlazor.Color.Inherit" OnClick="@((e) => DarkMode())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="MudBlazor.Color.Inherit" OnClick="@((e) => btnLogout_Click())" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="_themeManager.DrawerClipMode" Width="300px">
         <MudDrawerHeader>
@@ -58,10 +58,10 @@
     <MudMainContent>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
             <MudToolBar DisableGutters="true">
-                <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
+                <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="MudBlazor.Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
 
                 <MudSpacer />
-                <MudButton Variant="Variant.Text" Link="https://aei-solution.com/" Color="Color.Success">AEI Solution</MudButton>
+                <MudButton Variant="Variant.Text" Link="https://aei-solution.com/" Color="MudBlazor.Color.Success">AEI Solution</MudButton>
             </MudToolBar>
         </MudHidden>
         <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
