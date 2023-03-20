@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Org.BouncyCastle.Crypto.Engines;
 
 namespace GoWMS.Server.Data
 {
@@ -41,6 +42,7 @@ namespace GoWMS.Server.Data
             string _IPString = string.Empty;
             string _PortString = string.Empty;
             string _Dbname = string.Empty;
+            string _Hostmode = string.Empty;
 
             var configurationBuilder = new ConfigurationBuilder();
             var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
@@ -50,8 +52,15 @@ namespace GoWMS.Server.Data
             _IPString = root.GetSection("DBHost").GetSection("IP").Value;
             _PortString = root.GetSection("DBHost").GetSection("Port").Value;
             _Dbname = root.GetSection("DBHost").GetSection("Name").Value;
+            _Hostmode = root.GetSection("DBHost").GetSection("HostMode").Value;
 
             bool bLocal = true;
+
+            if (_Hostmode== "1")
+            {
+                bLocal = false;
+            }
+            
 
             if (bLocal)
             {

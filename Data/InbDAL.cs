@@ -226,16 +226,24 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                 StringBuilder sql = new StringBuilder();
-                sql.AppendLine("SELECT count(*)");
-                sql.AppendLine("FROM api.postasrsorders");
-                sql.AppendLine("WHERE typor=@typor");
+                sql.AppendLine("SELECT count(subQ.palletcode) FROM (");
+
+                sql.AppendLine("SELECT palletcode");
+                sql.AppendLine("FROM api.posttaskorders");
+                sql.AppendLine("WHERE tasktype=@typor");
+                sql.AppendLine("AND efstatus <= @efstatus");
+                sql.AppendLine("GROUP BY palletcode");
+                sql.AppendLine(")subQ");
+
+
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
                     CommandType = CommandType.Text
                 };
 
-                cmd.Parameters.AddWithValue("@typor", "PUT");
+                cmd.Parameters.AddWithValue("@typor", "01");
+                cmd.Parameters.AddWithValue("@efstatus", 0);
 
                 con.Open();
                 lRet = (long)(cmd.ExecuteScalar());
@@ -254,16 +262,22 @@ namespace GoWMS.Server.Data
             using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
             {
                 StringBuilder sql = new StringBuilder();
-                sql.AppendLine("SELECT count(*)");
-                sql.AppendLine("FROM api.postasrsorders");
-                sql.AppendLine("WHERE typor=@typor");
+                sql.AppendLine("SELECT count(subQ.palletcode) FROM (");
+
+                sql.AppendLine("SELECT palletcode");
+                sql.AppendLine("FROM api.posttaskorders");
+                sql.AppendLine("WHERE tasktype=@typor");
+                sql.AppendLine("AND efstatus <= @efstatus");
+                sql.AppendLine("GROUP BY palletcode");
+                sql.AppendLine(")subQ");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {
                     CommandType = CommandType.Text
                 };
 
-                cmd.Parameters.AddWithValue("@typor", "PICK");
+                cmd.Parameters.AddWithValue("@typor", "05");
+                cmd.Parameters.AddWithValue("@efstatus", 0);
 
                 con.Open();
                 lRet = (long)(cmd.ExecuteScalar());

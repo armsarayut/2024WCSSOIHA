@@ -112,10 +112,10 @@
         @if (Locations != null)
         {
               <MudPaper Class="d-flex py-2 px-1">
-                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-2" Style="@($"color:{Colors.Shades.White}; background:rgb(41, 121, 255);")"><MudText Typo="Typo.h6">@L["Use"]: @L1Use</MudText></MudPaper>
-                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-3" Style="@($"color:{Colors.Shades.White}; background:rgb(83, 199, 144);")"><MudText Typo="Typo.h6">@L["Empty"]: @L1Emp</MudText></MudPaper>
-                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-1" Style="@($"color:{Colors.Shades.White}; background:rgb(255, 64, 129);")"><MudText Typo="Typo.h6">@L["Total"]: @L1Total</MudText></MudPaper>
-                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-4" Style="@($"color:{Colors.Shades.White}; background:rgb(255, 64, 129);")"><MudText Typo="Typo.h6">@L["Block"]: @L1Block</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-2" Style="@($"color:{Colors.Shades.White}; background:rgb(20, 199, 80);")"><MudText Typo="Typo.h6">@L["Use"]: @L1Use</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-3" Style="@($"color:{Colors.Shades.White}; background:rgb(248, 175, 31);")"><MudText Typo="Typo.h6">@L["Empty"]: @L1Emp</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-1" Style="@($"color:{Colors.Shades.White}; background:rgb(26, 132, 219);")"><MudText Typo="Typo.h6">@L["Total"]: @L1Total</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-4" Style="@($"color:{Colors.Shades.White}; background:rgb(248, 61, 43);")"><MudText Typo="Typo.h6">@L["Block"]: @L1Block</MudText></MudPaper>
             </MudPaper>
                 <br />
 
@@ -131,7 +131,7 @@
                                         XValue="@(e => e.Srm_Name)"
                                         YAggregate="@(e => e.Sum(e => e.Total))"
                                         OrderByDescending="e=>e.X"
-                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+                                        SeriesType="@ApexCharts.SeriesType.Bar"  />
 
                 <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
                                         Items="Locations"
@@ -139,7 +139,7 @@
                                         XValue="@(e => e.Srm_Name)"
                                         YAggregate="@(e => e.Sum(e => e.Locavl))"
                                         OrderByDescending="e=>e.X"
-                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+                                        SeriesType="@ApexCharts.SeriesType.Bar"  />
 
                 <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
                                         Items="Locations"
@@ -147,7 +147,7 @@
                                         XValue="@(e => e.Srm_Name)"
                                         YAggregate="@(e => e.Sum(e => e.Locemp))"
                                         OrderByDescending="e=>e.X"
-                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+                                        SeriesType="@ApexCharts.SeriesType.Bar"  />
 
                  <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
                                         Items="Locations"
@@ -155,7 +155,7 @@
                                         XValue="@(e => e.Srm_Name)"
                                         YAggregate="@(e => e.Sum(e => e.Plerr))"
                                         OrderByDescending="e=>e.X"
-                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+                                        SeriesType="@ApexCharts.SeriesType.Bar"  />
 
             </ApexCharts.ApexChart>
         }

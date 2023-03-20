@@ -139,7 +139,7 @@
     <value>รอดำเนินการจัดเก็บ</value>
   </data>
   <data name="PendingReceving" xml:space="preserve">
-    <value>รอรับ</value>
+    <value>รอดำเนินการ</value>
   </data>
   <data name="Retrieval" xml:space="preserve">
     <value>จัดเบิก</value>
