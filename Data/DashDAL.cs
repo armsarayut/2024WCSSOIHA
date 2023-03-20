@@ -101,6 +101,41 @@ namespace GoWMS.Server.Data
         }
 
 
+        public IEnumerable<Vrpt_shelfsummary> GetAllLocationSummaryCap()
+        {
+            List<Vrpt_shelfsummary> lstobj = new List<Vrpt_shelfsummary>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand("select srm_name, srm_no, locavl, locemp, plemp, plerr, prohloc, total, percen " +
+                    "FROM wcs.vrpt_shelfsummary " +
+                     "WHERE srm_name Like '%TOTAL%' " +
+                    "ORDER BY srm_no DESC LIMIT 1", con)
+                {
+                    CommandType = CommandType.Text
+                };
+                con.Open();
+                NpgsqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Vrpt_shelfsummary objrd = new Vrpt_shelfsummary
+                    {
+                        Srm_Name = rdr["srm_name"].ToString(),
+                        Srm_No = rdr["srm_no"] == DBNull.Value ? null : (Int32?)rdr["srm_no"],
+                        Locavl = rdr["locavl"] == DBNull.Value ? null : (Int64?)rdr["locavl"],
+                        Locemp = rdr["locemp"] == DBNull.Value ? null : (Int64?)rdr["locemp"],
+                        Plemp = rdr["plemp"] == DBNull.Value ? null : (Int64?)rdr["plemp"],
+                        Plerr = rdr["plerr"] == DBNull.Value ? null : (Int64?)rdr["plerr"],
+                        Prohloc = rdr["prohloc"] == DBNull.Value ? null : (Int64?)rdr["prohloc"],
+                        Total = rdr["total"] == DBNull.Value ? null : (Int64?)rdr["total"],
+                        Percen = rdr["percen"] == DBNull.Value ? null : (decimal?)rdr["percen"]
+                    };
+                    lstobj.Add(objrd);
+                }
+                con.Close();
+            }
+            return lstobj;
+        }
+
         public IEnumerable<VLocationDash> GetAllTasworkofday()
         {
             List<VLocationDash> lstobj = new List<VLocationDash>();

@@ -130,7 +130,7 @@
     <value>DATE</value>
   </data>
   <data name="DNNo" xml:space="preserve">
-    <value>JOB</value>
+    <value>TASKNO</value>
   </data>
   <data name="DNSeq" xml:space="preserve">
     <value>SU</value>
@@ -139,7 +139,7 @@
     <value>Excel</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ItemName" xml:space="preserve">
     <value>NAME</value>

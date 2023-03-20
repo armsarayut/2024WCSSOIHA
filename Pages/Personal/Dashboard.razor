@@ -1,4 +1,4 @@
-﻿@page "/gowms"
+﻿@page "/gowcs"
 @using GoWMS.Server.Models.Das
 @using GoWMS.Server.Models.Public
 @using GoWMS.Server.Models.Wcs
@@ -7,11 +7,13 @@
 @using GoWMS.Server.Data
 @using GoWMS.Server.Controllers
 
+
 @inject IStringLocalizer<Dashboard> L
 
 @inject ErpApiService ObjErpService
 @inject InboundService ObjInbService
 @inject DashService ObjDashService
+@inject PublicService ObjPublicService
 @attribute [Authorize]
 
 <MudText Typo="Typo.h5" Color="MudBlazor.Color.Primary" Class="mb-4">Dashboard</MudText>
@@ -89,7 +91,9 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <MudCard Elevation="25" Style="height:350px;">
+
+
+       @*  <MudCard Elevation="25" Style="height:350px;">
             <MudCardHeader>
                 <CardHeaderContent>
                     <MudText Typo="Typo.h6">@L["Lane"] 01</MudText>
@@ -102,33 +106,110 @@
             </MudPaper>
             <br />
             <MudChart ChartType="MudBlazor.ChartType.Pie" InputData="@data1" @bind-SelectedIndex="Index1" InputLabels="@labels1" Width="150px" Height="150px" />
-        </MudCard>
+        </MudCard>*@
+
+
+        @if (Locations != null)
+        {
+              <MudPaper Class="d-flex py-2 px-1">
+                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-2" Style="@($"color:{Colors.Shades.White}; background:rgb(41, 121, 255);")"><MudText Typo="Typo.h6">@L["Use"]: @L1Use</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-3" Style="@($"color:{Colors.Shades.White}; background:rgb(83, 199, 144);")"><MudText Typo="Typo.h6">@L["Empty"]: @L1Emp</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-1" Style="@($"color:{Colors.Shades.White}; background:rgb(255, 64, 129);")"><MudText Typo="Typo.h6">@L["Total"]: @L1Total</MudText></MudPaper>
+                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-4" Style="@($"color:{Colors.Shades.White}; background:rgb(255, 64, 129);")"><MudText Typo="Typo.h6">@L["Block"]: @L1Block</MudText></MudPaper>
+            </MudPaper>
+                <br />
+
+
+
+
+
+            <ApexCharts.ApexChart Options="locationoptions" @ref=locationchart TItem="@Vrpt_shelfsummary" Title="Capacity" Height="370">
+
+                <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
+                                        Items="Locations"
+                                        Name="@L["Total"]"
+                                        XValue="@(e => e.Srm_Name)"
+                                        YAggregate="@(e => e.Sum(e => e.Total))"
+                                        OrderByDescending="e=>e.X"
+                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+
+                <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
+                                        Items="Locations"
+                                        Name="@L["Use"]"
+                                        XValue="@(e => e.Srm_Name)"
+                                        YAggregate="@(e => e.Sum(e => e.Locavl))"
+                                        OrderByDescending="e=>e.X"
+                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+
+                <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
+                                        Items="Locations"
+                                        Name="@L["Empty"]"
+                                        XValue="@(e => e.Srm_Name)"
+                                        YAggregate="@(e => e.Sum(e => e.Locemp))"
+                                        OrderByDescending="e=>e.X"
+                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+
+                 <ApexCharts.ApexPointSeries TItem="@Vrpt_shelfsummary"
+                                        Items="Locations"
+                                        Name="@L["Block"]"
+                                        XValue="@(e => e.Srm_Name)"
+                                        YAggregate="@(e => e.Sum(e => e.Plerr))"
+                                        OrderByDescending="e=>e.X"
+                                        SeriesType="@ApexCharts.SeriesType.Bar" ShowDataLabels />
+
+            </ApexCharts.ApexChart>
+        }
+
+    
+
+
+
+
     </MudItem>
 
-@*    <MudItem xs="12" sm="6">
-        <MudCard Elevation="25" Style="height:350px;">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@L["Lane"] 02</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudPaper Class="d-flex py-2 px-1">
-                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-2" Style="@($"color:{Colors.Shades.White}; background:rgb(41, 121, 255);")"><MudText Typo="Typo.h6">@L["Use"]: @L2Use</MudText></MudPaper>
-                <MudPaper Class="flex-grow-1 flex-shrink-0 pa-2 mx-2 order-3" Style="@($"color:{Colors.Shades.White}; background:rgb(83, 199, 144);")"><MudText Typo="Typo.h6">@L["Empty"]: @L2Emp</MudText></MudPaper>
-                <MudPaper Class="flex-grow-1 flex-shrink-1 pa-2 mx-2 order-1" Style="@($"color:{Colors.Shades.White}; background:rgb(255, 64, 129);")"><MudText Typo="Typo.h6">@L["Total"]: @L2Total</MudText></MudPaper>
-            </MudPaper>
-            <br />
-            <MudChart ChartType="ChartType.Pie" InputData="@data2" @bind-SelectedIndex="Index2" InputLabels="@labels2" Width="150px" Height="150px" />
-        </MudCard>
-    </MudItem>*@
+    <MudItem xs="12" sm="6">
+      
+        @if(AsrsEndofweek != null)
+        {
+            <ApexCharts.ApexChart Options="options" @ref=chart TItem="@Class6_7_F" Title="7 days ago" Height="450">
+
+                <ApexCharts.ApexPointSeries TItem="@Class6_7_F"
+                                        Items="AsrsEndofweek"
+                                        Name="IN"
+                                        XValue="@(e => Convert.ToDateTime(e.W_date).ToString(VarGlobals.FormatD))"
+                                        YAggregate="@(e => e.Sum(e => e.W01))"
+                                        OrderByDescending="e=>e.X"
+                                        SeriesType="@ApexCharts.SeriesType.Area" ShowDataLabels />
+
+                <ApexCharts.ApexPointSeries TItem="@Class6_7_F"
+                                        Items="AsrsEndofweek"
+                                        Name="OUT"
+                                        XValue="@(e => Convert.ToDateTime(e.W_date).ToString(VarGlobals.FormatD))"
+                                        YAggregate="@(e => e.Sum(e => e.W05))"
+                                        OrderByDescending="e=>e.X"
+                                        SeriesType="@ApexCharts.SeriesType.Area" ShowDataLabels />
+
+            </ApexCharts.ApexChart>
+        }
+    
+        
+    </MudItem>
  
 
 
 </MudGrid>
 
-@code { private System.Threading.Timer timer;
+@code {
+    private System.Threading.Timer timer;
     private List<DasLocation> daslos;
     private DasLocation daslocations = new DasLocation();
+
+    private ApexCharts.ApexChart<Class6_7_F> chart;
+    private ApexCharts.ApexChartOptions<Class6_7_F> options { get; set; } = new();
+
+
+    private ApexCharts.ApexChart<Vrpt_shelfsummary> locationchart;
+    private ApexCharts.ApexChartOptions<Vrpt_shelfsummary> locationoptions { get; set; } = new();
 
     private Int64 palletGR = 0;
     private Int64 orderGR = 0;
@@ -153,18 +234,22 @@
     private Int64 L1Total = 0;
     private Int64 L1Use = 0;
     private Int64 L1Emp = 0;
+    private Int64 L1Block = 0;
 
     private Int64 L2Total = 0;
     private Int64 L2Use = 0;
     private Int64 L2Emp = 0;
+    private Int64 L2Block = 0;
 
     private Int64 L3Total = 0;
     private Int64 L3Use = 0;
     private Int64 L3Emp = 0;
+    private Int64 L3Block = 0;
 
     private Int64 L4Total = 0;
     private Int64 L4Use = 0;
     private Int64 L4Emp = 0;
+    private Int64 L4Block = 0;
 
 
     private Boolean bRun = true;
@@ -181,6 +266,13 @@
     private IEnumerable<DashTaskTime> AsrsCompleteData = new List<DashTaskTime>();
 
     private IEnumerable<AsrsTaskSummary> AsrsTaskofday = new List<AsrsTaskSummary>();
+
+    private IEnumerable<Class6_7_F> AsrsEndofwees = new List<Class6_7_F>();
+
+    private List<Class6_7_F> AsrsEndofweek { get; set; }
+
+    private List<Vrpt_shelfsummary> Locations { get; set; }
+
 
 
     EarningReport[] earningReports = new EarningReport[]
@@ -267,6 +359,8 @@
 
         AsrsCompleteData = await Task.Run(() => ObjDashService.GetASRSDashboardComplete());
 
+        await LoadData();
+
         if (Elementorders.ToList().Count > 0)
         {
             var vorderCompletePut = Elementorders.Select(a => a.C01).Single();
@@ -299,6 +393,7 @@
                 L1Total = (Int64)val.Total;
                 L1Use = (Int64)val.Locavl;
                 L1Emp = (Int64)val.Locemp;
+                L1Block = (Int64)val.Plerr;
             }
         }
         else
@@ -310,6 +405,7 @@
             L1Total = 0;
             L1Use = 0;
             L1Emp = 0;
+            L1Block = 0;
         }
 
         var allCorrect2 = Elementlocation.Where(a => a.Srm_No == 2).ToList();
@@ -326,6 +422,7 @@
                 L2Total = (Int64)val.Total;
                 L2Use = (Int64)val.Locavl;
                 L2Emp = (Int64)val.Locemp;
+                L2Block = (Int64)val.Plerr;
             }
         }
         else
@@ -337,6 +434,7 @@
             L2Total = 0;
             L2Use = 0;
             L2Emp = 0;
+            L2Block = 0;
         }
 
         var allCorrect3 = Elementlocation.Where(a => a.Srm_No == 3).ToList();
@@ -353,6 +451,7 @@
                 L3Total = (Int64)val.Total;
                 L3Use = (Int64)val.Locavl;
                 L3Emp = (Int64)val.Locemp;
+                L3Block = (Int64)val.Plerr;
             }
         }
         else
@@ -364,6 +463,7 @@
             L3Total = 0;
             L3Use = 0;
             L3Emp = 0;
+            L3Block = 0;
         }
 
         var allCorrect4 = Elementlocation.Where(a => a.Srm_No == 4).ToList();
@@ -381,6 +481,7 @@
                 L4Total = (Int64)val.Total;
                 L4Use = (Int64)val.Locavl;
                 L4Emp = (Int64)val.Locemp;
+                L4Block = (Int64)val.Plerr;
             }
         }
         else
@@ -394,6 +495,7 @@
             L4Total = 0;
             L4Use = 0;
             L4Emp = 0;
+            L4Block = 0;
         }
 
         var allCorrectTas01 = ElementWorks.Where(a => a.Work_Code == "01").ToList();
@@ -439,9 +541,11 @@
         }
 
 
+     
+
         ASRSDashboardData();
 
-
+       
 
 
     }
@@ -552,4 +656,31 @@
     void StartCountdown()
     {
 
-    } }
+    }
+
+    private async Task UpdateChartSeries()
+    {
+         Class6_7_F Models = new Class6_7_F();
+            Models.W_date = DateTime.Now;
+            Models.W01 =50;
+            Models.W05 =10;
+
+        AsrsEndofweek.Add(Models);
+
+        await chart.RenderAsync();
+        //await chart.UpdateSeriesAsync(true);
+    }
+
+
+    private async Task LoadData()
+    {
+        await Task.Delay(10); //Simulate External Api call
+        //AsrsEndofweek = SampleData.GetOrders();
+
+        AsrsEndofweek = await Task.Run(() => ObjPublicService.GetAllMenu6_7Fby7Days());
+
+        Locations = await Task.Run(() => ObjDashService.GetAllLocationSummaryCap());
+
+
+    }
+}

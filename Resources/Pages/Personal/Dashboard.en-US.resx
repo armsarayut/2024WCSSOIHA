@@ -120,6 +120,9 @@
   <data name="AverageTime" xml:space="preserve">
     <value>Average Time</value>
   </data>
+  <data name="Block" xml:space="preserve">
+    <value>Block</value>
+  </data>
   <data name="CompleteOrder" xml:space="preserve">
     <value>Complete Order</value>
   </data>

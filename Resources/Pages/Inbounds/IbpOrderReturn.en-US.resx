@@ -130,7 +130,7 @@
     <value>JOB</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ITEMNAME" xml:space="preserve">
     <value>NAME</value>
@@ -157,7 +157,7 @@
     <value>SET RETURN</value>
   </data>
   <data name="SONO" xml:space="preserve">
-    <value>DOCNO</value>
+    <value>TASKNO</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>TOTAL</value>

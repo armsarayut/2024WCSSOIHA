@@ -16,7 +16,7 @@
 
 @inject NavigationManager navigationManager
 
-<MudText Typo="Typo.h4" GutterBottom="true">Sign In to GoWMS</MudText>
+<MudText Typo="Typo.h4" GutterBottom="true">Sign In to GoWCS</MudText>
 
 <MudText>Don't have an account? <MudLink Href="/pages/authentication/register" Color="MudBlazor.Color.Error">Sign Up</MudLink></MudText>
 
@@ -44,10 +44,10 @@
     string sRole { get; set; } = "";
     string sGroupID { get; set; } = "";
     string sUserID { get; set; } = "";
-    public string mPagedesc { get; set; } = "Gowms";
+    public string mPagedesc { get; set; } = "Gowcs";
     private string mPagename { get; set; } = "/Login";
 
-    private string pageheader = "Gowms";
+    private string pageheader = "Gowcs";
 
     void TogglePasswordVisibility()
     {
@@ -97,7 +97,7 @@
                     this.InsertAuditrial("SignIn User : " + Userword, pageheader);
 
                     var authModule = await JSRunTime.InvokeAsync<IJSObjectReference>("import", "./js/auth.js");
-                    await authModule.InvokeVoidAsync("SignIn", Userword, encrypted, grouid.ToString(), sUserID, "/gowms");
+                    await authModule.InvokeVoidAsync("SignIn", Userword, encrypted, grouid.ToString(), sUserID, "/gowcs");
                     var authModules = authModule;
                 }
                 else
@@ -153,7 +153,7 @@
         VarGlobals.User.DeepID = 1;
         VarGlobals.User.GroupID = 1;
 
-        navigationManager.NavigateTo("/gowms");
+        navigationManager.NavigateTo("/gowcs");
 
         // navigationManager.NavigateTo("/");
 

@@ -133,7 +133,7 @@
     <value>DATE</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ItemName" xml:space="preserve">
     <value>NAME</value>
@@ -166,7 +166,7 @@
     <value>SU</value>
   </data>
   <data name="SoNo" xml:space="preserve">
-    <value>JOB</value>
+    <value>TASKNO</value>
   </data>
   <data name="START" xml:space="preserve">
     <value>SET PICK</value>

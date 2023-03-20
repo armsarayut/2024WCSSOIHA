@@ -25,6 +25,13 @@ namespace GoWMS.Server.Controllers
             return retlist;
         }
 
+        public List<Vrpt_shelfsummary> GetAllLocationSummaryCap()
+        {
+            List<Vrpt_shelfsummary> retlist = objDAL.GetAllLocationSummaryCap().ToList();
+            return retlist;
+        }
+
+        
         public List<VLocationDash> GetAllTasworkofday()
         {
             List<VLocationDash> retlist = objDAL.GetAllTasworkofday().ToList();

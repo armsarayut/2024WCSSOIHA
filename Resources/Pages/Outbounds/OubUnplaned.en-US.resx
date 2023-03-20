@@ -121,7 +121,7 @@
     <value>BATCH</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ItemName" xml:space="preserve">
     <value>NAME</value>

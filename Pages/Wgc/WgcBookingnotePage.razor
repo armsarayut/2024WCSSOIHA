@@ -52,8 +52,8 @@ else
                OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>*@
 
              <MudButtonGroup Color="MudBlazor.Color.Default" Variant="Variant.Outlined">
-            <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="MudBlazor.Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
-                <MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="MudBlazor.Color.Tertiary" OnClick=@AddNewGr>@L["ADD"]</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.AddTask" IconColor="MudBlazor.Color.Tertiary" OnClick=@OnButtonOrderSelected>@L["START"]</MudButton>
+                @*<MudButton StartIcon="@Icons.Material.Filled.CreateNewFolder" IconColor="MudBlazor.Color.Tertiary" OnClick=@AddNewGr>@L["ADD"]</MudButton>*@
              </MudButtonGroup>
 
             <MudSpacer />
@@ -86,7 +86,9 @@ else
               <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Apicreated)">@L["DNDate"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Apikaror)">@L["SoNo"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApimaterialCode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApipackageID)">@L["Seq"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.Itemname)">@L["ItemName"]</MudTableSortLabel></MudTh>
+
+               @* <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApipackageID)">@L["Seq"]</MudTableSortLabel></MudTh>*@
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.ApijobCode)">@L["BatchNo"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<Inv_Stock_GoApiInfo, object>(x=>x.DisApigrQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
                 <MudTh>@L["ACTION"]</MudTh>
@@ -97,23 +99,24 @@ else
                     @if(context.Quantity>0)
                     {
                        <MudTd DataLabel="@L["STATUS"]">
-                            <MudIcon Icon="@Icons.Filled.EmojiEmotions" Color="MudBlazor.Color.Success" />
+                            <MudIcon Icon="@Icons.Material.Filled.EmojiEmotions" Color="MudBlazor.Color.Success" />
                        </MudTd>
                     }
                     else
                     {
                          <MudTd DataLabel="@L["STATUS"]">
-                            <MudIcon Icon="@Icons.Filled.MoodBad" Color="MudBlazor.Color.Error" />
+                        <MudIcon Icon="@Icons.Material.Filled.MoodBad" Color="MudBlazor.Color.Error" />
                         </MudTd>
                     }
                     <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Apicreated).ToString(VarGlobals.FormatDT)</MudTd>
                     <MudTd DataLabel="@L["SoNo"]">@context.Apikaror</MudTd>
                     <MudTd DataLabel="@L["ItemCode"]">@context.ApimaterialCode</MudTd>
-                    <MudTd DataLabel=@L["Seq"]>@context.ApipackageID</MudTd>
+                <MudTd DataLabel="@L["ItemName"]">@context.Itemname</MudTd>
+                    @*<MudTd DataLabel=@L["Seq"]>@context.ApipackageID</MudTd>*@
                     <MudTd DataLabel="@L["BatchNo"]">@context.ApijobCode</MudTd>
                     <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisApigrQuantity)</MudTd>
                      <MudTd DataLabel="@L["ACTION"]">
-                        <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="MudBlazor.Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="MudBlazor.Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
                     </MudTd>
            
                 

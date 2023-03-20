@@ -120,6 +120,9 @@
   <data name="AverageTime" xml:space="preserve">
     <value>เวลาเฉลี่ย</value>
   </data>
+  <data name="Block" xml:space="preserve">
+    <value>ห้าม</value>
+  </data>
   <data name="CompleteOrder" xml:space="preserve">
     <value>เสร็จสิ้นการสั่งซื้อ</value>
   </data>

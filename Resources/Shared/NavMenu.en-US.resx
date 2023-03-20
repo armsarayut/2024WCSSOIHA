@@ -268,7 +268,7 @@
     <value>Dashboard</value>
   </data>
   <data name="ErpBookingNote" xml:space="preserve">
-    <value>9.1.Confirmation</value>
+    <value>9.1.API Monitoring</value>
   </data>
   <data name="ErpBookingOrder" xml:space="preserve">
     <value>Booking Order</value>
@@ -286,7 +286,7 @@
     <value>9.5.Packeing</value>
   </data>
   <data name="GoodReceive" xml:space="preserve">
-    <value>1.3.Good Receive</value>
+    <value>1.1.Good Receive</value>
   </data>
   <data name="History" xml:space="preserve">
     <value>History</value>
@@ -334,7 +334,7 @@
     <value>1.2.Pallet Mapping</value>
   </data>
   <data name="MasterQueuing" xml:space="preserve">
-    <value>1.4.Master Queuing</value>
+    <value>1.2.Master Queuing</value>
   </data>
   <data name="OrderBooking" xml:space="preserve">
     <value>3.1.Order Booking</value>

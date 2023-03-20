@@ -389,6 +389,14 @@ namespace GoWMS.Server.Controllers
             List<Class6_7_F> retlist = objDAL.GetAllMenu6_7FbyDate(dtStart, dtStop).ToList();
             return retlist;
         }
+        public List<Class6_7_F> GetAllMenu6_7Fby7Days()
+        {
+            List<Class6_7_F> retlist = objDAL.GetAllMenu6_7Fby7Days().ToList();
+            return retlist;
+        }
+
+
+        
 
         public List<Class6_7_F> GetMenu6_7Fbydatelimit(DateTime dtStart, DateTime dtStop, long limitrec, long currentPage)
         {

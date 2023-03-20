@@ -159,18 +159,17 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine(", t1.grtype, t1.pallteno, t1.palltmapkey, t1.storagetime, t1.storageno");
                 Sql.AppendLine(", t1.storagearea, t1.storagebin, t1.gnrefer, t1.allocatequantity, t1.allocateweight");
                 Sql.AppendLine(",t0.efidx as apiefidx, t0.efstatus as apiefstatus, t0.created as apicreated, t0.modified as apimodified, t0.innovator as apiinnovator, t0.device as apidevice");
-                Sql.AppendLine(",t0.lenum as apiPackage_ID, t0.lenum as apiRoll_ID");
+                Sql.AppendLine(",t0.taskno as apiPackage_ID, t0.taskno as apiRoll_ID");
 
-                Sql.AppendLine(",matnr as apiMaterial_Code, '-' as apiMaterial_Description");
-                //Sql.AppendLine(",SUBSTRING (t0.matnr FROM 2) as apiMaterial_Code, '-' as apiMaterial_Description");
-                Sql.AppendLine(",t0.created as apiReceiving_Date, CAST(t0.matqty AS DECIMAL) as  apiGR_Quantity");
+                Sql.AppendLine(",t0.itemno as apiMaterial_Code, '-' as apiMaterial_Description");
+                Sql.AppendLine(",t0.created as apiReceiving_Date, CAST(t0.qty AS DECIMAL) as  apiGR_Quantity");
                 Sql.AppendLine(",null as apiUnit,1.00 as apiGR_Quantity_KG");
-                Sql.AppendLine(",t0.lgnum as  apiWH_Code, t0.lgnum as apiWarehouse, t0.matnr as apiJob, t0.matbatch as apiJob_Code, t0.typor as apitypor, t0.karor as apikaror");
-                Sql.AppendLine("FROM api.postasrsorders t0");
+                Sql.AppendLine(",t0.batchno as  apiWH_Code, t0.pickgate as apiWarehouse, 'P' || t0.itemno as apiJob, t0.batchno as apiJob_Code, t0.tasktype as apitypor, t0.taskno as apikaror");
+                Sql.AppendLine("FROM api.posttaskorders t0");
                 Sql.AppendLine("LEFT JOIN wms.vinv_stock_go_readypick t1");
 
-                Sql.AppendLine("ON t0.lenum = t1.pallettag");
-                Sql.AppendLine("WHERE t0.typor=@typor");
+                Sql.AppendLine("ON t0.palletcode = t1.pallteno");
+                Sql.AppendLine("WHERE t0.tasktype=@typor");
                 Sql.AppendLine("AND t0.efstatus=@efstatus");
                 Sql.AppendLine(")subQ");
 
@@ -184,7 +183,7 @@ namespace GoWMS.Server.Data
                 {
                     CommandType = CommandType.Text
                 };
-                cmd.Parameters.AddWithValue("@typor", "PICK");
+                cmd.Parameters.AddWithValue("@typor", "05");
                 cmd.Parameters.AddWithValue("@efstatus", 0);
 
                 con.Open();

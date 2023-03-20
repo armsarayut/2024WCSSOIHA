@@ -13,7 +13,7 @@ namespace GoWMS.Server.Data
         public string CurrentMunu { get; set; }
         public static string Imagelogoreport()
         {
-            return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\KETL.png"}" ;
+            return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\yss-img.jpg"}" ;
         }
 
         public static string Fontreport()

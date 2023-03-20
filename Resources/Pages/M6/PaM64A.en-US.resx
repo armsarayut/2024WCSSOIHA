@@ -127,13 +127,13 @@
     <value>Export</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ITEMNAME" xml:space="preserve">
     <value>NAME</value>
   </data>
   <data name="ORDERNO" xml:space="preserve">
-    <value>JOB</value>
+    <value>TASKNO</value>
   </data>
   <data name="PALLET" xml:space="preserve">
     <value>PALLET</value>

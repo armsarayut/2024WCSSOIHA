@@ -34,9 +34,9 @@ else
     <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary">@pageheader</MudText>
 
     <MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
-        <MudTooltip Text=RackLayout Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
+      @*  <MudTooltip Text=RackLayout Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Outlined.ViewColumn" Color="MudBlazor.Color.Info" OnClick="OpenLayout"></MudIconButton>
-        </MudTooltip>
+        </MudTooltip>*@
         <MudSpacer />
         <MudTooltip Text=@L["Export"] Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
             <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="MudBlazor.Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
@@ -62,7 +62,7 @@ else
 
         <HeaderContent>
             <MudTh><MudTableSortLabel SortBy="new Func<Vrpt_shelf_listInfo, object>(x=>x.Shelfcode)">@L["Location"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<Vrpt_shelf_listInfo, object>(x=>x.Srm_no)">@L["LANE"]</MudTableSortLabel></MudTh>
+            @*<MudTh><MudTableSortLabel SortBy="new Func<Vrpt_shelf_listInfo, object>(x=>x.Srm_no)">@L["LANE"]</MudTableSortLabel></MudTh>*@
             <MudTh><MudTableSortLabel SortBy="new Func<Vrpt_shelf_listInfo, object>(x=>x.Shelfbank)">@L["BANK"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Vrpt_shelf_listInfo, object>(x=>x.Shelfbay)">@L["BAY"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Vrpt_shelf_listInfo, object>(x=>x.Shelflevel)">@L["LEVEL"]</MudTableSortLabel></MudTh>
@@ -72,7 +72,7 @@ else
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="@L["Location"]">@context.Shelfcode</MudTd>
-            <MudTd DataLabel="@L["LANE"]">@context.Srm_no</MudTd>
+           @* <MudTd DataLabel="@L["LANE"]">@context.Srm_no</MudTd>*@
             <MudTd DataLabel="@L["BANK"]">@context.Shelfbank</MudTd>
             <MudTd DataLabel="@L["BAY"]">@context.Shelfbay</MudTd>
             <MudTd DataLabel="@L["LEVEL"]">@context.Shelflevel</MudTd>

@@ -3702,6 +3702,76 @@ namespace GoWMS.Server.Data
             return lstobj;
         }
 
+
+
+        public IEnumerable<Class6_7_F> GetAllMenu6_7Fby7Days()
+        {
+            List<Class6_7_F> lstobj = new List<Class6_7_F>();
+            using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
+            {
+                try
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.AppendLine("SELECT");
+                    sql.Append("w_date, ");
+                    sql.Append("COALESCE(NULLIF(w01  ,0),0) AS w01, ");
+                    sql.Append("COALESCE(NULLIF(w07  ,0),0) AS w07, ");
+                    sql.Append("COALESCE(NULLIF(w02  ,0),0) AS w02, ");
+                    sql.Append("COALESCE(NULLIF(w03  ,0),0) AS w03, ");
+                    sql.Append("COALESCE(NULLIF(w05  ,0),0) AS w05, ");
+                    sql.Append("COALESCE(NULLIF(w08  ,0),0) AS w08, ");
+                    sql.Append("COALESCE(NULLIF(w09  ,0),0) AS w09, ");
+                    sql.Append("COALESCE(NULLIF(w101  ,0),0) AS w101, ");
+                    sql.Append("COALESCE(NULLIF(w102  ,0),0) AS w102, ");
+                    sql.Append("COALESCE(NULLIF(wtotal  ,0),0) AS wtotal ");
+                    sql.AppendLine("FROM wcs.vrpt_workendofday ");
+                    sql.AppendLine("WHERE 1=1");
+                    //sql.AppendLine("AND (w_date >= @startdate AND w_date < @stopdate)");
+                    //sql.AppendLine("and (w_date >='" & dtpStart.ToString("s") & "' and w_date < '" & dtpStop.ToString("s") & "')");
+                    sql.AppendLine("ORDER BY w_date DESC ");
+                    //sql.AppendLine("limit " & LimitRecoard & " offset " & (LimitRecoard * CurrentPage) - LimitRecoard);
+                    sql.AppendLine("LIMIT 7;");
+
+
+                    NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
+                    {
+                        CommandType = CommandType.Text
+                    };
+                    //cmd.Parameters.AddWithValue("@startdate", NpgsqlDbType.Timestamp, dtStart);
+                    //cmd.Parameters.AddWithValue("@stopdate", NpgsqlDbType.Timestamp, dtStop);
+                    con.Open();
+
+                    NpgsqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        Class6_7_F objrd = new Class6_7_F
+                        {
+                            W_date = rdr["w_date"] == DBNull.Value ? null : (DateTime?)rdr["w_date"],
+                            W01 = rdr["w01"] == DBNull.Value ? null : (long?)rdr["w01"],
+                            W02 = rdr["w02"] == DBNull.Value ? null : (long?)rdr["w02"],
+                            W03 = rdr["w03"] == DBNull.Value ? null : (long?)rdr["w03"],
+                            W05 = rdr["w05"] == DBNull.Value ? null : (long?)rdr["w05"],
+                            W07 = rdr["W07"] == DBNull.Value ? null : (long?)rdr["W07"],
+                            W09 = rdr["w09"] == DBNull.Value ? null : (long?)rdr["w09"],
+                            W101 = rdr["w101"] == DBNull.Value ? null : (long?)rdr["w101"],
+                            W102 = rdr["w102"] == DBNull.Value ? null : (long?)rdr["w102"],
+                            Wtotal = rdr["wtotal"] == DBNull.Value ? null : (long?)rdr["wtotal"]
+                        };
+                        lstobj.Add(objrd);
+                    }
+                }
+                catch (NpgsqlException ex)
+                {
+                    Log.Error(ex.ToString());
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            return lstobj;
+        }
+
         public IEnumerable<Class6_7_F> GetAllMenu6_7FbyDatelimit(DateTime dtStart, DateTime dtStop, long limitrec, long currentPage)
         {
             List<Class6_7_F> lstobj = new List<Class6_7_F>();

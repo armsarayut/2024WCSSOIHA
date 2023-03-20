@@ -1,4 +1,4 @@
-﻿@page "/1/1_2"
+﻿@page "/1/1_1"
 @using System
 @using System.IO
 @using System.Linq
@@ -74,6 +74,7 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docdate)">@L["DNDate"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pono)">@L["DNNo"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Itemcode)">@L["ItemCode"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Itemname)">@L["ItemName"]</MudTableSortLabel></MudTh>
             @*<MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Pallettag)">@L["DNSeq"]</MudTableSortLabel></MudTh>*@
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.Docnote)">@L["BatchNo"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Inb_Goodreceive_Go, object>(x=>x.DisQuantity)">@L["Qty"]</MudTableSortLabel></MudTh>
@@ -84,12 +85,13 @@ else
              <MudTd DataLabel="@L["DNDate"]">@Convert.ToDateTime(context.Docdate).ToString(VarGlobals.FormatDT)</MudTd>
             <MudTd DataLabel="@L["DNNo"]">@context.Pono</MudTd>
             <MudTd DataLabel="@L["ItemCode"]">@context.Itemcode</MudTd>
+            <MudTd DataLabel="@L["ItemName"]">@context.Itemname</MudTd>
            @* <MudTd DataLabel=@L["DNSeq"]>@context.Pallettag</MudTd>*@
              <MudTd DataLabel="@L["BatchNo"]">@context.Docnote</MudTd>
             <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisQuantity)</MudTd>
             <MudTd DataLabel="@L["Pallet"]">@context.Pallteno</MudTd>
             <MudTd DataLabel="@L["Adjust"]">
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Delete" Color="MudBlazor.Color.Warning" @onclick="@(()=>DeleteMap(@context.Pallteno, @context.Pallettag))" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="MudBlazor.Color.Warning" @onclick="@(()=>DeleteMap(@context.Pallteno, @context.Pallettag))" />
             </MudTd>
         </RowTemplate>
          <PagerContent>
@@ -104,11 +106,11 @@ else
     private bool _dense = true;
     private bool _multiSelect = false;
 
-    private string pageheader { get; set; } = "1.3.Good Receive";
+    private string pageheader { get; set; } = "1.1.Good Receive";
     private bool _processing = false;
 
-    public string mPagedesc { get; set; } = "1.3.Good Receive";
-    private string mPagename { get; set; } = "/1/1_2";
+    public string mPagedesc { get; set; } = "1.1.Good Receive";
+    private string mPagename { get; set; } = "/1/1_1";
 
     private string msgAction = "Enter Palletcode";
     private string mPalletcode { get; set; } = "";

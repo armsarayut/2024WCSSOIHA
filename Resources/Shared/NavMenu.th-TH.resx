@@ -268,7 +268,7 @@
     <value>แผงควบคุม</value>
   </data>
   <data name="ErpBookingNote" xml:space="preserve">
-    <value>9.1.ผลการส่งกลับ</value>
+    <value>9.1.ติดตามข้อมูลการเขื่อมต่อ</value>
   </data>
   <data name="ErpBookingOrder" xml:space="preserve">
     <value>การจองคำสั่งซื้อ</value>
@@ -286,7 +286,7 @@
     <value>9.5.การบรรจุ</value>
   </data>
   <data name="GoodReceive" xml:space="preserve">
-    <value>1.3.การรับ</value>
+    <value>1.1.การรับ</value>
   </data>
   <data name="History" xml:space="preserve">
     <value>ประวัติ</value>
@@ -331,7 +331,7 @@
     <value>1.2.กำกับพาเลท</value>
   </data>
   <data name="MasterQueuing" xml:space="preserve">
-    <value>1.4.มาสเตอร์คิว</value>
+    <value>1.2.มาสเตอร์คิว</value>
   </data>
   <data name="OrderBooking" xml:space="preserve">
     <value>3.1.รายการจองสินค้า</value>

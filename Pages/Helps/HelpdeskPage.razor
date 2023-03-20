@@ -22,52 +22,22 @@
 else
 {
     <MudText Typo="Typo.h6" Color="MudBlazor.Color.Primary"> @pageheader </MudText>
-    <MudAppBar Color="MudBlazor.Color.Transparent" Fixed="false" Dense="true">
-        <MudSpacer />
-        <MudTooltip Text=@L["Export"] Color="MudBlazor.Color.Inherit" Placement="Placement.Top">
-            <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="MudBlazor.Color.Success" OnClick="DownloadExcelDocument"></MudIconButton>
-            <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="MudBlazor.Color.Error" OnClick="DownloadPdfDocument"></MudIconButton>
-        </MudTooltip>
-    </MudAppBar>
 
-    <MudTable Items="@Elements"
-              FixedHeader="@fixed_header"
-              FixedFooter="@fixed_footer"
-              Height="@(fixed_header || fixed_footer ?"500px":"")"
-              Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
-              Filter="new Func<Helpdesk,bool>(FilterFunc)" @bind-SelectedItem="selectedItem"
-              SortLabel=@L["SortBy"]>
-        <ToolBarContent>
-            <MudSpacer />
-            <MudTextField @bind-Value="searchString"
-                          Placeholder=@L["Search"] Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Search"
-                          IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
+    <div class="d-flex justify-center">
+        <MudImage ObjectFit="ObjectFit.Fill" 
+            ObjectPosition="@ImagePosition" 
+            Height="300" Width="300" Src="images/Aei-LOA-Service.JPG" 
+            Alt="Aei Service Line OA" 
+            Elevation="25" Class="rounded-lg ma-4" />
+    </div>
 
-        <HeaderContent>
-            <MudTh>@L["HelpCondition"]</MudTh>
-            <MudTh>@L["HelpName"]</MudTh>
-            <MudTh>@L["Tel"]</MudTh>
-            <MudTh>@L["Email"]</MudTh>
-
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel=@L["HelpCondition"]>@context.Hlp_desc</MudTd>
-            <MudTd DataLabel=@L["HelpName"]>@context.Hlp_name</MudTd>
-            <MudTd DataLabel=@L["Tel"]>@context.Hlp_tel</MudTd>
-            <MudTd DataLabel=@L["Email"]>@context.Hlp_mail</MudTd>
-
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
-        </PagerContent>
-    </MudTable>
 }
 
 @code {
 
     IEnumerable<int> pageSizeOptions = new int[] { 10, 20, 30, 50, 100 };
+
+    ObjectPosition ImagePosition = ObjectPosition.Center;
 
     public string mPagedesc { get; set; } = "8.2.Helpdesk";
     private string mPagename { get; set; } = "/8/8_2";

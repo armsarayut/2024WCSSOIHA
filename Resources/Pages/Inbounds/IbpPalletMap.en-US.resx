@@ -124,13 +124,13 @@
     <value>BATCH</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ItemName" xml:space="preserve">
     <value>NAME</value>
   </data>
   <data name="Job" xml:space="preserve">
-    <value>JOB</value>
+    <value>TASKNO</value>
   </data>
   <data name="MasterPallet" xml:space="preserve">
     <value>PALLET</value>

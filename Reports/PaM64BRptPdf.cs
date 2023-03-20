@@ -229,7 +229,7 @@ namespace GoWMS.Server.Reports
                 else if (i == 1) sizes[i] = 1f;
                 else if (i == 2) sizes[i] = 1f;
                 else if (i == 3) sizes[i] = 1.5f;
-                else if (i == 4) sizes[i] = 1f;
+                else if (i == 4) sizes[i] = 0.75f;
                 else if (i == 5) sizes[i] = 0.7f;
                 else if (i == 6) sizes[i] = 0.7f;
                 else if (i == 7) sizes[i] = 0.7f;
@@ -258,7 +258,7 @@ namespace GoWMS.Server.Reports
             };
             bodyTable.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("JOB", _fontstyeheader))
+            cell = new PdfPCell(new Phrase("TASKNO", _fontstyeheader))
             {
                 HorizontalAlignment = Element.ALIGN_LEFT,
                 VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -267,7 +267,7 @@ namespace GoWMS.Server.Reports
             };
             bodyTable.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("PART", _fontstyeheader))
+            cell = new PdfPCell(new Phrase("ITEM", _fontstyeheader))
             {
                 HorizontalAlignment = Element.ALIGN_LEFT,
                 VerticalAlignment = Element.ALIGN_MIDDLE,

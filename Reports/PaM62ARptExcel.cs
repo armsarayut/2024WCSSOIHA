@@ -24,8 +24,8 @@ namespace GoWMS.Server.Reports
                 worksheet.Column(1).Width = 24;
                 worksheet.Row(1).Height = 30;
                 var image = worksheet.AddPicture(imagePath).MoveTo(worksheet.Cell("A1")); //this will throw an error
-                image.ScaleWidth(.18);
-                image.ScaleHeight(.18);
+                image.ScaleWidth(.13);
+                image.ScaleHeight(.07);
                 worksheet.Cell("B1").Value = "5.2.1.Order Receive" + " - Report";
                 worksheet.Cell("B1").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
                 worksheet.Cell("B2").Value = $"PrintDate : {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}";
@@ -34,12 +34,12 @@ namespace GoWMS.Server.Reports
                 #region Excel Report Data
                 var rptRows = 4;
                 worksheet.Cell(rptRows, 1).Value = "DATE";
-                worksheet.Cell(rptRows, 2).Value = "JOB";
-                worksheet.Cell(rptRows, 3).Value = "PART";
+                worksheet.Cell(rptRows, 2).Value = "TASKNO";
+                worksheet.Cell(rptRows, 3).Value = "ITEM";
                 worksheet.Cell(rptRows, 4).Value = "NAME";
-                worksheet.Cell(rptRows, 5).Value = "SU";
-                worksheet.Cell(rptRows, 6).Value = "BATCH";
-                worksheet.Cell(rptRows, 7).Value = "QTY";
+                worksheet.Cell(rptRows, 5).Value = "BATCH";
+                worksheet.Cell(rptRows, 6).Value = "QTY";
+                worksheet.Cell(rptRows, 7).Value = "PALLET";
 
                 foreach (var rpt in rptElements)
                 {
@@ -48,9 +48,9 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 2).Value = "'" + rpt.Po_No;
                     worksheet.Cell(rptRows, 3).Value = "'" + rpt.Item_Code;
                     worksheet.Cell(rptRows, 4).Value = "'" + rpt.Item_Name;
-                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.Su_No;
-                    worksheet.Cell(rptRows, 6).Value = "'" + rpt.Batch_Number;
-                    worksheet.Cell(rptRows, 7).Value = "'" + string.Format(VarGlobals.FormatN3, rpt.DisResult_Qty) ;
+                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.Batch_Number;
+                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN3, rpt.DisResult_Qty);
+                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.Pallet_No;
                 }
                 #endregion
                 workbook.SaveAs(_memoryStream);

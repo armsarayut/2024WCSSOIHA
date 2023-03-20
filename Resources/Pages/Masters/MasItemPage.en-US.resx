@@ -130,7 +130,7 @@
     <value>GROSSWEIGHT</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ITEMNAME" xml:space="preserve">
     <value>NAME</value>

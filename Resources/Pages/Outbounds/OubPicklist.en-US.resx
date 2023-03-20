@@ -127,7 +127,7 @@
     <value>Excel</value>
   </data>
   <data name="ITEMCODE" xml:space="preserve">
-    <value>PART</value>
+    <value>ITEM</value>
   </data>
   <data name="ITEMNAME" xml:space="preserve">
     <value>NAME</value>
@@ -154,7 +154,7 @@
     <value>Search</value>
   </data>
   <data name="SONO" xml:space="preserve">
-    <value>JOB</value>
+    <value>TASKNO</value>
   </data>
   <data name="UNIT" xml:space="preserve">
     <value>UNIT</value>
