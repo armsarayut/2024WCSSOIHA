@@ -98,26 +98,76 @@ else
                       Variant="Variant.Filled"
                       Dense="true"
                       >
-                        Intransit
+                        New
                     </MudAlert>
                 }
                 else @if (context.Efstatus == 1)
                 {
-                    <MudAlert Severity="Severity.Warning"
+                    @if(context.Tasktype=="01")
+                    {
+                        <MudAlert Severity="Severity.Warning"
+                          Variant="Variant.Filled"
+                          Dense="true">
+                            Download
+                        </MudAlert>
+                    }else{
+                          <MudAlert Severity="Severity.Warning"
+                          Variant="Variant.Filled"
+                          Dense="true">
+                            Download
+                        </MudAlert>
+                    }
+                    
+                }
+                else @if (context.Efstatus == 2)
+                {
+                    @if (context.Tasktype == "01")
+                    {
+                        <MudAlert Severity="Severity.Warning"
                       Variant="Variant.Filled"
-                      Dense="true"
-                      >
-                        Putaway
-                    </MudAlert>
+                      Dense="true">
+                            Process
+                        </MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Warning"
+                      Variant="Variant.Filled"
+                      Dense="true">
+                            Process
+                        </MudAlert>
+                    }
+
+                }
+                else @if (context.Efstatus == 3)
+                {
+                    @if (context.Tasktype == "01")
+                    {
+                        <MudAlert Severity="Severity.Success"
+                      Variant="Variant.Filled"
+                      Dense="true">
+                            Completed
+                        </MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Success"
+                      Variant="Variant.Filled"
+                      Dense="true">
+                            Completed
+                        </MudAlert>
+                    }
+
                 }
                 else
                 {
-                    <MudAlert Severity="Severity.Success"
-                      Variant="Variant.Filled"
-                      Dense="true"
-                      >
-                        Onstock
-                    </MudAlert>
+                 <MudAlert Severity="Severity.Error"
+                          Variant="Variant.Filled"
+                          Dense="true">
+                            Unknow 
+                        </MudAlert>
+
+                    
                 }
                
             </MudTd>
@@ -126,7 +176,7 @@ else
             <MudTd DataLabel=@L["TASKNO"]>@context.Taskno</MudTd>
             <MudTd DataLabel=@L["BATCHNO"]>@context.Batchno</MudTd>
             <MudTd DataLabel=@L["ITEMNO"]>@context.Itemno</MudTd>
-            <MudTd DataLabel=@L["QTY"]>@context.Qty</MudTd>
+            <MudTd DataLabel="@L["QTY"]" Style="text-align: right">@string.Format(VarGlobals.FormatN2, context.Qty)</MudTd>
             <MudTd DataLabel=@L["PALLET"]>@context.Palletcode</MudTd>
             <MudTd DataLabel=@L["CREATEBY"]>@context.Sendby</MudTd>
            <MudTd DataLabel=@L["CREATED"]>@context.Senddate</MudTd>

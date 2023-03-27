@@ -136,6 +136,8 @@ namespace GoWMS.Server.Data
                 sqlQurey.AppendLine(" ELSE subQ.transfer_qty *  t3.weightnet");
                 sqlQurey.AppendLine("END AS distransfer_qty");
 
+                sqlQurey.AppendLine(", t3.itemname as itemdesctiption");
+
                 sqlQurey.AppendLine("FROM (");
                 sqlQurey.AppendLine("select row_number() over(order by t1.item_code asc) AS rn, t1.idx, ");
                 sqlQurey.AppendLine("t1.item_code, t1.item_name, t1.request_qty, t1.unit, t1.su_no, ");
@@ -165,7 +167,7 @@ namespace GoWMS.Server.Data
                     {
                         Idx = rdr["idx"] == DBNull.Value ? null : (Int64?)rdr["idx"],
                         Item_Code = rdr["item_code"].ToString(),
-                        Item_Name = rdr["item_name"].ToString(),
+                        Item_Name = rdr["itemdesctiption"].ToString(),
                         Request_Qty = rdr["request_qty"] == DBNull.Value ? null : (decimal?)rdr["request_qty"],
                         Unit = rdr["unit"].ToString(),
                         Su_No = rdr["su_no"].ToString(),

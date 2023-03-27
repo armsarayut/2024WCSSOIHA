@@ -52,7 +52,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 2).Value = "'" + rpt.Itemname;
                     worksheet.Cell(rptRows, 3).Value = "'" + rpt.Cusname;
                     worksheet.Cell(rptRows, 4).Value = "'" + rpt.Pallteno;
-                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.Totalstock;
+                    worksheet.Cell(rptRows, 5).Value = "'" + string.Format(VarGlobals.FormatN2, rpt.Totalstock);  
                     worksheet.Cell(rptRows, 6).Value = "'" + rpt.Storagebin;
                     worksheet.Cell(rptRows, 7).Value = "'" + rpt.StorageLane;
                     worksheet.Cell(rptRows, 8).Value = "'" + rpt.StorageBank;

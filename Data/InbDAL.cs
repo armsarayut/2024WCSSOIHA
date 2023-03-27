@@ -141,7 +141,8 @@ namespace GoWMS.Server.Data
                 sql.AppendLine("ELSE subQ.GR_Quantity * t3.weightnet");
                 sql.AppendLine("END AS disgr_quantity");
 
-     
+                sql.AppendLine(", t3.itemname as itemdesctiption");
+
 
                 sql.AppendLine("FROM (");
                 sql.AppendLine("SELECT efidx, efstatus, created, modified, innovator, device,lenum as Package_ID, lenum as Roll_ID");
@@ -194,7 +195,7 @@ namespace GoWMS.Server.Data
                         Pallettag = rdr["Package_ID"].ToString(),
                         Itemtag = rdr["Roll_ID"].ToString(),
                         Itemcode = rdr["Material_Code"].ToString(),
-                        Itemname = rdr["Material_Description"].ToString(),
+                        Itemname = rdr["itemdesctiption"].ToString(),
                         Itembar = rdr["Package_ID"].ToString(),
                         Unit = rdr["Unit"].ToString(),
                         Weightunit = null,
@@ -317,6 +318,7 @@ namespace GoWMS.Server.Data
                 sql.AppendLine("THEN subQ.totalweight");
                 sql.AppendLine("ELSE subQ.totalweight * t3.weightnet");
                 sql.AppendLine("END AS distotalweight");
+                sql.AppendLine(", t3.itemname as itemdesctiption");
                 sql.AppendLine("FROM (");
                 sql.AppendLine("select * ");
                 sql.AppendLine("from wms.inb_goodreceive_go");
@@ -356,7 +358,7 @@ namespace GoWMS.Server.Data
                         Pallettag = rdr["pallettag"].ToString(),
                         Itemtag = rdr["itemtag"].ToString(),
                         Itemcode = rdr["itemcode"].ToString(),
-                        Itemname = rdr["itemname"].ToString(),
+                        Itemname = rdr["itemdesctiption"].ToString(),
                         Itembar = rdr["itembar"].ToString(),
                         Unit = rdr["unit"].ToString(),
                         Weightunit = rdr["weightunit"].ToString(),

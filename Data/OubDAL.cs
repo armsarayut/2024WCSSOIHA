@@ -41,6 +41,7 @@ namespace GoWMS.Server.Data
                 sql.AppendLine(" ELSE subQ.transfer_qty * t3.weightnet ");
                 sql.AppendLine(" END AS distransfer_qty");
 
+                sql.AppendLine(", t3.itemname as itemdesctiption");
 
                 sql.AppendLine("FROM(");
                 sql.AppendLine("SELECT *");
@@ -110,7 +111,7 @@ namespace GoWMS.Server.Data
                         Site = rdr["site"].ToString(),
                         Storage_Location = rdr["storage_location"].ToString(),
                         Warehouse = rdr["warehouse"].ToString(),
-                        Item_Name = rdr["item_Name"].ToString(),
+                        Item_Name = rdr["itemdesctiption"].ToString(),
                         Tracking_Number = rdr["tracking_number"].ToString(),
                         Su_No = rdr["su_no"].ToString(),
                         Pallet_No = rdr["pallet_no"].ToString(),
@@ -150,6 +151,8 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine(" THEN   subQ.apiGR_Quantity");
                 Sql.AppendLine(" ELSE subQ.apiGR_Quantity * t3.weightnet ");
                 Sql.AppendLine(" END AS disapigr_quantity");
+
+                Sql.AppendLine(", t3.itemname as itemdesctiption");
 
                 Sql.AppendLine("FROM (");
                 Sql.AppendLine("SELECT t1.efidx , t1.efstatus, t1.created, t1.modified, t1.innovator, t1.device");
@@ -202,7 +205,7 @@ namespace GoWMS.Server.Data
                         Pallettag = rdr["pallettag"].ToString(),
                         Itemtag = rdr["itemtag"].ToString(),
                         Itemcode = rdr["itemcode"].ToString(),
-                        Itemname = rdr["itemname"].ToString(),
+                        Itemname = rdr["itemdesctiption"].ToString(),
                         Itembar = rdr["itembar"].ToString(),
                         Unit = rdr["unit"].ToString(),
                         Weightunit = rdr["weightunit"].ToString(),
@@ -283,6 +286,7 @@ namespace GoWMS.Server.Data
                 sql.AppendLine(" ELSE subQ.transfer_qty * t3.weightnet ");
                 sql.AppendLine(" END AS distransfer_qty");
 
+                sql.AppendLine(", t3.itemname as itemdesctiption");
 
                 sql.AppendLine("FROM(");
                 sql.AppendLine("SELECT *");
@@ -350,7 +354,7 @@ namespace GoWMS.Server.Data
                         Site = rdr["site"].ToString(),
                         Storage_Location = rdr["storage_location"].ToString(),
                         Warehouse = rdr["warehouse"].ToString(),
-                        Item_Name = rdr["item_Name"].ToString(),
+                        Item_Name = rdr["itemdesctiption"].ToString(),
                         Tracking_Number = rdr["tracking_number"].ToString(),
                         Su_No = rdr["su_no"].ToString(),
                         Pallet_No = rdr["pallet_no"].ToString(),

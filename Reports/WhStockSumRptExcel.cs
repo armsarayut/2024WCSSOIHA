@@ -43,7 +43,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 1).Value = "'" + rpt.Item_code;
                     worksheet.Cell(rptRows, 2).Value = "'" + rpt.Item_name;
                     worksheet.Cell(rptRows, 3).Value = "'" + rpt.lot;
-                    worksheet.Cell(rptRows, 4).Value = "'" + rpt.DisTotalstock;
+                    worksheet.Cell(rptRows, 4).Value = "'" + string.Format(VarGlobals.FormatN2, rpt.DisTotalstock); 
                 }
                 #endregion
                 workbook.SaveAs(_memoryStream);

@@ -49,7 +49,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 3).Value = "'" + rpt.Item_Code;
                     worksheet.Cell(rptRows, 4).Value = "'" + rpt.Item_Name;
                     worksheet.Cell(rptRows, 5).Value = "'" + rpt.Batch_Number;
-                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.DisResult_Qty);
+                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN2, rpt.DisResult_Qty);
                     worksheet.Cell(rptRows, 7).Value = "'" + rpt.Pallet_No;
 
 

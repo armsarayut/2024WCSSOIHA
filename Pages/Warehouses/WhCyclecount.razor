@@ -72,7 +72,7 @@ else
                         <MudTd DataLabel=@L["ItemCode"]>@context.Itemcode</MudTd>
                         <MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>
                         <MudTd DataLabel=@L["Lot"]>@context.Docno</MudTd>
-                        <MudTd DataLabel="@L["Stock"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisQuantity)</MudTd>
+                        <MudTd DataLabel="@L["Stock"]" Style="text-align: right">@string.Format(VarGlobals.FormatN0, context.DisQuantity)</MudTd>
                         <MudTd DataLabel=@L["PalletGo"]>@context.Pallteno</MudTd>
                     </RowTemplate>
                     <PagerContent>

@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BATCHNO" xml:space="preserve">
+    <value>เลขชุด</value>
+  </data>
   <data name="BK_NO" xml:space="preserve">
     <value>BK_NO</value>
   </data>
   <data name="BOOKING_MODEL" xml:space="preserve">
     <value>BOOKING_MODEL</value>
+  </data>
+  <data name="CREATEBY" xml:space="preserve">
+    <value>ข้อมูลโดย</value>
+  </data>
+  <data name="CREATED" xml:space="preserve">
+    <value>ข้อมูลวันที่</value>
   </data>
   <data name="CREATED_DATE" xml:space="preserve">
     <value>CREATED_DATE</value>
@@ -153,6 +162,12 @@
   <data name="FromDate" xml:space="preserve">
     <value>FromDate</value>
   </data>
+  <data name="GATE" xml:space="preserve">
+    <value>สถานี</value>
+  </data>
+  <data name="ITEMNO" xml:space="preserve">
+    <value>รหัสสินค้า</value>
+  </data>
   <data name="ITEM_CODE" xml:space="preserve">
     <value>ITEM_CODE</value>
   </data>
@@ -162,11 +177,17 @@
   <data name="PACKETING_CODE" xml:space="preserve">
     <value>PACKETING_CODE</value>
   </data>
+  <data name="PALLET" xml:space="preserve">
+    <value>พาเลท</value>
+  </data>
   <data name="PALLET_GO" xml:space="preserve">
     <value>PALLET_GO</value>
   </data>
   <data name="PDF" xml:space="preserve">
     <value>Pdf</value>
+  </data>
+  <data name="QTY" xml:space="preserve">
+    <value>จำนวน</value>
   </data>
   <data name="REQUEST_DATE" xml:space="preserve">
     <value>REQUEST_DATE</value>
@@ -177,14 +198,26 @@
   <data name="SEQ_NO" xml:space="preserve">
     <value>SEQ_NO</value>
   </data>
+  <data name="STATUS" xml:space="preserve">
+    <value>สถานะ</value>
+  </data>
   <data name="STATUS_GO" xml:space="preserve">
     <value>STATUS_GO</value>
   </data>
   <data name="SUBCUSTOMER_CODE" xml:space="preserve">
     <value>SUBCUSTOMER_CODE</value>
   </data>
+  <data name="TASKNO" xml:space="preserve">
+    <value>ใบงาน</value>
+  </data>
+  <data name="TASKTYPE" xml:space="preserve">
+    <value>ประเภทงาน</value>
+  </data>
   <data name="ToDate" xml:space="preserve">
     <value>ToDate</value>
+  </data>
+  <data name="TRANSACTION" xml:space="preserve">
+    <value>วันเวลารับส่งข้อมูล</value>
   </data>
   <data name="UPDATE_DATE" xml:space="preserve">
     <value>UPDATE_DATE</value>

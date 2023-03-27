@@ -41,7 +41,7 @@ namespace GoWMS.Server.Reports
                 {
                     rptRows++;
                     worksheet.Cell(rptRows, 1).Value = "'" + Convert.ToDateTime(rpt.W_Hour).ToString(VarGlobals.FormatDTHM);
-                    worksheet.Cell(rptRows, 2).Value = "'" + rpt.W_Count;
+                    worksheet.Cell(rptRows, 2).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.W_Count);
 
                 }
                 #endregion

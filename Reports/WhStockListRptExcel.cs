@@ -46,7 +46,7 @@ namespace GoWMS.Server.Reports
                     worksheet.Cell(rptRows, 1).Value = "'" + rpt.Itemcode;
                     worksheet.Cell(rptRows, 2).Value = "'" + rpt.Itemname;
                     worksheet.Cell(rptRows, 3).Value = "'" + rpt.Docnote;
-                    worksheet.Cell(rptRows, 4).Value = "'" + rpt.DisQuantity;
+                    worksheet.Cell(rptRows, 4).Value = "'" + string.Format(VarGlobals.FormatN2, rpt.DisQuantity);  
                     worksheet.Cell(rptRows, 5).Value = "'" + rpt.Pallteno;
                     worksheet.Cell(rptRows, 6).Value = "'" + rpt.Storagebin;
                 }

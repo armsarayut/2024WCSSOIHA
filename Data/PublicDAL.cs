@@ -292,6 +292,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.shortge_qty * t3.weightnet ");
                     sql.AppendLine(" END AS disshortge_qty");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM(");
                     sql.AppendLine("SELECT");
                     sql.AppendLine("t1.created, t1.work_type, t1.create_by, t1.batch_number, t1.item_code,");
@@ -335,7 +337,7 @@ namespace GoWMS.Server.Data
                             Create_By = rdr["create_by"].ToString(),
                             Batch_Number = rdr["batch_number"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Su_No = rdr["su_no"].ToString(),
                             Movement_Type = rdr["movement_type"].ToString(),
                             Movemet_Reason = rdr["movemet_reason"].ToString(),
@@ -529,6 +531,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
                     sql.AppendLine(" END AS disresult_qty");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM(");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t1.created::date as created , t1.po_no, t1.batch_number, t1.item_code,");
@@ -573,7 +577,7 @@ namespace GoWMS.Server.Data
                             Created = rdr["created"] == DBNull.Value ? null : (DateTime?)rdr["created"],
                             Batch_Number = rdr["batch_number"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Movement_Type = rdr["movement_type"].ToString(),
                             Movemet_Reason = rdr["movemet_reason"].ToString(),
                             Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"],
@@ -664,6 +668,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.qty * t3.weightnet ");
                     sql.AppendLine(" END AS disqty");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM (");
                     sql.AppendLine("select row_number() over(order by t2.itembrand asc, t1.batch_number asc, t1.item_code asc) AS rn,");
                     sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
@@ -712,7 +718,7 @@ namespace GoWMS.Server.Data
                             Brand = rdr["brand"].ToString(),
                             Batch_Number = rdr["batch_number"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Qty = rdr["qty"] == DBNull.Value ? null : (decimal?)rdr["qty"],
                             Su_No = rdr["su_no"].ToString(),
                             Palletcode = rdr["palletcode"].ToString(),
@@ -817,6 +823,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.totalstock * t3.weightnet ");
                     sql.AppendLine(" END AS distotalstock");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, sum(t1.qty) AS totalstock, count(t1.palletcode) as countpallet ");
@@ -849,7 +857,7 @@ namespace GoWMS.Server.Data
                             Brand = rdr["brand"].ToString(),
                             Batch_Number = rdr["batch_number"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Totalstock = rdr["totalstock"] == DBNull.Value ? null : (decimal?)rdr["totalstock"],
                             Countpallet = rdr["countpallet"] == DBNull.Value ? null : (long?)rdr["countpallet"],
                             DisTotalstock = rdr["distotalstock"] == DBNull.Value ? null : (decimal?)rdr["distotalstock"]
@@ -943,6 +951,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.qty * t3.weightnet ");
                     sql.AppendLine(" END AS disqty");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t2.itembrand as brand, t1.batch_number, t1.item_code, t2.itemname as item_name, t1.qty, t1.su_no, t1.palletcode, t3.shelfname");
@@ -977,7 +987,7 @@ namespace GoWMS.Server.Data
                             Brand = rdr["brand"].ToString(),
                             Batch_Number = rdr["batch_number"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Qty = rdr["qty"] == DBNull.Value ? null : (decimal?)rdr["qty"],
                             Su_No = rdr["su_no"].ToString(),
                             Palletcode = rdr["palletcode"].ToString(),
@@ -1389,6 +1399,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
                     sql.AppendLine(" END AS disresult_qty");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t1.idx, t1.created, t1.entity_lock, t1.modified, t1.client_id, t1.client_ip, t1.seq_no, ");
@@ -1443,7 +1455,7 @@ namespace GoWMS.Server.Data
                             Movement_Type = rdr["movement_type"].ToString(),
                             Movemet_Reason = rdr["movemet_reason"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Batch_Number = rdr["batch_number"].ToString(),
                             Su_No = rdr["su_no"].ToString(),
                             Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"],
@@ -1639,6 +1651,8 @@ namespace GoWMS.Server.Data
                     sql.AppendLine(" ELSE subQ.result_qty * t3.weightnet ");
                     sql.AppendLine(" END AS disresult_qty");
 
+                    sql.AppendLine(", t3.itemname as itemdesctiption");
+
                     sql.AppendLine("FROM (");
                     sql.AppendLine("SELECT ");
                     sql.AppendLine("t1.created::date as created, t1.order_no, t1.ship_to_code, t1.ship_name, t1.batch_number ,");
@@ -1681,7 +1695,7 @@ namespace GoWMS.Server.Data
                             Movement_Type = rdr["movement_type"].ToString(),
                             Movemet_Reason = rdr["movemet_reason"].ToString(),
                             Item_Code = rdr["item_code"].ToString(),
-                            Item_Name = rdr["item_name"].ToString(),
+                            Item_Name = rdr["itemdesctiption"].ToString(),
                             Result_Qty = rdr["result_qty"] == DBNull.Value ? null : (decimal?)rdr["result_qty"],
                             Batch_number = rdr["batch_number"].ToString(),
                             DisResult_Qty = rdr["disresult_qty"] == DBNull.Value ? null : (decimal?)rdr["disresult_qty"],

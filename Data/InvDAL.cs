@@ -84,6 +84,8 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine(" ELSE subQ.totalquantity * t3.weightnet ");
                 Sql.AppendLine(" END AS distotalquantity");
 
+                Sql.AppendLine(", t3.itemname as itemdesctiption");
+
                 Sql.AppendLine("FROM (");
                 Sql.AppendLine("SELECT t1.efidx , t1.efstatus, t1.created, t1.modified, t1.innovator, t1.device");
                 Sql.AppendLine(", t1.pono, t1.pallettag, t1.itemtag, t1.itemcode, t1.itemname, t1.itembar, t1.unit");
@@ -129,7 +131,7 @@ namespace GoWMS.Server.Data
                         Pallettag = rdr["pallettag"].ToString(),
                         Itemtag = rdr["itemtag"].ToString(),
                         Itemcode = rdr["itemcode"].ToString(),
-                        Itemname = rdr["itemname"].ToString(),
+                        Itemname = rdr["itemdesctiption"].ToString(),
                         Itembar = rdr["itembar"].ToString(),
                         Unit = rdr["unit"].ToString(),
                         Weightunit = rdr["weightunit"].ToString(),
@@ -182,6 +184,8 @@ namespace GoWMS.Server.Data
                 Sql.AppendLine("ELSE subQ.totalqty * t3.weightnet");
                 Sql.AppendLine("END AS distotalstock");
 
+                Sql.AppendLine(", t3.itemname as itemdesctiption");
+
                 Sql.AppendLine("FROM (");
                 Sql.AppendLine("select row_number() over(order by itemcode asc) AS rn,");
                 Sql.AppendLine("itemcode, itemname, sum(quantity) as totalqty, count(pallteno) as countpallet, docnote as lot");
@@ -208,7 +212,7 @@ namespace GoWMS.Server.Data
                     {
                         Rn = rdr["rn"] == DBNull.Value ? null : (Int64?)rdr["rn"],
                         Item_code = rdr["itemcode"].ToString(),
-                        Item_name = rdr["itemname"].ToString(),
+                        Item_name = rdr["itemdesctiption"].ToString(),
                         lot = rdr["lot"].ToString(),
                         Totalstock = rdr["totalqty"] == DBNull.Value ? null : (Decimal?)rdr["totalqty"],
                         Countpallet = rdr["countpallet"] == DBNull.Value ? null : (Int64?)rdr["countpallet"],

@@ -98,7 +98,7 @@ namespace GoWMS.Server.Reports
 
 
 
-                    cb.SetTextMatrix(70.0f, 253.0f);
+                    cb.SetTextMatrix(60.0f, 253.0f);
                     img.ScaleToFit(80, 288);
                     img.SetAbsolutePosition(108f, 30f);
                     img.Alignment = Element.ALIGN_CENTER;

@@ -40,18 +40,18 @@ namespace GoWMS.Server.Reports
                 worksheet.Cell(rptRows, 4).Value = "STORE-OUT";
                 worksheet.Cell(rptRows, 5).Value = "EMPTY-IN";
                 worksheet.Cell(rptRows, 6).Value = "EMPTY-OUT";
-                worksheet.Cell(rptRows, 7).Value = "MOVE";
+                worksheet.Cell(rptRows, 5).Value = "MOVE";
 
                 foreach (var rpt in rptElements)
                 {
                     rptRows++;
                     worksheet.Cell(rptRows, 1).Value = "'" + Convert.ToDateTime(rpt.W_date).ToString(VarGlobals.FormatD);
-                    worksheet.Cell(rptRows, 2).Value = "'" + rpt.Wtotal;
-                    worksheet.Cell(rptRows, 3).Value = "'" + rpt.W01;
-                    worksheet.Cell(rptRows, 4).Value = "'" + rpt.W05;
-                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.W101;
-                    worksheet.Cell(rptRows, 6).Value = "'" + rpt.W102;
-                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.W09;
+                    worksheet.Cell(rptRows, 2).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.Wtotal);
+                    worksheet.Cell(rptRows, 3).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.W01);
+                    worksheet.Cell(rptRows, 4).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.W05);
+                    worksheet.Cell(rptRows, 5).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.W101);
+                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.W102);
+                    worksheet.Cell(rptRows, 5).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.W09);
                 }
                 #endregion
                 workbook.SaveAs(_memoryStream);

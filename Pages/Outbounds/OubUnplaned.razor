@@ -88,7 +88,7 @@ else
                 <MudTd DataLabel=@L["ItemName"]>@context.Itemname</MudTd>
                     @*<MudTd DataLabel=@L["SEQ"]>@context.Pallettag</MudTd>*@
                     <MudTd DataLabel=@L["batch"]>@context.Docnote</MudTd>
-                    <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisQuantity)</MudTd>
+                <MudTd DataLabel=@L["Stock"] Style="text-align: right">@string.Format(VarGlobals.FormatN2, context.DisQuantity)</MudTd>
                 <MudTd DataLabel=@L["PalletGo"]>@context.Pallteno</MudTd>
                 </RowTemplate>
    

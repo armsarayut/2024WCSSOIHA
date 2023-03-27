@@ -114,7 +114,7 @@ else
                 <MudTd DataLabel="@L["ItemName"]">@context.Itemname</MudTd>
                     @*<MudTd DataLabel=@L["Seq"]>@context.ApipackageID</MudTd>*@
                     <MudTd DataLabel="@L["BatchNo"]">@context.ApijobCode</MudTd>
-                    <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN3, context.DisApigrQuantity)</MudTd>
+                <MudTd DataLabel="@L["Qty"]" Style="text-align: right">@string.Format(VarGlobals.FormatN2, context.DisApigrQuantity)</MudTd>
                      <MudTd DataLabel="@L["ACTION"]">
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="MudBlazor.Color.Warning" @onclick="@(()=>CancelGR((long)context.Apiefidx, context.Apikaror,context.ApipackageID))" />
                     </MudTd>
@@ -385,7 +385,7 @@ else
                 WriteIndented = true
             };
 
-        string cus = "SAP";
+        string cus = "WMS";
         //string so = "MO-" + DateTime.Now.ToString("yyMMddHHmmssffff");
 
 

@@ -45,12 +45,12 @@ namespace GoWMS.Server.Reports
                 {
                     rptRows++;
                     worksheet.Cell(rptRows, 1).Value = "'" + rpt.Srmname;
-                    worksheet.Cell(rptRows, 2).Value = "'" + rpt.Locavlt1;
-                    worksheet.Cell(rptRows, 3).Value = "'" + rpt.Locemp;
-                    worksheet.Cell(rptRows, 4).Value = "'" + rpt.Perr;
-                    worksheet.Cell(rptRows, 5).Value = "'" + rpt.Prohloc;
-                    worksheet.Cell(rptRows, 6).Value = "'" + rpt.Total;
-                    worksheet.Cell(rptRows, 7).Value = "'" + rpt.OccRate;
+                    worksheet.Cell(rptRows, 2).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.Locavlt1);  
+                    worksheet.Cell(rptRows, 3).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.Locemp);
+                    worksheet.Cell(rptRows, 4).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.Perr);
+                    worksheet.Cell(rptRows, 5).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.Prohloc);
+                    worksheet.Cell(rptRows, 6).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.Total);
+                    worksheet.Cell(rptRows, 7).Value = "'" + string.Format(VarGlobals.FormatN0, rpt.OccRate);
 
 
                 }

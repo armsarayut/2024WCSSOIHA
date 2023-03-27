@@ -88,7 +88,7 @@ else
                 <MudTd Class="clm-row-small" DataLabel=@L["MATERIAL"]>@context.Item_Code</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["PACKID"]>@context.Su_No</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["BATCH"]>@context.Po_No</MudTd>
-                <MudTd Class="clm-row-small" DataLabel=@L["QTY"]>@string.Format(VarGlobals.FormatN3, context.DisStock_Qty)</MudTd>
+                <MudTd Class="clm-row-small" DataLabel=@L["QTY"]>@string.Format(VarGlobals.FormatN0, context.DisStock_Qty)</MudTd>
                 <MudTd Class="clm-row-small" DataLabel=@L["ACTION"]>
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Check" Color="MudBlazor.Color.Error" @onclick="@(()=>CountMap(@context.Su_No))" />
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Outlined.Clear" Color="MudBlazor.Color.Warning" @onclick="@(()=>DeleteMap(@context.Su_No))" />
