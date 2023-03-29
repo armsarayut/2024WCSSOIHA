@@ -62,7 +62,9 @@ else
                       GroupFooterClass="mb-4"
                       Dense="_dense"
                       SelectedItems="@selectedItems"
-                      MultiSelection="_multiSelect">
+                      MultiSelection="_multiSelect"
+                      >
+
                 <ColGroup>
                     @if (_multiSelect)
                     {
@@ -79,6 +81,7 @@ else
                     <col />
            
                 </ColGroup>
+
                 <HeaderContent>
                     <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Order_No)">@L["ORDERNO"]</MudTableSortLabel></MudTh>
                     <MudTh><MudTableSortLabel SortBy="new Func<Sap_Storeout, object>(x=>x.Item_Code)">@L["ITEMCODE"]</MudTableSortLabel></MudTh>
