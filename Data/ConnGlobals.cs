@@ -44,6 +44,11 @@ namespace GoWMS.Server.Data
             string _Dbname = string.Empty;
             string _Hostmode = string.Empty;
 
+            string _IPQAString = string.Empty;
+            string _PortQAString = string.Empty;
+            string _DbQAname = string.Empty;
+            string _HostQAmode = string.Empty;
+
             var configurationBuilder = new ConfigurationBuilder();
             var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
             configurationBuilder.AddJsonFile(path, false);
@@ -53,6 +58,12 @@ namespace GoWMS.Server.Data
             _PortString = root.GetSection("DBHost").GetSection("Port").Value;
             _Dbname = root.GetSection("DBHost").GetSection("Name").Value;
             _Hostmode = root.GetSection("DBHost").GetSection("HostMode").Value;
+
+            _IPQAString = root.GetSection("DBHost").GetSection("IPQA").Value;
+            _PortQAString = root.GetSection("DBHost").GetSection("PortQA").Value;
+            _DbQAname = root.GetSection("DBHost").GetSection("NameQA").Value;
+            _HostQAmode = root.GetSection("DBHost").GetSection("HostModeQA").Value;
+
 
             bool bLocal = true;
 
@@ -64,11 +75,15 @@ namespace GoWMS.Server.Data
 
             if (bLocal)
             {
-                return "Server=" + NpgServer + " ;Port=" + NpgPort + ";Database=" + NpgDB + ";User Id=" + NpgUser + ";Password=" + NpgPass + ";Timeout=" + NpgContime + ";";
+                //return "Server=" + NpgServer + " ;Port=" + NpgPort + ";Database=" + NpgDB + ";User Id=" + NpgUser + ";Password=" + NpgPass + ";Timeout=" + NpgContime + ";";
+
+                return "Server=" + _IPQAString + " ;Port=" + _PortQAString + ";Database=" + _DbQAname + ";User Id=" + NpgUser + ";Password=" + NpgPass + ";Timeout=" + NpgContime + ";";
             }
             else
             {
                 return "Server=" + _IPString + " ;Port=" + _PortString + ";Database=" + _Dbname + ";User Id=" + NpgUser + ";Password=" + NpgPass + ";Timeout=" + NpgContime + ";";
+
+             
             }
 
         }
