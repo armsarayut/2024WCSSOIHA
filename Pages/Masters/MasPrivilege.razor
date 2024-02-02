@@ -65,7 +65,7 @@ else
         <RowTemplate>
             <MudTd DataLabel=@L["GROUP"]>@context.Ugdesc</MudTd>
             <MudTd DataLabel=@L["MENU"]>@context.Menu_desc</MudTd>
-            <MudTd DataLabel=@L["ACCESS"]><MudCheckBox   @bind-Checked="@context.Role_acc"/></MudTd>
+            <MudTd DataLabel=@L["ACCESS"]><MudCheckBox Color="MudBlazor.Color.Primary" @bind-Checked="@context.Role_acc" /></MudTd>
             <MudTd DataLabel=@L["ADD"]><MudCheckBox Color="MudBlazor.Color.Tertiary" @bind-Checked="@context.Role_add"/></MudTd>
             <MudTd DataLabel=@L["EDIT"]><MudCheckBox Color="MudBlazor.Color.Secondary" @bind-Checked="@context.Role_edit"/></MudTd>
             <MudTd DataLabel=@L["DELETE"]><MudCheckBox Color="MudBlazor.Color.Warning" @bind-Checked="@context.Role_del"/></MudTd>

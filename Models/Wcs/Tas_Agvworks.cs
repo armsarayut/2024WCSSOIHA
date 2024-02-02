@@ -24,5 +24,11 @@ namespace GoWMS.Server.Models.Wcs
 		public DateTime? Stime { get; set; }
 		public DateTime? Etime { get; set; }
 		public Int32? Work_Priority { get; set; }
-	}
+
+        public string Task_code { get; set; }
+
+        public Int32? DestStatus { get; set; }
+        public string DestMsg { get; set; }
+
+    }
 }

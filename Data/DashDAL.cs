@@ -108,7 +108,7 @@ namespace GoWMS.Server.Data
             {
                 NpgsqlCommand cmd = new NpgsqlCommand("select srm_name, srm_no, locavl, locemp, plemp, plerr, prohloc, total, percen " +
                     "FROM wcs.vrpt_shelfsummary " +
-                     "WHERE srm_name Like '%TOTAL%' " +
+                     "WHERE srm_name Like '%ASRS-ALL : TOTAL%' " +
                     "ORDER BY srm_no DESC LIMIT 1", con)
                 {
                     CommandType = CommandType.Text

@@ -133,10 +133,10 @@
     <value>4.2.ASRS-Queue</value>
   </data>
   <data name="4.3.RGV-QUEUE" xml:space="preserve">
-    <value>4.3.RGV-Queue</value>
+    <value>4.5.AGV-Queue</value>
   </data>
   <data name="4.4-RGV-SURVEY" xml:space="preserve">
-    <value>4.4.RGV-Survey</value>
+    <value>4.4.AGV-STATUS</value>
   </data>
   <data name="4.4.1.RGV01-SURVEY" xml:space="preserve">
     <value>4.4.1.RGV01-Survey</value>

@@ -1,0 +1,369 @@
+﻿@page "/4/4_5"
+@using System
+@using System.IO
+@using System.Linq
+@using System.Text
+@using System.Threading
+@using System.Threading.Tasks
+@using System.Collections.Generic
+
+@using GoWMS.Server.Data
+@using GoWMS.Server.Controllers
+@using GoWMS.Server.Models
+@using GoWMS.Server.Models.Wcs
+@using GoWMS.Server.Reports
+
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+
+@inject AgvService AgvObjService
+@inject UserServices OpjUserService
+@inject ReportService UserlogService
+
+@attribute [Authorize]
+
+@if (Elements == null)
+{
+    // <p><em>Loading...</em></p>
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+}
+else
+{
+    <MudText Typo="Typo.h6" Color="Color.Primary"> @mPagecaption </MudText>
+    <MudAppBar Color="Color.Transparent" Fixed="false" Dense="true">
+        <MudSpacer />
+        <MudTooltip Text=Export Color="Color.Inherit" Placement="Placement.Top">
+            <MudIconButton Icon="@Icons.Custom.FileFormats.FileExcel" Color="Color.Success"></MudIconButton>
+            <MudIconButton Icon="@Icons.Custom.FileFormats.FilePdf" Color="Color.Error"></MudIconButton>
+        </MudTooltip>
+    </MudAppBar>
+    <MudTable Items="@Elements" FixedHeader="@fixed_header" FixedFooter="@fixed_footer" Height="@(fixed_header || fixed_footer ?VarGlobals.TableHeight:"")" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Tas_Agvworks,bool>(FilterFunc)" @bind-SelectedItem="selectedItem" SortLabel="Sort By">
+        <ToolBarContent>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+
+        <HeaderContent>
+            <MudTh>QUEUING</MudTh>
+            <MudTh>PALLET</MudTh>
+            <MudTh>FROM</MudTh>
+            <MudTh>TO</MudTh>
+            <MudTh>TASKTYPE</MudTh>
+            <MudTh>AGV</MudTh>
+            <MudTh>Q-STATUS</MudTh>
+            <MudTh>TASKCODE</MudTh>
+            <MudTh>CANCEL</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="QUEUING">@Convert.ToDateTime(context.Ctime).ToString(VarGlobals.FormatDT)</MudTd>
+            <MudTd DataLabel="PALLET">@context.Lpncode</MudTd>
+            <MudTd DataLabel="FROM">@context.Gate_Source</MudTd>
+            <MudTd DataLabel="TO">@context.Gate_Dest</MudTd>
+            <MudTd DataLabel="TASKTYPE">@context.Work_Code</MudTd>
+            <MudTd DataLabel="AGV">@context.Agv_Name</MudTd>
+            <MudTd DataLabel="Q-STATUS">
+                @if (@context.Work_Status == 0)
+                    {
+                    <MudChip Variant="Variant.Outlined" Color="Color.Primary">QUEUE</MudChip>
+                    }
+                    else
+                    {
+                    @if (@context.Work_Status == 1)
+                        {
+                        <MudChip Variant="Variant.Outlined" Color="Color.Secondary">QUEUE</MudChip>
+                        }
+                        else
+                        {
+                        @if (@context.Work_Status == 2)
+                            {
+                            <MudChip Variant="Variant.Filled" Color="Color.Info">PROCESS</MudChip>
+                            }
+                            else
+                            {
+                            @if (@context.Work_Status == 3)
+                                {
+                                <MudChip Variant="Variant.Filled" Color="Color.Success">COMPLETE</MudChip>
+                                }
+                                else
+                                {
+                                <MudChip Variant="Variant.Filled" Color="Color.Error">ERROR</MudChip>
+                                }
+
+                            }
+                        }
+                    }
+            </MudTd>
+            <MudTd DataLabel="TASKCODE">@context.Task_code</MudTd>
+            <MudTd DataLabel="CANCEL">
+                <MudFab @onclick="@(()=>CancleTask(@context.Lpncode))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" Size="Size.Small" IconSize="Size.Small" />
+            </MudTd>
+
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
+        </PagerContent>
+    </MudTable>
+}
+
+
+@code {
+    private string stColor = "background-color:yellow;";
+
+    IEnumerable<int> pageSizeOptions = new int[] { 10, 20, 30, 50, 100 };
+    private readonly string pageheader = "4.5-AGV-QUEUE";
+    private readonly string mPagecaption = "4.5-AGV-QUEUE";
+    private string mPagedesc { get; set; } = "4.5-AGV-QUEUE";
+    private string mPagename { get; set; } = "/4/4_5";
+    private string msgAction = "Enter Palletcode";
+    private string mPalletcode { get; set; } = "";
+    private string mPackid { get; set; } = "";
+    private string palletcode { get; set; }
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = false;
+    private bool fixed_header = true;
+    private bool fixed_footer = true;
+    private string searchString = "";
+    private Tas_Agvworks selectedItem = null;
+    private HashSet<Tas_Agvworks> selectedItems = new HashSet<Tas_Agvworks>();
+    private IEnumerable<Tas_Agvworks> Elements = new List<Tas_Agvworks>();
+
+    private IEnumerable<Functionreturn> Funcreturn = new List<Functionreturn>();
+
+    public int elevation = 0;
+
+    private ResultReturn resultReturn = null;
+    string sUsername { get; set; } = "";
+    string sRole { get; set; } = "";
+    string sGroupID { get; set; } = "";
+    string sUserID { get; set; } = "";
+    List<Userroleinfo> Roles = new List<Userroleinfo>();
+    [Inject] private IDialogService DialogService { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AgvService objCS = new AgvService();
+        //Elements = await Task.Run(() => objCS.GetReceivingOrdersbypallet(mPalletcode));
+
+        //////// Intial Menu and Privilege//////
+        resultReturn = await Task.Run(() => OpjUserService.InsertMenu(mPagename, mPagedesc));
+        resultReturn = await Task.Run(() => OpjUserService.InsertPrivilege(mPagename));
+        ////////////////////////////////////////
+
+        await GetUserAthu();
+        this.InsertAuditrial("View", pageheader);
+        Roles = await Task.Run(() => OpjUserService.GetUserRole(mPagename, long.Parse(sGroupID)));
+
+        Elements = await Task.Run(() => objCS.GetAllTaskAgv());
+    }
+
+    async Task GetUserAthu()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        sGroupID = user.Claims.FirstOrDefault(
+        c => c.Type == ClaimTypes.Role)?.Value;
+
+        sUserID = user.Claims.FirstOrDefault(
+            c => c.Type == ClaimTypes.Actor)?.Value;
+    }
+
+    private void InsertAuditrial(String actdesc, String munname)
+    {
+        bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
+    }
+
+    private bool FilterFunc(Tas_Agvworks element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Lpncode.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private void CancleTask(string pallet)
+    {
+        msgAction = "Cancle successfully";
+
+
+        Funcreturn = AgvObjService.CancleTaskAGV(pallet);
+
+        var Retchk = Funcreturn.Select(x => x.Retchk).LastOrDefault();
+        var Retmsg = Funcreturn.Select(x => x.Retmsg).LastOrDefault();
+
+
+
+        Elements = AgvObjService.GetAllTaskAgv();
+
+
+    }
+
+    #region "Role"
+    private async Task<bool> CheckRoleAdd()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_add == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleAddPermit, yesText: "OK");
+            }
+
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleEdit()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_edit == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleEditPermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleDelete()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_del == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleDelPermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleApprove()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_apv == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleApprovePermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleReport()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_rpt == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleReportPermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+        return bRet;
+    }
+    #endregion
+}

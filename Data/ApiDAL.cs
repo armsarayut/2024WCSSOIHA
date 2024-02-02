@@ -1379,7 +1379,7 @@ namespace GoWMS.Server.Data
                 sql.AppendLine("select efidx, efstatus, created, modified, innovator, device, taskno, tasktype, palletcode, itemno, batchno, qty, senddate, sendby, pickgate ");
                 sql.AppendLine("from api.posttaskorders");
                 sql.AppendLine("where (senddate >= @startdate AND senddate < @stopdate)");
-                sql.AppendLine("order by efidx");
+                sql.AppendLine("order by created desc");
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql.ToString(), con)
                 {

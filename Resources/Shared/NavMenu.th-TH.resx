@@ -133,10 +133,10 @@
     <value>4.2.ASRS-คิว</value>
   </data>
   <data name="4.3.RGV-QUEUE" xml:space="preserve">
-    <value>4.3.RGV-คิว</value>
+    <value>4.5.AGV-คิว</value>
   </data>
   <data name="4.4-RGV-SURVEY" xml:space="preserve">
-    <value>4.4-RGV-แบบสำรวจ</value>
+    <value>4.4-AGV-สถานะ</value>
   </data>
   <data name="4.4.1.RGV01-SURVEY" xml:space="preserve">
     <value>4.4.1.RGV01-แบบสำรวจ</value>

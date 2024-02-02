@@ -83,9 +83,26 @@ namespace GoWMS.Server
             services.AddSingleton<UserServices>();
             services.AddSingleton<PublicFunServices>();
 
+            services.AddSingleton<AgvService>();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
+            services.AddHttpClient();
+            services.AddScoped<HttpClient>();
+
+
             services.AddBlazoredModal();
 
-            
+
+            services.AddServerSideBlazor()
+               .AddHubOptions(options =>
+               {
+                   options.ClientTimeoutInterval = TimeSpan.FromMinutes(10);
+                   options.KeepAliveInterval = TimeSpan.FromSeconds(3);
+                   options.HandshakeTimeout = TimeSpan.FromMinutes(10);
+               });
+
+
             //services.AddTransient<VarGlobalService>();
             services.AddScoped<BlazorAppContext>();
 
@@ -101,7 +118,7 @@ namespace GoWMS.Server
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
                     {
-                        options.Cookie.Name = "gowmsaeiauth";
+                        options.Cookie.Name = "gowcsaeiauth";
                         options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
                         options.EventsType = typeof(Controllers.CookieAuthenticationEvents);
                         

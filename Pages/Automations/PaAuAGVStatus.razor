@@ -1,0 +1,516 @@
+﻿@page "/4/4_4"
+@using System.Runtime.Serialization
+@using Newtonsoft.Json
+@using GoWMS.Server.Data
+@using GoWMS.Server.Controllers
+@using GoWMS.Server.Models
+@using GoWMS.Server.Models.Hagv
+@using GoWMS.Server.Data
+@using System.Net.NetworkInformation
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+
+@inject AgvService ObjAgvService;
+@inject IHttpClientFactory _clientFactory;
+@implements IDisposable;
+@inject UtilityServices ObjUtitityservice
+@inject UserServices OpjUserService
+@inject ReportService UserlogService
+
+@attribute [Authorize]
+
+@if (Elements == null)
+{
+    // <p><em>Loading...</em></p>
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+}
+else
+{
+        <MudText Typo="Typo.h6" Color="Color.Primary"> @mPagecaption </MudText>
+        <MudTable Items="@Elements" FixedHeader="@fixed_header" FixedFooter="@fixed_footer" Height="@(fixed_header || fixed_footer ?VarGlobals.TableHeight:"")" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<dataModel,bool>(FilterFunc)" SortLabel="Sort By">
+            <ToolBarContent>
+                <MudSpacer />
+                <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+
+            <HeaderContent>
+                <MudTh><MudTableSortLabel SortBy="new Func<dataModel, object>(x=>x.robotCode)">AGVNO</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<dataModel, object>(x=>x.robotIp)">AGVIP</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<dataModel, object>(x=>x.battery)">POWER(%)</MudTableSortLabel></MudTh>
+                <MudTh>SPEED</MudTh>
+                <MudTh>STATUS</MudTh>
+                <MudTh>CONNECTION</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="AGVNO">@context.robotCode</MudTd>
+                <MudTd DataLabel="AGVIP">@context.robotIp</MudTd>
+                <MudTd DataLabel="POWER(%)">@context.battery</MudTd>
+                <MudTd DataLabel="SPEED">@context.speed</MudTd>
+
+                <MudTd DataLabel="STATUS">
+                @{
+                    int ind = @ElementsStatus.FindIndex(x => x.Status.ToString() == context.status);
+                    if (ind > -1)
+                    {
+                        string strmsg = @ElementsStatus[ind].Description;
+
+                                    <MudText>@context.status - @strmsg</MudText>
+                    }
+                    else
+                    {
+                                    <MudText>@context.status - Unknow</MudText>
+                    }
+                }
+                </MudTd>
+
+                <MudTd DataLabel="CONNECTION">
+                @if (@context.Online == true)
+                {
+                            <MudChip Variant="Variant.Filled" Color="Color.Success">Online</MudChip>
+                }
+                else
+                {
+                            <MudChip Variant="Variant.Filled" Color="Color.Error">Offline</MudChip>
+                }
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{10,20,50,100}" />
+            </PagerContent>
+        </MudTable>
+}
+
+@code {
+    private string mPagecaption = "4.4-AGV-STATUS";
+    private string mPagedesc { get; set; } = "4.4-AGV-STATUS";
+    private string mPagename { get; set; } = "/4/4_4";
+    private readonly string pageheader = "4.4-AGV-STATUS";
+
+    private ResultReturn resultReturn = null;
+    string sUsername { get; set; } = "";
+    string sRole { get; set; } = "";
+    string sGroupID { get; set; } = "";
+    string sUserID { get; set; } = "";
+    List<Userroleinfo> Roles = new List<Userroleinfo>();
+    [Inject] private IDialogService DialogService { get; set; }
+
+
+    [DataContract]
+    class Request
+    {
+        [DataMember]
+        public string reqCode { get; set; }
+        [DataMember]
+        public string mapShortName { get; set; }
+    }
+    class Response
+    {
+        [DataMember]
+        public string code { get; set; }
+        [DataMember]
+        [JsonProperty("data")]
+        public dataModel[] data { get; set; } = new dataModel[1];
+        [DataMember]
+        public string interrupt { get; set; }
+        [DataMember]
+        public string message { get; set; }
+        [DataMember]
+        public string reqCode { get; set; }
+    }
+    [DataContract]
+    class dataModel
+    {
+        [DataMember]
+        public string battery { get; set; }
+        [DataMember]
+        public string exclType { get; set; }
+        [DataMember]
+        public string mapCode { get; set; }
+        [JsonIgnore]
+        public string[] path { get; set; }
+        [DataMember]
+        public string podCode { get; set; }
+        [DataMember]
+        public string podDir { get; set; }
+        [DataMember]
+        public string posX { get; set; }
+        [DataMember]
+        public string posY { get; set; }
+        [DataMember]
+        public string robotCode { get; set; }
+        [DataMember]
+        public string robotDir { get; set; }
+        [DataMember]
+        public string robotIp { get; set; }
+        [DataMember]
+        public string speed { get; set; }
+        [DataMember]
+        public string status { get; set; }
+        [DataMember]
+        public string stop { get; set; }
+        [DataMember]
+        public string timestamp { get; set; }
+        [DataMember]
+        public bool Online { get; set; }
+    }
+
+    List<dataModel> Elements = new List<dataModel>();
+    List<Agv_Status> ElementsStatus = new List<Agv_Status>();
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = false;
+    private bool fixed_header = true;
+    private bool fixed_footer = true;
+    private string searchString = "";
+
+    private bool AGV192_168_200_32 { get; set; } = false;
+    private bool AGV192_168_200_33 { get; set; } = false;
+    private bool AGV192_168_200_34 { get; set; } = false;
+    private bool AGV192_168_200_35 { get; set; } = false;
+    private bool AGV192_168_200_36 { get; set; } = false;
+    private bool AGV192_168_200_37 { get; set; } = false;
+    private bool AGV192_168_200_38 { get; set; } = false;
+
+    void IDisposable.Dispose()
+    {
+        //while (bgWorker.IsBusy == true)
+        //{ }
+        if (timer != null)
+        {
+            timer.Enabled = false;
+            timer.Dispose();
+        }
+        
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //////// Intial Menu and Privilege//////
+        resultReturn = await Task.Run(() => OpjUserService.InsertMenu(mPagename, mPagedesc));
+        resultReturn = await Task.Run(() => OpjUserService.InsertPrivilege(mPagename));
+        ////////////////////////////////////////
+
+        await GetUserAthu();
+        this.InsertAuditrial("View", pageheader);
+        Roles = await Task.Run(() => OpjUserService.GetUserRole(mPagename, long.Parse(sGroupID)));
+
+
+        ElementsStatus = await Task.Run(() => ObjAgvService.GetAllAgvStatusDesc());
+
+        //ElementsStatus = ObjAgvService.GetAllAgvStatusDesc();
+        //await Task.Run(() => PingAGV());
+        await Task.Run(() => InitialTimer());
+
+        //InitialTimer();
+
+    }
+
+    async Task GetUserAthu()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        sGroupID = user.Claims.FirstOrDefault(
+        c => c.Type == ClaimTypes.Role)?.Value;
+
+        sUserID = user.Claims.FirstOrDefault(
+            c => c.Type == ClaimTypes.Actor)?.Value;
+    }
+
+    private void InsertAuditrial(String actdesc, String munname)
+    {
+        bool bRet = UserlogService.InsertAudittrial(actdesc, munname, long.Parse(sUserID));
+    }
+
+    bool FilterFunc(dataModel element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.robotCode.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    void RefreshData()
+    {
+
+    }
+    async void ExecuteApi()
+    {
+        var client = _clientFactory.CreateClient();
+        System.Data.DataTable vDt = ObjAgvService.GetQueryAgvStatusApiName();
+
+        if (vDt.Rows.Count > 0)
+        {
+            string vFullApiName = vDt.Rows[0]["full_api_name"].ToString();
+            Request vRequest = new Request();
+            vRequest.reqCode = "QAGV" + DateTime.Now.ToString("YYYYMMddHHmmss");
+            vRequest.mapShortName = vDt.Rows[0]["map_short_name"].ToString();
+
+            string vBody = Newtonsoft.Json.JsonConvert.SerializeObject(vRequest);
+            var vContent = new StringContent(vBody, System.Text.Encoding.UTF8, "application/json");
+            try
+            {
+                var vResponseMsg = client.PostAsync(vFullApiName, vContent).Result;
+                Response vResponse = null;
+                var vResult = vResponseMsg.Content.ReadAsStringAsync().Result;
+                if (vResponseMsg.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    Elements = new List<dataModel>();
+                    vResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Response>(vResult.ToString());
+                    if (vResponse.code == "0" && vResponse.data != null)
+                    {
+                        for (int i = 0; i < vResponse.data.Length; i++)
+                        {
+                            dataModel vTemp = new dataModel();
+                            vTemp.battery = vResponse.data[i].battery;
+                            vTemp.robotCode = vResponse.data[i].robotCode;
+                            vTemp.speed = vResponse.data[i].speed;
+                            vTemp.status = vResponse.data[i].status;
+                            vTemp.robotIp = vResponse.data[i].robotIp;
+                            switch (vResponse.data[i].robotIp)
+                            {
+                                case "192.168.200.32":
+                                    vTemp.Online = AGV192_168_200_32;
+                                    break;
+                                case "192.168.200.33":
+                                    vTemp.Online = AGV192_168_200_33;
+                                    break;
+                                case "192.168.200.34":
+                                    vTemp.Online = AGV192_168_200_34;
+                                    break;
+                                case "192.168.200.35":
+                                    vTemp.Online = AGV192_168_200_35;
+                                    break;
+                                case "192.168.200.36":
+                                    vTemp.Online = AGV192_168_200_36;
+                                    break;
+                                case "192.168.200.37":
+                                    vTemp.Online = AGV192_168_200_37;
+                                    break;
+                                case "192.168.200.38":
+                                    vTemp.Online = AGV192_168_200_38;
+                                    break;
+                                default:
+                                    vTemp.Online = false;
+                                    break;
+                            }
+
+                            //vTemp.Online = await ObjUtitityservice.PingAsync(vResponse.data[i].robotIp);
+                            Elements.Add(vTemp);
+                        }
+                        Elements = Elements.OrderBy(x => x.robotCode).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string exmsg = ex.Message.ToString();
+            }
+        }
+        
+    }
+    #region timer
+    System.Timers.Timer timer;
+    void InitialTimer()
+    {
+        timer = new System.Timers.Timer();
+        timer.Interval = 5000;
+        timer.Elapsed += TimerElapsed;
+        timer.Enabled = true;
+    }
+    void TimerElapsed(Object source, System.Timers.ElapsedEventArgs e)
+    {
+
+        if (timer.Interval <= 5000)
+            timer.Interval = 10000;
+
+        //PingAGV();
+        ExecuteApi();
+        InvokeAsync(StateHasChanged);
+    }
+    #endregion
+
+
+    async void PingAGV()
+    {
+        AGV192_168_200_32 = await ObjUtitityservice.PingAsync("192.168.200.32");
+        AGV192_168_200_33 = await ObjUtitityservice.PingAsync("192.168.200.33");
+        AGV192_168_200_34 = await ObjUtitityservice.PingAsync("192.168.200.34");
+        AGV192_168_200_35 = await ObjUtitityservice.PingAsync("192.168.200.35");
+        AGV192_168_200_36 = await ObjUtitityservice.PingAsync("192.168.200.36");
+        AGV192_168_200_37 = await ObjUtitityservice.PingAsync("192.168.200.37");
+        AGV192_168_200_38 = await ObjUtitityservice.PingAsync("192.168.200.38");
+    }
+
+
+    #region "Role"
+    private async Task<bool> CheckRoleAdd()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_add == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleAddPermit, yesText: "OK");
+            }
+
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleEdit()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_edit == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleEditPermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleDelete()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_del == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleDelPermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleApprove()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_apv == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleApprovePermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+        return bRet;
+    }
+
+    private async Task<bool> CheckRoleReport()
+    {
+        bool bRet = false;
+
+        if (Roles.ToList().Count > 0)
+        {
+            var iCorrect = Roles.ToList().FindIndex(a => a.Role_rpt == true);
+
+            if (iCorrect >= 0)
+            {
+                bRet = true;
+            }
+            else
+            {
+                bRet = false;
+            }
+
+            if (bRet == false)
+            {
+                bool? result = await DialogService.ShowMessageBox(
+                        "Warning", VarGlobals.MessageRoleReportPermit, yesText: "OK");
+            }
+        }
+        else
+        {
+            bool? result = await DialogService.ShowMessageBox(
+                                "Warning", VarGlobals.MessageRoleAuthrizedPermit, yesText: "OK");
+        }
+
+        return bRet;
+    }
+    #endregion
+
+
+
+}

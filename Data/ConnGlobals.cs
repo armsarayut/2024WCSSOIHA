@@ -23,13 +23,14 @@ namespace GoWMS.Server.Data
         private static readonly string NpgServer = "203.159.93.86"; // QAS Host
         //private static readonly string NpgServer = "10.144.12.162"; // QAS OnSite
 
-        private static readonly string NpgDB = "GOPG-YSS-DEV"; // Develop
+        //private static readonly string NpgDB = "GOPG-YSS-DEV"; // Develop
+        private static readonly string NpgDB = "Gowes_soiha"; // QAS Host
         //private static readonly string NpgDB = "Gowes"; // Production
 
-        private static readonly string NpgPort = "5434";
+        private static readonly string NpgPort = "5435";
 
         private static readonly string NpgUser = "postgres"; // "postgres";
-        private static readonly string NpgPass = "@ei0u2020";
+        private static readonly string NpgPass = "D3v@nz0ndb!@#$";
         //private static readonly string NpgPass = "@ei0u";
         private static readonly string NpgContime = "120";
 
@@ -95,9 +96,9 @@ namespace GoWMS.Server.Data
 
             if (bLocal)
             {
-                //return "Server=" + NpgServer + " ;Port=" + NpgPort + ";Database=" + NpgDB + ";User Id=" + NpgUser + ";Password=" + NpgPass + ";Timeout=" + NpgContime + ";";
+                return "Server=" + NpgServer + " ;Port=" + NpgPort + ";Database=" + NpgDB + ";User Id=" + NpgUser + ";Password=" + NpgPass + ";Timeout=" + NpgContime + ";";
 
-                return "Server=" + _IPQAString + " ;Port=" + _PortQAString + ";Database=" + _DbQAname + ";User Id=" + NpgUser + ";Password=" + _DbPass + ";Timeout=" + NpgContime + ";";
+                //return "Server=" + _IPQAString + " ;Port=" + _PortQAString + ";Database=" + _DbQAname + ";User Id=" + NpgUser + ";Password=" + _DbPass + ";Timeout=" + NpgContime + ";";
             }
             else
             {

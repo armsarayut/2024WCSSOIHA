@@ -13,13 +13,26 @@ namespace GoWMS.Server.Data
         public string CurrentMunu { get; set; }
         public static string Imagelogoreport()
         {
-            return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\yss-img.jpg"}" ;
+            return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\LogoSoiha.png"}";
         }
+
+
+
 
         public static string Fontreport()
         {
             return $"{Directory.GetCurrentDirectory()}{@"\wwwroot\fonts\ARIALUNI.TTF"}";
         }
+
+        public static Double Widthlogoreport()
+        {
+            return 0.25;
+        }
+        public static Double Highlogoreport()
+        { 
+            return  0.25;
+        }
+
 
         public static string CurrentUserName { get; set; }
 
@@ -58,5 +71,8 @@ namespace GoWMS.Server.Data
         public static string MessageRoleAuthrizedPermit { get; set; } = "You're not authorized.";
 
         public static string TableHeaderColor { get; set; } = Colors.Blue.Accent4;
+
+
+
     }
 }
